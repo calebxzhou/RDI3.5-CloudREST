@@ -1,4 +1,4 @@
-package calebzhou.rdicloudrest.controller.home;
+package calebzhou.rdicloudrest.controller;
 
 import calebzhou.rdicloudrest.constants.HomeAction;
 import calebzhou.rdicloudrest.dao.PlayerHomeDao;
@@ -17,7 +17,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-/*http://localhost:26888/home?action=SET&playerUuid=123456789123456789123456789123456789&homeName=abc&dimension=a&posX=1.0&posY=1.0&posZ=1.0&yaw=1.0&pitch=1.0
+/*
+http://localhost:26888/home?action=SET&playerUuid=123456789123456789123456789123456789&homeName=abc&dimension=a&posX=1.0&posY=1.0&posZ=1.0&yaw=1.0&pitch=1.0
 http://localhost:26888/home?action=GET&playerUuid=123456789123456789123456789123456789&homeName=abcd
 * */
 @WebServlet("/home")
@@ -87,21 +88,13 @@ public class PlayerHomeController extends HttpServlet {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        /*PlayerHome home=new PlayerHome();
-        home.setPlayerUuid(req.getParameter("playerUuid"));
-        home.setHomeName(req.getParameter("homeName"));
-        home.setDimension(req.getParameter("dimension"));
-        home.setPosX(Double.parseDouble(req.getParameter("posX")));
-        home.setPosY(Double.parseDouble(req.getParameter("posY")));
-        home.setPosZ(Double.parseDouble(req.getParameter("posZ")));
-        home.setYaw(Float.parseFloat(req.getParameter("yaw")));
-        home.setPitch(Float.parseFloat(req.getParameter("pitch")));
-        home.setComment(req.getParameter("comments"));*/
         try {
             resp.getWriter().append(
                     PlayerHomeDao.insertHome(home)
                             >0?"success":"failed");
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
