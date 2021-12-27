@@ -13,26 +13,26 @@ public class HttpUtils {
         HttpURLConnection connection = null;
         InputStream is = null;
         BufferedReader br = null;
-        String result = null;// ·µ»Ø½á¹û×Ö·û´®
+        String result = null;// è¿”å›ç»“æœå­—ç¬¦ä¸²
         try {
-            // ´´½¨Ô¶³ÌurlÁ¬½Ó¶ÔÏó
+            // åˆ›å»ºè¿œç¨‹urlè¿æ¥å¯¹è±¡
             URL url = new URL(httpurl);
-            // Í¨¹ıÔ¶³ÌurlÁ¬½Ó¶ÔÏó´ò¿ªÒ»¸öÁ¬½Ó£¬Ç¿×ª³ÉhttpURLConnectionÀà
+            // é€šè¿‡è¿œç¨‹urlè¿æ¥å¯¹è±¡æ‰“å¼€ä¸€ä¸ªè¿æ¥ï¼Œå¼ºè½¬æˆhttpURLConnectionç±»
             connection = (HttpURLConnection) url.openConnection();
-            // ÉèÖÃÁ¬½Ó·½Ê½£ºget
+            // è®¾ç½®è¿æ¥æ–¹å¼ï¼šget
             connection.setRequestMethod("GET");
-            // ÉèÖÃÁ¬½ÓÖ÷»ú·şÎñÆ÷µÄ³¬Ê±Ê±¼ä£º15000ºÁÃë
+            // è®¾ç½®è¿æ¥ä¸»æœºæœåŠ¡å™¨çš„è¶…æ—¶æ—¶é—´ï¼š15000æ¯«ç§’
             connection.setConnectTimeout(15000);
-            // ÉèÖÃ¶ÁÈ¡Ô¶³Ì·µ»ØµÄÊı¾İÊ±¼ä£º60000ºÁÃë
+            // è®¾ç½®è¯»å–è¿œç¨‹è¿”å›çš„æ•°æ®æ—¶é—´ï¼š60000æ¯«ç§’
             connection.setReadTimeout(60000);
-            // ·¢ËÍÇëÇó
+            // å‘é€è¯·æ±‚
             connection.connect();
-            // Í¨¹ıconnectionÁ¬½Ó£¬»ñÈ¡ÊäÈëÁ÷
+            // é€šè¿‡connectionè¿æ¥ï¼Œè·å–è¾“å…¥æµ
             if (connection.getResponseCode() == 200) {
                 is = connection.getInputStream();
-                // ·â×°ÊäÈëÁ÷is£¬²¢Ö¸¶¨×Ö·û¼¯
+                // å°è£…è¾“å…¥æµisï¼Œå¹¶æŒ‡å®šå­—ç¬¦é›†
                 br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-                // ´æ·ÅÊı¾İ
+                // å­˜æ”¾æ•°æ®
                 StringBuffer sbf = new StringBuffer();
                 String temp = null;
                 while ((temp = br.readLine()) != null) {
@@ -46,7 +46,7 @@ public class HttpUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // ¹Ø±Õ×ÊÔ´
+            // å…³é—­èµ„æº
             if (null != br) {
                 try {
                     br.close();
@@ -63,7 +63,7 @@ public class HttpUtils {
                 }
             }
 
-            connection.disconnect();// ¹Ø±ÕÔ¶³ÌÁ¬½Ó
+            connection.disconnect();// å…³é—­è¿œç¨‹è¿æ¥
         }
 
         return result;
@@ -78,37 +78,37 @@ public class HttpUtils {
         String result = null;
         try {
             URL url = new URL(httpUrl);
-            // Í¨¹ıÔ¶³ÌurlÁ¬½Ó¶ÔÏó´ò¿ªÁ¬½Ó
+            // é€šè¿‡è¿œç¨‹urlè¿æ¥å¯¹è±¡æ‰“å¼€è¿æ¥
             connection = (HttpURLConnection) url.openConnection();
-            // ÉèÖÃÁ¬½ÓÇëÇó·½Ê½
+            // è®¾ç½®è¿æ¥è¯·æ±‚æ–¹å¼
             connection.setRequestMethod("POST");
-            // ÉèÖÃÁ¬½ÓÖ÷»ú·şÎñÆ÷³¬Ê±Ê±¼ä£º15000ºÁÃë
+            // è®¾ç½®è¿æ¥ä¸»æœºæœåŠ¡å™¨è¶…æ—¶æ—¶é—´ï¼š15000æ¯«ç§’
             connection.setConnectTimeout(15000);
-            // ÉèÖÃ¶ÁÈ¡Ö÷»ú·şÎñÆ÷·µ»ØÊı¾İ³¬Ê±Ê±¼ä£º60000ºÁÃë
+            // è®¾ç½®è¯»å–ä¸»æœºæœåŠ¡å™¨è¿”å›æ•°æ®è¶…æ—¶æ—¶é—´ï¼š60000æ¯«ç§’
             connection.setReadTimeout(60000);
 
-            // Ä¬ÈÏÖµÎª£ºfalse£¬µ±ÏòÔ¶³Ì·şÎñÆ÷´«ËÍÊı¾İ/Ğ´Êı¾İÊ±£¬ĞèÒªÉèÖÃÎªtrue
+            // é»˜è®¤å€¼ä¸ºï¼šfalseï¼Œå½“å‘è¿œç¨‹æœåŠ¡å™¨ä¼ é€æ•°æ®/å†™æ•°æ®æ—¶ï¼Œéœ€è¦è®¾ç½®ä¸ºtrue
             connection.setDoOutput(true);
-            // Ä¬ÈÏÖµÎª£ºtrue£¬µ±Ç°ÏòÔ¶³Ì·şÎñ¶ÁÈ¡Êı¾İÊ±£¬ÉèÖÃÎªtrue£¬¸Ã²ÎÊı¿ÉÓĞ¿ÉÎŞ
+            // é»˜è®¤å€¼ä¸ºï¼štrueï¼Œå½“å‰å‘è¿œç¨‹æœåŠ¡è¯»å–æ•°æ®æ—¶ï¼Œè®¾ç½®ä¸ºtrueï¼Œè¯¥å‚æ•°å¯æœ‰å¯æ— 
             connection.setDoInput(true);
-            // ÉèÖÃ´«Èë²ÎÊıµÄ¸ñÊ½:ÇëÇó²ÎÊıÓ¦¸ÃÊÇ name1=value1&name2=value2 µÄĞÎÊ½¡£
+            // è®¾ç½®ä¼ å…¥å‚æ•°çš„æ ¼å¼:è¯·æ±‚å‚æ•°åº”è¯¥æ˜¯ name1=value1&name2=value2 çš„å½¢å¼ã€‚
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            // ÉèÖÃ¼øÈ¨ĞÅÏ¢£ºAuthorization: Bearer da3efcbf-0845-4fe3-8aba-ee040be542c0
+            // è®¾ç½®é‰´æƒä¿¡æ¯ï¼šAuthorization: Bearer da3efcbf-0845-4fe3-8aba-ee040be542c0
             connection.setRequestProperty("Authorization", "Bearer da3efcbf-0845-4fe3-8aba-ee040be542c0");
-            // Í¨¹ıÁ¬½Ó¶ÔÏó»ñÈ¡Ò»¸öÊä³öÁ÷
+            // é€šè¿‡è¿æ¥å¯¹è±¡è·å–ä¸€ä¸ªè¾“å‡ºæµ
             os = connection.getOutputStream();
-            // Í¨¹ıÊä³öÁ÷¶ÔÏó½«²ÎÊıĞ´³öÈ¥/´«Êä³öÈ¥,ËüÊÇÍ¨¹ı×Ö½ÚÊı×éĞ´³öµÄ
+            // é€šè¿‡è¾“å‡ºæµå¯¹è±¡å°†å‚æ•°å†™å‡ºå»/ä¼ è¾“å‡ºå»,å®ƒæ˜¯é€šè¿‡å­—èŠ‚æ•°ç»„å†™å‡ºçš„
             os.write(param.getBytes());
-            // Í¨¹ıÁ¬½Ó¶ÔÏó»ñÈ¡Ò»¸öÊäÈëÁ÷£¬ÏòÔ¶³Ì¶ÁÈ¡
+            // é€šè¿‡è¿æ¥å¯¹è±¡è·å–ä¸€ä¸ªè¾“å…¥æµï¼Œå‘è¿œç¨‹è¯»å–
             if (connection.getResponseCode() == 200) {
 
                 is = connection.getInputStream();
-                // ¶ÔÊäÈëÁ÷¶ÔÏó½øĞĞ°ü×°:charset¸ù¾İ¹¤×÷ÏîÄ¿×éµÄÒªÇóÀ´ÉèÖÃ
+                // å¯¹è¾“å…¥æµå¯¹è±¡è¿›è¡ŒåŒ…è£…:charsetæ ¹æ®å·¥ä½œé¡¹ç›®ç»„çš„è¦æ±‚æ¥è®¾ç½®
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 
                 StringBuffer sbf = new StringBuffer();
                 String temp = null;
-                // Ñ­»·±éÀúÒ»ĞĞÒ»ĞĞ¶ÁÈ¡Êı¾İ
+                // å¾ªç¯éå†ä¸€è¡Œä¸€è¡Œè¯»å–æ•°æ®
                 while ((temp = br.readLine()) != null) {
                     sbf.append(temp);
                     //sbf.append("\r\n");
@@ -120,7 +120,7 @@ public class HttpUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // ¹Ø±Õ×ÊÔ´
+            // å…³é—­èµ„æº
             if (null != br) {
                 try {
                     br.close();
@@ -142,7 +142,7 @@ public class HttpUtils {
                     e.printStackTrace();
                 }
             }
-            // ¶Ï¿ªÓëÔ¶³ÌµØÖ·urlµÄÁ¬½Ó
+            // æ–­å¼€ä¸è¿œç¨‹åœ°å€urlçš„è¿æ¥
             connection.disconnect();
         }
         return result;

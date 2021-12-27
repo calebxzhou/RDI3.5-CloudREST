@@ -13,27 +13,27 @@ public class Weather {
             public Humidity[] humidity;
             public Wind[] wind;
 
-            public class Skycon //Êý×é[0]ÊÇµ±Ìì
+            public class Skycon //æ•°ç»„[0]æ˜¯å½“å¤©
             {
                 public String date;
                 public String value;
             }
 
-            public class Temperature //Êý×é[0]ÊÇµ±Ìì
+            public class Temperature //æ•°ç»„[0]æ˜¯å½“å¤©
             {
                 public String date;
                 public double max;
                 public double min;
             }
 
-            public class Precipitation//Êý×é[0]ÊÇµ±Ìì
+            public class Precipitation//æ•°ç»„[0]æ˜¯å½“å¤©
             {
                 public String date;
                 public double max;
                 public double min;
             }
 
-            public class Pressure//Êý×é[0]ÊÇµ±Ìì
+            public class Pressure//æ•°ç»„[0]æ˜¯å½“å¤©
             {
                 public String date;
                 public double max;
@@ -46,7 +46,7 @@ public class Weather {
                 public double min;
             }
 
-            public class Wind//Êý×é[0]ÊÇµ±Ìì
+            public class Wind//æ•°ç»„[0]æ˜¯å½“å¤©
             {
                 public String date;
                 public Max max;

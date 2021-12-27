@@ -11,10 +11,10 @@ public class IP2Location {
             "lng": 120.89393
         },
         "ad_info": {
-            "nation": "ÖĞ¹ú",
-            "province": "ÁÉÄşÊ¡",
-            "city": "ºùÂ«µºÊĞ",
-            "district": "Áú¸ÛÇø",
+            "nation": "ä¸­å›½",
+            "province": "è¾½å®çœ",
+            "city": "è‘«èŠ¦å²›å¸‚",
+            "district": "é¾™æ¸¯åŒº",
             "adcode": 211403
         }
     }

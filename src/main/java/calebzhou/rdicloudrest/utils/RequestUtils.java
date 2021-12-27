@@ -1,8 +1,11 @@
 package calebzhou.rdicloudrest.utils;
 
+import com.google.gson.Gson;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serial;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
@@ -30,5 +33,15 @@ public class RequestUtils {
 
 
         return objInstance;
+    }
+    //把http请求转换成java对象 json版
+    public static <T extends Serializable> T parseRequstJsonToObject(Class<T> objClass , HttpServletRequest request) {
+        try {
+            request.setCharacterEncoding("GB18030");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String json  = request.getParameter("obj");
+        return new Gson().fromJson(json,objClass);
     }
 }
