@@ -76,18 +76,7 @@ public class PlayerHomeController extends HttpServlet {
         resp.getWriter().append(json);
     }
     private void homeSet(HttpServletRequest req,HttpServletResponse resp) throws IOException {
-        PlayerHome home = null;
-        try {
-            home = RequestUtils.parseRequstToObject(PlayerHome.class,req);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        PlayerHome home = RequestUtils.parseRequstJsonToObject(PlayerHome.class,req);
         try {
             resp.getWriter().append(
                     PlayerHomeDao.insertHome(home)
