@@ -37,7 +37,7 @@ public class RequestUtils {
     //把http请求转换成java对象 json版
     public static <T extends Serializable> T parseRequstJsonToObject(Class<T> objClass , HttpServletRequest request) {
         try {
-            request.setCharacterEncoding("GB18030");
+            request.setCharacterEncoding("UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package calebzhou.rdicloudrest.model;
+package calebzhou.rdicloudrest.model.record;
 
 import java.io.Serializable;
 

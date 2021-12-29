@@ -10,7 +10,7 @@ public enum HomeAction {
     //重命名
     RENAME,
     //重定位
-    RELOCATE,
+    LOCATE,
     //添加备注
     COMMENT,
 }

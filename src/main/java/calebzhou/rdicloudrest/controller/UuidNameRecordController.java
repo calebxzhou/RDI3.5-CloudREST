@@ -1,7 +1,7 @@
 package calebzhou.rdicloudrest.controller;
 
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
-import calebzhou.rdicloudrest.model.UuidNameRecord;
+import calebzhou.rdicloudrest.model.record.UuidNameRecord;
 import calebzhou.rdicloudrest.utils.RequestUtils;
 import calebzhou.rdicloudrest.utils.ResponseUtils;
 import calebzhou.rdicloudrest.utils.SqlUtils;

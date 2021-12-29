@@ -1,4 +1,4 @@
-package calebzhou.rdicloudrest.model;
+package calebzhou.rdicloudrest.model.record;
 
 import calebzhou.rdicloudrest.constants.BlockAction;
 import com.google.gson.Gson;

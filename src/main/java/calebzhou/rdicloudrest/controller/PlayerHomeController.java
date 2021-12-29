@@ -4,6 +4,7 @@ import calebzhou.rdicloudrest.constants.HomeAction;
 import calebzhou.rdicloudrest.dao.PlayerHomeDao;
 import calebzhou.rdicloudrest.model.PlayerHome;
 import calebzhou.rdicloudrest.utils.RequestUtils;
+import calebzhou.rdicloudrest.utils.ResponseUtils;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -37,6 +38,7 @@ public class PlayerHomeController extends HttpServlet {
             case GET -> homeGet(req, resp);
             case SET -> homeSet(req, resp);
             case DELETE -> homeDelete(req, resp);
+            case LOCATE -> homeLocate(req, resp);
         }
 
 
@@ -94,6 +96,20 @@ public class PlayerHomeController extends HttpServlet {
             PlayerHomeDao.deleteHome(req.getParameter("playerUuid"),req.getParameter("homeName"))
             >0 ? "success":"failed");
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void homeLocate(HttpServletRequest req,HttpServletResponse resp){
+        String homeName = req.getParameter("homeName");
+        PlayerHome home = RequestUtils.parseRequstJsonToObject(PlayerHome.class,req);
+        try {
+            ResponseUtils.write(resp,
+            PlayerHomeDao.updateHomeLocation(home.getPlayerUuid(),homeName,home)+""
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }

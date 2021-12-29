@@ -1,7 +1,6 @@
 package calebzhou.rdicloudrest.controller;
 
-import calebzhou.rdicloudrest.model.LogInOutRecord;
-import calebzhou.rdicloudrest.model.PlayerDeathRecord;
+import calebzhou.rdicloudrest.model.record.PlayerDeathRecord;
 import calebzhou.rdicloudrest.utils.RequestUtils;
 import calebzhou.rdicloudrest.utils.SqlUtils;
 

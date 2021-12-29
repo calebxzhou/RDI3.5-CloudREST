@@ -1,7 +1,6 @@
 package calebzhou.rdicloudrest.dao;
 
-import calebzhou.rdicloudrest.model.BlockRecord;
-import calebzhou.rdicloudrest.model.PlayerHome;
+import calebzhou.rdicloudrest.model.record.BlockRecord;
 import calebzhou.rdicloudrest.utils.SqlUtils;
 
 import java.sql.SQLException;

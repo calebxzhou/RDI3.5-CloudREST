@@ -27,7 +27,9 @@ public class PlayerHomeDao {
         }
         return playerHome;
     }
-
+    public static int updateHomeLocation(String uuid,String homeName,PlayerHome home) throws SQLException, IllegalAccessException {
+        return SqlUtils.updateObject(home,new String[]{"playerUuid=? and ","homeName=?"},uuid,homeName);
+    }
     public static int insertHome(PlayerHome home) throws SQLException, IllegalAccessException {
         //TODO
         return SqlUtils.insertObjectToTable(home,PlayerHome.class);

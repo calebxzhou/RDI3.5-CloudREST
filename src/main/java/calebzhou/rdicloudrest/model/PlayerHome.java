@@ -18,4 +18,11 @@ public class PlayerHome implements Serializable {
         return new Gson().toJson(this);
     }
 
+    public String getPlayerUuid() {
+        return playerUuid;
+    }
+
+    public String getHomeName() {
+        return homeName;
+    }
 }

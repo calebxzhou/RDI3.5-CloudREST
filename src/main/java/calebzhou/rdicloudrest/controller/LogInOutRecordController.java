@@ -1,8 +1,6 @@
 package calebzhou.rdicloudrest.controller;
 
-import calebzhou.rdicloudrest.dao.BlockRecordDao;
-import calebzhou.rdicloudrest.model.BlockRecord;
-import calebzhou.rdicloudrest.model.LogInOutRecord;
+import calebzhou.rdicloudrest.model.record.LogInOutRecord;
 import calebzhou.rdicloudrest.utils.RequestUtils;
 import calebzhou.rdicloudrest.utils.SqlUtils;
 
