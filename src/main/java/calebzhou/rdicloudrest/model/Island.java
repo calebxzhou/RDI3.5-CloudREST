@@ -6,6 +6,6 @@ import java.sql.Timestamp;
 public class Island implements Serializable {
     String islandId;
     String ownerUuid;
-    CoordLocation location;
+    String location;
     Timestamp createTime;
 }

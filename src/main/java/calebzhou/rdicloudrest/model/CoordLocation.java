@@ -2,8 +2,10 @@ package calebzhou.rdicloudrest.model;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
+
 //坐标位置，XYZ
-public class CoordLocation {
+public class CoordLocation implements Serializable {
     int posX,posY,posZ;
 
     public CoordLocation(int posX, int posY, int posZ) {

@@ -8,8 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class IslandDao {
+    public static Island get(String islandId) throws SQLException, IllegalAccessException {
+        ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where islandId=?",islandId).executeQuery();
+        rs.next();
+        return SqlUtils.initializeObjectByResultSet(rs,Island.class);
+    }
     public static boolean has(String uuid) throws SQLException {
-        ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from Island where playerUuid=?",uuid).executeQuery();
+        ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from Island where ownerUuid=?",uuid).executeQuery();
         return rs.next();
     }
     public static boolean joined(String uuid) throws SQLException{
@@ -33,6 +38,12 @@ public class IslandDao {
     }
     public static String getIslandId(String ownerUuid) throws SQLException{
         ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from Island where ownerUuid=?",ownerUuid).executeQuery();
+        if(!rs.next())
+            return "null";
+        return rs.getString("islandId");
+    }
+    public static String getIslandIdJoined(String memberUuid) throws SQLException{
+        ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from IslandMember where memberUuid=?",memberUuid).executeQuery();
         if(!rs.next())
             return "null";
         return rs.getString("islandId");
