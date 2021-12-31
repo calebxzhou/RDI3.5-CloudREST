@@ -1,11 +1,12 @@
 package calebzhou.rdicloudrest.controller;
 
+import calebzhou.rdicloudrest.dao.DatabaseConnector;
 import calebzhou.rdicloudrest.dao.IslandDao;
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.model.Island;
+import calebzhou.rdicloudrest.utils.RandomUtils;
 import calebzhou.rdicloudrest.utils.RequestUtils;
 import calebzhou.rdicloudrest.utils.ResponseUtils;
-import calebzhou.rdicloudrest.utils.SqlUtils;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -16,11 +17,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static calebzhou.rdicloudrest.utils.ResponseUtils.*;
+
 @WebServlet("/island")
 public class IslandController extends HttpServlet {
-    HttpServletResponse response;
-    HttpServletRequest request;
+    enum IslandAction{
+        //创建空岛
+        create,
+        //删除空岛
+        delete,
+        //主动加入他人空岛
+        join,
+        //退出他人空岛
+        quit,
+        //邀请他人加入空岛
+        invite,kick,
+        //返回空岛
+        home,
+        //改变空岛传送点
+        sethome,
 
+    }
+    private HttpServletResponse response;
+    private HttpServletRequest request;
+    private String pid,iid,loca;
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req,resp);
@@ -30,97 +50,99 @@ public class IslandController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         this.request =req;
         this.response = resp;
+        this.pid=req.getParameter("pid");
+        this.iid=req.getParameter("iid");
+        this.loca=req.getParameter("loca");
         IslandAction action = null;
         try {
             action = Enum.valueOf(IslandAction.class,req.getParameter("action"));
             switch (action){
-                case HAS -> has();
-                case DELETE -> delete();
-                case JOIN -> join();
-                case CREATE -> create();
-                case JOINED -> joined();
-                case LOCATE -> locate();
-                case GETID -> getIslandId();
-                case GETID_JOINED -> getIslandIdJoined();
-                case QUIT -> quit();
-                case GET -> get();
+                case create -> create();
+                case delete -> delete();
+                case join -> join();
+                case quit -> quit();
+                case invite -> invite();
+                case kick -> kick();
+                case home -> home();
+                case sethome -> sethome();
             }
         }catch (RuntimeException | SQLException | IllegalAccessException exception){
-            ResponseUtils.write(resp,exception.getMessage());
+            write(resp,exception.getMessage());
             exception.printStackTrace();
         }
 
     }
-    private void get() throws SQLException, IllegalAccessException {
-            ResponseUtils.write(response, new Gson().toJson(IslandDao.get(request.getParameter("islandId"))));
+    private boolean checkHasIsland() throws SQLException {
+        boolean has = IslandDao.checkHasIsland(pid);
+        if(has){
+            write(response,"您拥有空岛!");
+            return true;
+        }else{
+            write(response,"您没有空岛!");
+            return false;
+        }
     }
-    private void getIslandId() throws SQLException, IllegalAccessException {
-         
-            ResponseUtils.write(response,""+IslandDao.getIslandId(request.getParameter("uuid")));
-         
+    private boolean checkJoinedIsland() throws SQLException{
+        boolean joined = IslandDao.checkJoinedIsland(pid);
+        if(joined){
+            write(response,"您加入了他人的空岛!");
+            return true;
+        }else{
+            write(response,"您没有加入他人的空岛!");
+            return false;
+        }
     }
-    private void getIslandIdJoined() throws SQLException {
-         
-            ResponseUtils.write(response,""+IslandDao.getIslandIdJoined(request.getParameter("uuid")));
-        
-    }
-    private void has() throws SQLException, IllegalAccessException {
-        
-            ResponseUtils.write(response,""+IslandDao.has(request.getParameter("uuid")));
-         
-    }
-    private void joined() throws SQLException, IllegalAccessException {
-        
-            ResponseUtils.write(response,""+IslandDao.joined(request.getParameter("uuid")));
-        
-    }
-    private void join() throws SQLException, IllegalAccessException {
-        
-            ResponseUtils.write(response,""+IslandDao.join(request.getParameter("uuid"),request.getParameter("islandId")));
-        
-    }
+    //创建空岛,自己有空岛 或者 自己加入了别人的空岛,就不
     private void create() throws SQLException, IllegalAccessException {
-        
-            ResponseUtils.write(response,""+IslandDao.create(RequestUtils.parseRequstJsonToObject(Island.class,request)));
+        if (checkHasIsland()||checkJoinedIsland()) return;
+        CoordLocation islandLocation = RandomUtils.getRandomCoordinate();
+        boolean createResult = IslandDao.create(new Island(RandomUtils.getRandomId(), pid, islandLocation));
+        write(response,createResult?islandLocation:"创建失败,请联系服主!");
+    }
+    //删除,如果自己没有空岛就不
+    private void delete() throws SQLException, IllegalAccessException {
+        if(!checkHasIsland())return;
+        write(response,
+                IslandDao.delete(pid));
+    }
+    //加入他人空岛,如果自己有空岛 或者 自己加入了别人的空岛,就不
+    private void join() throws SQLException, IllegalAccessException {
+        if(checkHasIsland() || checkJoinedIsland())return;
+        write(response,
+                IslandDao.joinOtherIsland(pid, iid));
+    }
+    //退出空岛,如果自己有空岛 或者 自己加入了别人的空岛,就不
+    private void quit() throws SQLException, IllegalAccessException {
+        if(checkHasIsland() || !checkJoinedIsland())return;
+        write(response,
+                IslandDao.quit(pid));
+    }
+    //邀请他人加入空岛,如果自己没有空岛 或者 自己加入了别人的空岛,就不
+    private void invite() throws SQLException, IllegalAccessException {
+        if(!checkHasIsland()|| checkJoinedIsland())return;
+        String iid=IslandDao.getIslandIdByPlayerUuid(pid);
+        write(response,
+                "告诉您的朋友输入指令/island join-"+iid+"即可加入,只能把指令告诉您的朋友,不要随意泄露指令"
+                );
+    }
+    //将玩家踢出空岛,如果自己没有空岛(岛主不是自己),就不
+    private void kick() throws SQLException, IllegalAccessException {
+        if(!checkHasIsland() || checkJoinedIsland())return;
 
     }
-    private void delete() throws SQLException, IllegalAccessException {
-        
-            ResponseUtils.write(response,""+IslandDao.delete(request.getParameter("islandId")));
-        
+    //回到空岛,如果自己没有空岛 或者 自己没加入别人的空岛 就不
+    private void home() throws SQLException, IllegalAccessException {
+        if(!checkHasIsland() || !checkJoinedIsland())return;
+        String iid =IslandDao.getIslandIdByPlayerUuid(pid);
+        if(iid==null)
+            iid=IslandDao.getIslandIdJoined(pid);
+        write(response,
+                IslandDao.getIslandById(iid).getLocation());
     }
-    private void quit() throws SQLException, IllegalAccessException {
-        
-            ResponseUtils.write(response,""+IslandDao.quit(request.getParameter("islandId"),request.getParameter("uuid")));
-        
+    //重设空岛传送点,如果自己没有空岛(岛主不是自己) 就不
+    private void sethome() throws SQLException, IllegalAccessException {
+        if(!checkHasIsland())return;
+        write(response,
+                IslandDao.locate(pid, CoordLocation.fromString(loca)));
     }
-    private void locate() throws SQLException, IllegalAccessException {
-        
-            ResponseUtils.write(response,""+IslandDao.locate(request.getParameter("islandId"), CoordLocation.fromString(request.getParameter("location"))));
-        
-    }
-}
-enum IslandAction{
-    //是否拥有空岛
-    HAS,
-    //是否加入他人空岛
-    JOINED,
-    //主动加入他人空岛
-    JOIN,
-    //邀请他人加入我的空岛
-    INVITE,
-    //创建空岛
-    CREATE,
-    //删除空岛
-    DELETE,
-    //改变空岛传送点
-    LOCATE,
-    //获取空岛ID
-    GETID,
-    //获取加入别人的空岛ID
-    GETID_JOINED,
-    //获取空岛信息
-    GET,
-    //退出他人空岛
-    QUIT,
 }

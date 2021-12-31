@@ -1,6 +1,6 @@
-package calebzhou.rdicloudrest.model;
+package calebzhou.rdicloudrest.model.geo;
 
-public class IP2Location {
+public class GeoLocation {
     /*{
     "status": 0,
     "message": "query ok",

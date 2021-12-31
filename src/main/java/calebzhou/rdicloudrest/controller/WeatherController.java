@@ -3,9 +3,9 @@ package calebzhou.rdicloudrest.controller;
 import calebzhou.rdicloudrest.constants.CloudServiceConstants;
 import calebzhou.rdicloudrest.constants.EColor;
 import calebzhou.rdicloudrest.constants.EWeather;
-import calebzhou.rdicloudrest.model.IP2Location;
-import calebzhou.rdicloudrest.model.WeatherRealTime;
-import calebzhou.rdicloudrest.model.Weather;
+import calebzhou.rdicloudrest.model.geo.GeoLocation;
+import calebzhou.rdicloudrest.model.geo.WeatherRealTime;
+import calebzhou.rdicloudrest.model.geo.Weather;
 import calebzhou.rdicloudrest.utils.GeographyUtils;
 import calebzhou.rdicloudrest.utils.HttpUtils;
 import calebzhou.rdicloudrest.utils.ResponseUtils;
@@ -23,7 +23,7 @@ public class WeatherController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         StringBuilder message = new StringBuilder();
         String playerIp = req.getParameter("ip");
-        IP2Location location = GeographyUtils.getGeoLocationFromIP(playerIp);
+        GeoLocation location = GeographyUtils.getGeoLocationFromIP(playerIp);
         //本地ip等特殊情况
         if (location.status != 0) {
             message.append("无法获取天气预报，将显示默认城市的天气预报。\n");
