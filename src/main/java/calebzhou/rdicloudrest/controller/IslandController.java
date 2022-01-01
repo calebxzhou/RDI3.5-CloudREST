@@ -132,7 +132,9 @@ public class IslandController extends HttpServlet {
     }
     //回到空岛,如果自己没有空岛 或者 自己没加入别人的空岛 就不
     private void home() throws SQLException, IllegalAccessException {
-        if(!checkHasIsland() || !checkJoinedIsland())return;
+        if(!checkHasIsland()
+                && !checkJoinedIsland())
+            return;
         String iid =IslandDao.getIslandIdByPlayerUuid(pid);
         if(iid==null)
             iid=IslandDao.getIslandIdJoined(pid);

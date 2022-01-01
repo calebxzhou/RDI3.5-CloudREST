@@ -10,6 +10,9 @@ public class CoordLocation {
     String dimension;
     double posX,posY,posZ;
 
+    public CoordLocation() {
+    }
+
     public CoordLocation(double posX, double posY, double posZ) {
         this.dimension = OVERWORLD;
         this.posX = posX;

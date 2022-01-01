@@ -11,6 +11,9 @@ public class Island implements Serializable {
     String location;
     Timestamp createTime;
 
+    public Island() {
+    }
+
     public Island(String islandId, String ownerUuid, CoordLocation location) {
         this.islandId = islandId;
         this.ownerUuid = ownerUuid;

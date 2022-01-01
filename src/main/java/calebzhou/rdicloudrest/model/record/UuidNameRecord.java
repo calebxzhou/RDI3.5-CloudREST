@@ -3,19 +3,19 @@ package calebzhou.rdicloudrest.model.record;
 import java.io.Serializable;
 
 public class UuidNameRecord implements Serializable {
-    String playerUuid;
-    String playerName;
+    String pid;
+    String pname;
 
     public String getPlayerUuid() {
-        return playerUuid;
+        return pid;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getPname() {
+        return pname;
     }
 
-    public UuidNameRecord(String playerUuid, String playerName) {
-        this.playerUuid = playerUuid;
-        this.playerName = playerName;
+    public UuidNameRecord(String pid, String pname) {
+        this.pid = pid;
+        this.pname = pname;
     }
 }

@@ -21,8 +21,8 @@ public class UuidNameRecordController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UuidNameRecord record = RequestUtils.parseRequstJsonToObject(UuidNameRecord.class , req);
         try {
-            ResultSet rs = DatabaseConnector.getPreparedStatement("select * from UuidNameRecord where playerUuid=? and playerName=?",
-                    record.getPlayerUuid(),record.getPlayerName()).executeQuery();
+            ResultSet rs = DatabaseConnector.getPreparedStatement("select 1 from UuidNameRecord where pid=? and pname=? limit 1",
+                    record.getPlayerUuid(),record.getPname()).executeQuery();
             if(!rs.next()){
                 SqlUtils.insertObjectToTable(record,UuidNameRecord.class);
                 ResponseUtils.write(resp,"success");
