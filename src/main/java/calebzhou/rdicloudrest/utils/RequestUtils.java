@@ -1,6 +1,7 @@
 package calebzhou.rdicloudrest.utils;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serial;
@@ -8,10 +9,11 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-
+@Slf4j
 public class RequestUtils {
     //把http请求转换成java对象
     public static <T extends Serializable> T parseRequstToObject(Class<T> objClass , HttpServletRequest request) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
         T objInstance = ReflectUtils.createInstance(objClass);
 
         for(Field field : ReflectUtils.getDeclaredAccessibleFields(objClass)){
@@ -42,6 +44,7 @@ public class RequestUtils {
             e.printStackTrace();
         }
         String json  = request.getParameter("obj");
+        log.info("request:"+json);
         return new Gson().fromJson(json,objClass);
     }
 }

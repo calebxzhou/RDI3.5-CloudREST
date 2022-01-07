@@ -2,15 +2,32 @@ package calebzhou.rdicloudrest.utils;
 
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
 import calebzhou.rdicloudrest.model.PlayerHome;
+import org.springframework.util.ReflectionUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SqlUtils {
+    public static <T extends Serializable> List<T> queryAll(Class<T> clazz) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        String name = clazz.getSimpleName();
+        ResultSet rs = DatabaseConnector.getPreparedStatement("select * from "+name).executeQuery();
+        ArrayList<T> list = new ArrayList();
+        while(rs.next()){
+            T obj = clazz.getConstructor().newInstance();
+            for (Field field : ReflectUtils.getDeclaredAccessibleFields(clazz)) {
+                field.set(obj, rs.getObject(field.getName()));
+            }
+            list.add(obj);
+        }
+        return list;
+    }
     public static <T extends Serializable> T initializeObjectByResultSet(ResultSet rs, Class<T> clazz) throws SQLException, IllegalAccessException {
         T objInstance = ReflectUtils.createInstance(clazz);
         for(Field field : ReflectUtils.getDeclaredAccessibleFields(clazz)){

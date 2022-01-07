@@ -1,16 +1,16 @@
 package calebzhou.rdicloudrest.model;
 
 import calebzhou.rdicloudrest.utils.TimeUtils;
-
+4
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Island implements Serializable {
     String islandId;
     String ownerUuid;
     String location;
     Timestamp createTime;
-
     public Island() {
     }
 
@@ -21,6 +21,12 @@ public class Island implements Serializable {
         this.createTime = TimeUtils.getNow();
     }
 
+    public Island(String islandId, String ownerUuid, String location,Timestamp time) {
+        this.islandId = islandId;
+        this.ownerUuid = ownerUuid;
+        this.location = location;
+        this.createTime = time;
+    }
     public String getIslandId() {
         return islandId;
     }

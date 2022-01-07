@@ -14,6 +14,10 @@ public class UuidNameRecord implements Serializable {
         return pname;
     }
 
+    public UuidNameRecord() {
+
+    }
+
     public UuidNameRecord(String pid, String pname) {
         this.pid = pid;
         this.pname = pname;

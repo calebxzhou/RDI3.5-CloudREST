@@ -52,7 +52,7 @@ public class IslandDao {
         return DatabaseConnector.getPreparedStatement("delete from IslandMember where memberUuid=?",memberUuid).executeUpdate()==1;
     }
     public static boolean locate(String pid, CoordLocation location) throws SQLException{
-        return DatabaseConnector.getPreparedStatement("update IslandMember set location=? where ownerUuid=?",location,pid).executeUpdate()==1;
+        return DatabaseConnector.getPreparedStatement("update Island set location=? where ownerUuid=?",location.toString(),pid).executeUpdate()==1;
     }
 
 
