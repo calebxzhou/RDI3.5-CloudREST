@@ -21,7 +21,7 @@ http://localhost:26888/home?action=SET&playerUuid=123456789123456789123456789123
 http://localhost:26888/home?action=GET&playerUuid=123456789123456789123456789123456789&homeName=abcd
 * */
 @WebServlet("/home")
-public class PlayerHomeController extends HttpServlet {
+public class PlayerHomeController extends BasicServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HomeAction action = null;
@@ -43,7 +43,7 @@ public class PlayerHomeController extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp)  {
         doGet(req, resp);
     }
 
@@ -76,7 +76,7 @@ public class PlayerHomeController extends HttpServlet {
         resp.getWriter().append(json);
     }
     private void homeSet(HttpServletRequest req,HttpServletResponse resp) throws IOException {
-        PlayerHome home = RequestUtils.parseRequstJsonToObject(PlayerHome.class,req);
+        PlayerHome home = parseRequstJsonToObject(PlayerHome.class,req);
         try {
             resp.getWriter().append(
                     PlayerHomeDao.insertHome(home)
@@ -100,7 +100,7 @@ public class PlayerHomeController extends HttpServlet {
 
     private void homeLocate(HttpServletRequest req,HttpServletResponse resp){
         String homeName = req.getParameter("homeName");
-        PlayerHome home = RequestUtils.parseRequstJsonToObject(PlayerHome.class,req);
+        PlayerHome home = parseRequstJsonToObject(PlayerHome.class,req);
         try {
             ResponseUtils.write(resp,
             PlayerHomeDao.updateHomeLocation(home.getPlayerUuid(),homeName,home)+""

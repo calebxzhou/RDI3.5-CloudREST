@@ -1,7 +1,7 @@
 package calebzhou.rdicloudrest.model;
 
 import calebzhou.rdicloudrest.utils.TimeUtils;
-4
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;

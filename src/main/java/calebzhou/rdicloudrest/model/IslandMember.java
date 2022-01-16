@@ -1,16 +1,24 @@
 package calebzhou.rdicloudrest.model;
 
-public class IslandMember {
+import java.io.Serializable;
+
+public class IslandMember implements Serializable {
     String islandId;
     String memberUuid;
 
-    public IslandMember setIslandId(String islandId) {
-        this.islandId = islandId;
-        return this;
+    public IslandMember() {
     }
 
-    public IslandMember setMemberUuid(String memberUuid) {
+    public IslandMember(String islandId, String memberUuid) {
+        this.islandId = islandId;
         this.memberUuid = memberUuid;
-        return this;
+    }
+
+    public void setIslandId(String islandId) {
+        this.islandId = islandId;
+    }
+
+    public void setMemberUuid(String memberUuid) {
+        this.memberUuid = memberUuid;
     }
 }

@@ -17,17 +17,26 @@ public class IslandDao {
         return DatabaseConnector.getPreparedStatement("SELECT 1 FROM IslandMember WHERE memberUuid =? LIMIT 1",pid).executeQuery().next();
     }
     //通过空岛id获取空岛对象
-    public static Island getIslandById(String islandId) throws SQLException, IllegalAccessException {
+    public static Island getIslandById(String islandId) throws SQLException{
         ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where islandId=?",islandId).executeQuery();
         rs.next();
-        return SqlUtils.initializeObjectByResultSet(rs,Island.class);
+        try {
+            return SqlUtils.initializeObjectByResultSet(rs,Island.class);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-    //通过玩家id获取空岛id
-    public static String getIslandIdByPlayerUuid(String ownerUuid) throws SQLException{
-        ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from Island where ownerUuid=?",ownerUuid).executeQuery();
-        if(!rs.next())
-            return null;
-        return rs.getString("islandId");
+    //通过玩家id获取空岛
+    public static Island getIslandByPlayerUuid(String ownerUuid) throws SQLException{
+        ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where ownerUuid=?",ownerUuid).executeQuery();
+        rs.next();
+        try {
+            return SqlUtils.initializeObjectByResultSet(rs,Island.class);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     //通过玩家id获取加入他人的空岛id
     public static String getIslandIdJoined(String memberUuid) throws SQLException{
@@ -40,13 +49,17 @@ public class IslandDao {
     public static boolean joinOtherIsland(String uuid, String targetIslandId) throws SQLException {
         return DatabaseConnector.getPreparedStatement("insert into IslandMember values (?,?)",targetIslandId,uuid).executeUpdate()==1;
     }
-    public static boolean create(Island island) throws SQLException, IllegalAccessException {
-        return SqlUtils.insertObjectToTable(island,Island.class)==1;
+    public static boolean create(Island island) throws SQLException {
+        try {
+            return SqlUtils.insertObjectToTable(island,Island.class)==1;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-    public static boolean delete(String uuid) throws SQLException, IllegalAccessException {
-        Island island = getIslandById(getIslandIdByPlayerUuid(uuid));
-        DatabaseConnector.getPreparedStatement("delete from IslandMember where islandId=?",island.getIslandId());
-        return DatabaseConnector.getPreparedStatement("delete from Island where islandId=?",island.getIslandId()).executeUpdate()==1 ;
+    public static boolean delete(String iid) throws SQLException {
+        DatabaseConnector.getPreparedStatement("delete from IslandMember where islandId=?",iid);
+        return DatabaseConnector.getPreparedStatement("delete from Island where islandId=?",iid).executeUpdate()==1 ;
     }
     public static boolean quit(String memberUuid) throws SQLException{
         return DatabaseConnector.getPreparedStatement("delete from IslandMember where memberUuid=?",memberUuid).executeUpdate()==1;

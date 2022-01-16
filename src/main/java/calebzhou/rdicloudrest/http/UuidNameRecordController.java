@@ -19,9 +19,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/UuidNameRecord")
-public class UuidNameRecordController extends HttpServlet {
+public class UuidNameRecordController extends BasicServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String query = req.getParameter("query");
         if(query != null){
             try {
@@ -32,7 +32,7 @@ public class UuidNameRecordController extends HttpServlet {
             }
             return;
         }
-        UuidNameRecord record = RequestUtils.parseRequstJsonToObject(UuidNameRecord.class , req);
+        UuidNameRecord record = parseRequstJsonToObject(UuidNameRecord.class , req);
         try {
             ResultSet rs = DatabaseConnector.getPreparedStatement("select 1 from UuidNameRecord where pid=? and pname=? limit 1",
                     record.getPlayerUuid(),record.getPname()).executeQuery();

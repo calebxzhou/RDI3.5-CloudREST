@@ -19,12 +19,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 @WebServlet("/GenericRecord")
-public class GenericRecordController extends HttpServlet {
+public class GenericRecordController extends BasicServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             if(req.getParameter("query")==null)
-            SqlUtils.insertObjectToTable(RequestUtils.parseRequstJsonToObject(GenericRecord.class,req),GenericRecord.class);
+            SqlUtils.insertObjectToTable(parseRequstJsonToObject(GenericRecord.class,req),GenericRecord.class);
             else{
                 doGet(req, resp);
             }
@@ -32,15 +32,11 @@ public class GenericRecordController extends HttpServlet {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         try {
             ArrayList<GenericRecord> list=new ArrayList<>();
             ResultSet set = DatabaseConnector.getPreparedStatement(req.getParameter("query").replace("@AST","*")).executeQuery();

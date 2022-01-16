@@ -9,14 +9,17 @@ public class RandomUtils {
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
     }
+    public static char generateRandomChar(){
+                        //1234567890 长得不像
+        String chars = "acdefhjkmnprtvwxy";
+        Random rnd = new Random();
+        return chars.charAt(rnd.nextInt(chars.length()));
+    }
     public static boolean randomPercentage(double perc){
         int ranMax=10000;
         int ranPerc=(int)(ranMax*perc);
         int ran=RandomUtils.generateRandomInt(0,ranMax);
-        if(ran<ranPerc)
-            return true;
-        else
-            return false;
+        return ran < ranPerc;
     }
     public static String getRandomId(){
         int digits=8;
@@ -27,8 +30,8 @@ public class RandomUtils {
         return sb.toString();
     }
     public static CoordLocation getRandomCoordinate(){
-        int x=RandomUtils.generateRandomInt(-9999,9999);
-        int z=RandomUtils.generateRandomInt(-9999,9999);
+        int x=RandomUtils.generateRandomInt(-49999,49999);
+        int z=RandomUtils.generateRandomInt(-49999,49999);
         return new CoordLocation(x,220,z);
     }
 }

@@ -37,14 +37,5 @@ public class RequestUtils {
         return objInstance;
     }
     //把http请求转换成java对象 json版
-    public static <T extends Serializable> T parseRequstJsonToObject(Class<T> objClass , HttpServletRequest request) {
-        try {
-            request.setCharacterEncoding("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String json  = request.getParameter("obj");
-        log.info("request:"+json);
-        return new Gson().fromJson(json,objClass);
-    }
+
 }
