@@ -1,5 +1,6 @@
-package calebzhou.rdicloudrest.model;
+package calebzhou.rdicloudrest.model.dto;
 
+import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.utils.TimeUtils;
 
 import java.io.Serializable;

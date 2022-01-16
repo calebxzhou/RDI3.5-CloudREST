@@ -61,9 +61,19 @@ public abstract class BasicServlet extends HttpServlet {
         String requestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
         String servletPath = request.getServletPath();
-
-        String path = requestURI.replaceAll(contextPath, "").replaceAll(servletPath, "");
+        String path = requestURI
+                .replaceFirst(contextPath, "")
+                .replaceFirst(servletPath, "")
+                .replaceFirst("/","");
         return path;
+    }
+    protected String[] getPathWithAction(HttpServletRequest request){
+        String path=getPath(request);
+        String[] pathSplit = path.split("/");
+        if(pathSplit.length<1){
+            return new String[]{path};
+        }else
+            return pathSplit;
     }
     protected void write(HttpServletResponse resp,Object content){
         try {
@@ -93,13 +103,11 @@ public abstract class BasicServlet extends HttpServlet {
     protected void responseSuccess(HttpServletResponse response) {
         responseResultJSON(response, "Success", "成功");
     }
-    protected void responseError(HttpServletResponse response, Exception exception) {
-        try {
-            throw exception;
-        } catch (Exception ex) {
-            log.error(ex.toString());
-            responseResultJSON(response, "Error", ex.toString());
-        }
+    protected void responseError(HttpServletResponse response,String msg) {
+        responseResultJSON(response, "Error", msg);
+    }
+    protected void responseError(HttpServletResponse response,Exception e){
+        responseResultJSON(response, "Error", e.toString());
     }
 
 

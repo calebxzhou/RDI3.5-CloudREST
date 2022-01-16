@@ -1,53 +1,33 @@
 package calebzhou.rdicloudrest.http;
 
-import calebzhou.rdicloudrest.constants.IslandStatus;
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
 import calebzhou.rdicloudrest.dao.IslandDao;
 import calebzhou.rdicloudrest.model.CoordLocation;
-import calebzhou.rdicloudrest.model.Island;
-import calebzhou.rdicloudrest.model.IslandMember;
-import calebzhou.rdicloudrest.model.record.GenericRecord;
-import calebzhou.rdicloudrest.model.record.RecordType;
+import calebzhou.rdicloudrest.model.dto.Island;
 import calebzhou.rdicloudrest.utils.RandomUtils;
-import calebzhou.rdicloudrest.utils.ResponseUtils;
-import calebzhou.rdicloudrest.utils.SqlUtils;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import static calebzhou.rdicloudrest.utils.ResponseUtils.*;
 
 @WebServlet("/island/*")
 @Slf4j
 public class IslandController extends BasicServlet {
     enum IslandAction{
-        //创建空岛
-        create,
-        //删除空岛
-        delete,
         //主动加入他人空岛
         join,
         //退出他人空岛
         quit,
         //邀请他人加入空岛
         invite,kick,
-        //返回空岛
-        home,
         //改变空岛传送点
         sethome,
-        //获取所有
-        getall,
-        getid
+
     }
     //创建空岛 POST
     @Override
@@ -55,7 +35,7 @@ public class IslandController extends BasicServlet {
         super.doPost(req, resp);
         String pid = getPath(req);
         if (checkHasIsland(pid)||checkJoinedIsland(pid)){
-            responseError(resp,new IllegalArgumentException("您不符合创建空岛的条件"));
+            responseError(resp,"您不符合创建空岛的条件");
             return;
         }
         //随机空岛位置
@@ -65,11 +45,14 @@ public class IslandController extends BasicServlet {
         Island island = new Island(iid, pid, islandLocation);
         boolean createResult = false;
         try {
-            createResult = IslandDao.create(island);
+            createResult = IslandDao.getInstance().create(island);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        write(resp,new Gson().toJson(island));
+        if(createResult)
+            write(resp,new Gson().toJson(island));
+        else
+            responseError(resp,"创建失败,请咨询服主");
 
     }
 
@@ -77,20 +60,20 @@ public class IslandController extends BasicServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         super.doGet(req, resp);
-        String path = getPath(req);
-        if(StringUtils.isEmpty(path)) return;
-        String[] pathSplit = path.split("/");
+        String[] pathSplit = getPathWithAction(req);
         //岛id 或者 玩家id
         String type = pathSplit[0];
         String id = pathSplit[1];
         Island island = null;
         try {
-            if(type.equals("island")){
-                island = IslandDao.getIslandById(id);
-            }else if(type.equals("player")){
-                island = IslandDao.getIslandByPlayerUuid(id);
-            }else
-                responseError(resp,new IllegalArgumentException("不存在的空岛参数!"));
+            if(type.equals("iid")){
+                island = IslandDao.getInstance().getIslandById(id);
+            }else if(type.equals("pid")){
+                island = IslandDao.getInstance().getIslandByPlayerUuid(id);
+            }else{
+                responseError(resp,"不存在的空岛参数!");
+                return;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -117,6 +100,19 @@ public class IslandController extends BasicServlet {
         }
 */
     }
+    //删除空岛 DELETE
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
+        super.doDelete(req, resp);
+        String uid=getPath(req);
+        if(!checkHasIsland(uid))return;
+        try {
+            write(resp, IslandDao.getInstance().delete(uid));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void getall() throws SQLException, IllegalAccessException {
         ResultSet query = DatabaseConnector.getPreparedStatement("select * from Island").executeQuery();
         ArrayList<Island> list = new ArrayList<>();
@@ -149,7 +145,7 @@ public class IslandController extends BasicServlet {
     private boolean checkHasIsland(String pid)  {
         boolean has = false;
         try {
-            has = IslandDao.checkHasIsland(pid);
+            has = IslandDao.getInstance().getInstance().checkHasIsland(pid);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -158,7 +154,7 @@ public class IslandController extends BasicServlet {
     private boolean checkJoinedIsland(String pid) {
         boolean joined = false;
         try {
-            joined = IslandDao.checkJoinedIsland(pid);
+            joined = IslandDao.getInstance().checkJoinedIsland(pid);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -169,14 +165,12 @@ public class IslandController extends BasicServlet {
     private void create() throws SQLException, IllegalAccessException {
         if (checkHasIsland()||checkJoinedIsland()) return;
         CoordLocation islandLocation = RandomUtils.getRandomCoordinate();
-        boolean createResult = IslandDao.create(new Island(RandomUtils.getRandomId(), pid, islandLocation));
+        boolean createResult = IslandDao.getInstance().create(new Island(RandomUtils.getRandomId(), pid, islandLocation));
         write(response,createResult?islandLocation:"创建失败,请联系服主!");
     }
     //删除,如果自己没有空岛就不
     private void delete() throws SQLException, IllegalAccessException {
-        if(!checkHasIsland())return;
-        write(response,
-                IslandDao.delete(pid));
+
     }
     //加入他人空岛,如果自己有空岛 或者 自己加入了别人的空岛,就不
     private void join() throws SQLException, IllegalAccessException {
@@ -186,24 +180,24 @@ public class IslandController extends BasicServlet {
             return;
         }
         write(response,
-                IslandDao.joinOtherIsland(pid, iid));
+                IslandDao.getInstance().joinOtherIsland(pid, iid));
     }
     //退出空岛,如果自己有空岛 或者 自己加入了别人的空岛,就不
     private void quit() throws SQLException, IllegalAccessException {
         if(checkHasIsland() || !checkJoinedIsland())return;
         write(response,
-                IslandDao.quit(pid));
+                IslandDao.getInstance().quit(pid));
     }
     //邀请他人加入空岛,如果自己没有空岛 或者 自己加入了别人的空岛,就不
     private void invite() throws SQLException, IllegalAccessException {
         if(!checkHasIsland()|| checkJoinedIsland())return;
-        String iid=IslandDao.getIslandIdByPlayerUuid(pid);
+        String iid=IslandDao.getInstance().getIslandIdByPlayerUuid(pid);
         write(response,
                 "告诉您的朋友输入指令/island join-"+iid+"即可加入,只能把指令告诉您的朋友,不要随意泄露指令"
                 );
     }
     private void get() throws SQLException {
-        String iid=IslandDao.getIslandIdByPlayerUuid(pid);
+        String iid=IslandDao.getInstance().getIslandIdByPlayerUuid(pid);
     }
     //将玩家踢出空岛,如果自己没有空岛(岛主不是自己),就不
     private void kick() throws SQLException, IllegalAccessException {
@@ -214,16 +208,16 @@ public class IslandController extends BasicServlet {
     private void home() throws SQLException, IllegalAccessException {
         if(!checkHasIsland() && !checkJoinedIsland())
             return;
-        String iid =IslandDao.getIslandIdByPlayerUuid(pid);
+        String iid =IslandDao.getInstance().getIslandIdByPlayerUuid(pid);
         if(iid==null)
-            iid=IslandDao.getIslandIdJoined(pid);
+            iid=IslandDao.getInstance().getIslandIdJoined(pid);
         write(response,
-                IslandDao.getIslandById(iid).getLocation());
+                IslandDao.getInstance().getIslandById(iid).getLocation());
     }
     //重设空岛传送点,如果自己没有空岛(岛主不是自己) 就不
     private void sethome() throws SQLException, IllegalAccessException {
         if(!checkHasIsland())return;
         write(response,
-                IslandDao.locate(pid, CoordLocation.fromString(loca)));
+                IslandDao.getInstance().locate(pid, CoordLocation.fromString(loca)));
     }*/
 }
