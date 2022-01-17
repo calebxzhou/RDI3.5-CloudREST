@@ -43,4 +43,20 @@ public class Island implements Serializable {
     public Timestamp getCreateTime() {
         return createTime;
     }
+
+    public void setIslandId(String islandId) {
+        this.islandId = islandId;
+    }
+
+    public void setOwnerUuid(String ownerUuid) {
+        this.ownerUuid = ownerUuid;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
 }

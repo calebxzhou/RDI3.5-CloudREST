@@ -1,5 +1,6 @@
 package calebzhou.rdicloudrest.http;
 
+import calebzhou.rdicloudrest.model.dto.ApiAction;
 import calebzhou.rdicloudrest.utils.DataConvertHelper;
 import calebzhou.rdicloudrest.utils.IntegerDefaultAdapter;
 import calebzhou.rdicloudrest.utils.ServletHelper;
@@ -67,13 +68,14 @@ public abstract class BasicServlet extends HttpServlet {
                 .replaceFirst("/","");
         return path;
     }
-    protected String[] getPathWithAction(HttpServletRequest request){
+    // str[0] 动作 str[1] 内容
+    protected ApiAction getPathWithAction(HttpServletRequest request){
         String path=getPath(request);
         String[] pathSplit = path.split("/");
         if(pathSplit.length<1){
-            return new String[]{path};
+            return new ApiAction(path,"");
         }else
-            return pathSplit;
+            return new ApiAction(pathSplit[0],pathSplit[1]);
     }
     protected void write(HttpServletResponse resp,Object content){
         try {
@@ -139,7 +141,7 @@ public abstract class BasicServlet extends HttpServlet {
             responseError(response, ex);
         }
     }
-    public static <T extends Serializable> T parseRequstJsonToObject(Class<T> objClass , HttpServletRequest request) {
+    protected static <T extends Serializable> T parseRequstJsonToObject(Class<T> objClass , HttpServletRequest request) {
         try {
             request.setCharacterEncoding("UTF-8");
         } catch (UnsupportedEncodingException e) {

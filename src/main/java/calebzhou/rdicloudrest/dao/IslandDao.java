@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class IslandDao {
@@ -49,65 +51,81 @@ public class IslandDao {
             memberMap.put(rs.getString(1),rs.getString(2));
         }
     }
-
     //是否拥有空岛
     public boolean checkHasIsland(String pid) throws SQLException {
-        return DatabaseConnector.getPreparedStatement("SELECT 1 FROM Island WHERE ownerUuid =? LIMIT 1",pid).executeQuery().next();
+        return this.ownIslandMap.containsKey(pid);//DatabaseConnector.getPreparedStatement("SELECT 1 FROM Island WHERE ownerUuid =? LIMIT 1",pid).executeQuery().next();
     }
     //是否加入他人的空岛
     public boolean checkJoinedIsland(String pid) throws SQLException {
-        return DatabaseConnector.getPreparedStatement("SELECT 1 FROM IslandMember WHERE memberUuid =? LIMIT 1",pid).executeQuery().next();
+        return this.memberMap.containsValue(pid);//DatabaseConnector.getPreparedStatement("SELECT 1 FROM IslandMember WHERE memberUuid =? LIMIT 1",pid).executeQuery().next();
     }
     //通过空岛id获取空岛对象
     public Island getIslandById(String islandId) throws SQLException{
-        ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where islandId=?",islandId).executeQuery();
+        return this.islandMap.get(islandId);
+        /*ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where islandId=?",islandId).executeQuery();
         rs.next();
         try {
             return SqlUtils.initializeObjectByResultSet(rs,Island.class);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        return null;
+        return null;*/
     }
     //通过玩家id获取空岛
     public Island getIslandByPlayerUuid(String ownerUuid) throws SQLException{
-        ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where ownerUuid=?",ownerUuid).executeQuery();
+        return this.islandMap.get(this.ownIslandMap.get(ownerUuid));
+        /*ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where ownerUuid=?",ownerUuid).executeQuery();
         rs.next();
         try {
             return SqlUtils.initializeObjectByResultSet(rs,Island.class);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        return null;
+        return null;*/
     }
+    //TODO Untested
     //通过玩家id获取加入他人的空岛id
     public String getIslandIdJoined(String memberUuid) throws SQLException{
-        ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from IslandMember where memberUuid=?",memberUuid).executeQuery();
+        return this.memberMap.entries().stream().filter(e -> e.getValue().equals(memberUuid)).map(Map.Entry::getKey).toList().get(0);
+        /*ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from IslandMember where memberUuid=?",memberUuid).executeQuery();
         if(!rs.next())
             return "null";
-        return rs.getString("islandId");
+        return rs.getString("islandId");*/
     }
     //加入他人的空岛
-    public boolean joinOtherIsland(String uuid, String targetIslandId) throws SQLException {
-        return DatabaseConnector.getPreparedStatement("insert into IslandMember values (?,?)",targetIslandId,uuid).executeUpdate()==1;
+    public boolean joinOtherIsland(String pid, String targetIslandId) throws SQLException {
+        boolean result = DatabaseConnector.getPreparedStatement("insert into IslandMember values (?,?)", targetIslandId, pid).executeUpdate() == 1;
+        this.memberMap.put(targetIslandId,pid);
+        return result;
     }
     public boolean create(Island island) throws SQLException {
-        try {
-            return SqlUtils.insertObjectToTable(island,Island.class)==1;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return false;
+        boolean result = SqlUtils.insertObjectToTable(island,Island.class)==1;
+        this.islandMap.put(island.getIslandId(),island);
+        this.ownIslandMap.put(island.getOwnerUuid(),island.getIslandId());
+        return result;
+
     }
     public boolean delete(String iid) throws SQLException {
-        DatabaseConnector.getPreparedStatement("delete from IslandMember where islandId=?",iid);
-        return DatabaseConnector.getPreparedStatement("delete from Island where islandId=?",iid).executeUpdate()==1 ;
+        DatabaseConnector.getPreparedStatement("delete from IslandMember where islandId=?",iid).executeUpdate();
+        boolean result = DatabaseConnector.getPreparedStatement("delete from Island where islandId=?",iid).executeUpdate()==1;
+        String pid = this.islandMap.get(iid).getOwnerUuid();
+        this.islandMap.remove(iid);
+        this.ownIslandMap.remove(pid);
+        this.memberMap.removeAll(iid);
+        return result;
     }
     public boolean quit(String memberUuid) throws SQLException{
-        return DatabaseConnector.getPreparedStatement("delete from IslandMember where memberUuid=?",memberUuid).executeUpdate()==1;
+         boolean result = DatabaseConnector.getPreparedStatement("delete from IslandMember where memberUuid=?",memberUuid).executeUpdate()==1;
+         String iid = getIslandIdJoined(memberUuid);
+         this.memberMap.remove(iid,memberUuid);
+         return result;
     }
-    public boolean locate(String pid, CoordLocation location) throws SQLException{
-        return DatabaseConnector.getPreparedStatement("update Island set location=? where ownerUuid=?",location.toString(),pid).executeUpdate()==1;
+    public boolean sethome(String iid, CoordLocation location) throws SQLException{
+        boolean result = DatabaseConnector.getPreparedStatement("update Island set location=? where islandId=?", location.toString(), iid).executeUpdate() == 1;
+        Island island = this.islandMap.get(iid);
+        island.setLocation(location.toString());
+        this.islandMap.put(iid,island);
+        return result;
     }
 
 

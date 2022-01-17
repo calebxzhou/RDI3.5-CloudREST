@@ -36,7 +36,7 @@ public class SqlUtils {
         return objInstance;
     }
     //向表中插入对象
-    public static <T extends Serializable> int insertObjectToTable (T objInstance, Class<T> objClass) throws SQLException, IllegalAccessException {
+    public static <T extends Serializable> int insertObjectToTable (T objInstance, Class<T> objClass) throws SQLException {
         //全部变量名
         Field[] fields = ReflectUtils.getDeclaredAccessibleFields(objClass);
         String tableName = objClass.getSimpleName();
@@ -55,7 +55,12 @@ public class SqlUtils {
         PreparedStatement pstm = DatabaseConnector.getConnection().prepareStatement(sql);
         for (int i = 0; i < fieldAmount; i++) {
             Field fn = fields[i];
-            Object value = fn.get(objInstance);
+            Object value = null;
+            try {
+                value = fn.get(objInstance);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
             pstm.setObject(i + 1, value);
         }
         return pstm.executeUpdate();
