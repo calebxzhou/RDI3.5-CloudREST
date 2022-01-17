@@ -2,6 +2,7 @@ package calebzhou.rdicloudrest.dao;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.model.dto.Island;
+import calebzhou.rdicloudrest.model.dto.IslandBookmark;
 import calebzhou.rdicloudrest.utils.SqlUtils;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -20,6 +21,7 @@ public class IslandDao {
         return instance;
     }
     private HashMap<String, Island> islandMap = new HashMap<>();//岛ID vs 岛
+    private HashMap<String, IslandBookmark> bookmarkMap = new HashMap<>();//岛ID vs 位置书签
     private HashMap<String, String> ownIslandMap = new HashMap<>();//玩家ID  vs  岛ID
     private Multimap<String, String> memberMap = LinkedHashMultimap.create();//岛ID  vs  成员ID
 
@@ -49,6 +51,19 @@ public class IslandDao {
         rs=DatabaseConnector.getPreparedStatement("SELECT * FROM IslandMember").executeQuery();
         while(rs.next()){
             memberMap.put(rs.getString(1),rs.getString(2));
+        }
+        log.info("载入位置书签缓存");
+        rs=DatabaseConnector.getPreparedStatement("SELECT * from IslandBookmark").executeQuery();
+        while (rs.next()){
+            String iid=rs.getString(1);
+            IslandBookmark bookmark = new IslandBookmark(
+                    iid,
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getTimestamp(5)
+                    );
+            bookmarkMap.put(iid,bookmark);
         }
     }
     //是否拥有空岛
@@ -128,5 +143,15 @@ public class IslandDao {
         return result;
     }
 
+    public boolean addBookmark(IslandBookmark bookmark) throws SQLException{
+        this.bookmarkMap.put(bookmark.getIslandId(),bookmark);
+        boolean result = SqlUtils.insertObjectToTable(bookmark,IslandBookmark.class)==1;
+        return result;
+    }
+    public boolean deleteBookmark(IslandBookmark bookmark) throws SQLException{
+        this.bookmarkMap.remove(bookmark.getIslandId());
+        boolean result = DatabaseConnector.getPreparedStatement("delete from IslandBookmark where islandId = ? and markName = ?",bookmark.getIslandId(),bookmark.getMarkName()).executeUpdate()==1;
+        return result;
+    }
 
 }

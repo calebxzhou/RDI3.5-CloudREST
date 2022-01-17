@@ -45,9 +45,10 @@ public class IslandController extends BasicServlet {
         if(action.getAction().equals("create")){
             String pid = action.getParam();
             Island island = createIsland(pid);
+            write(resp,new Gson().toJson(island));
         }else if(action.getAction().equals("bookmark")){
             IslandBookmark bookmark = BasicServlet.parseRequstJsonToObject(IslandBookmark.class, req);
-
+            createBookmark(bookmark);
         }
 
     }
@@ -56,15 +57,15 @@ public class IslandController extends BasicServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         super.doGet(req, resp);
-        String[] pathSplit = getPathWithAction(req);
+        ApiAction pathSplit = getPathWithAction(req);
         //岛id 或者 玩家id
-        String type = pathSplit[0];
-        String id = pathSplit[1];
+        String action = pathSplit.getAction();
+        String id = pathSplit.getParam();
         Island island = null;
         try {
-            if(type.equals("iid")){
+            if(action.equals("iid")){
                 island = IslandDao.getInstance().getIslandById(id);
-            }else if(type.equals("pid")){
+            }else if(action.equals("pid")){
                 island = IslandDao.getInstance().getIslandByPlayerUuid(id);
             }else{
                 responseError(resp,"不存在的空岛参数!");
@@ -118,7 +119,7 @@ public class IslandController extends BasicServlet {
     private boolean checkHasIsland(String pid)  {
         boolean has = false;
         try {
-            has = IslandDao.getInstance().getInstance().checkHasIsland(pid);
+            has = IslandDao.getInstance().checkHasIsland(pid);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -157,8 +158,15 @@ public class IslandController extends BasicServlet {
         String iid = bookmark.getIslandId();
         String pid = bookmark.getCreatorPid();
         if(!checkJoinedIsland(pid) || !checkHasIsland(pid)){
-            throw new IllegalArgumentException("您未加入空岛或者自己没有空岛。");
+            return false;
         }
+        boolean b = false;
+        try {
+            b = IslandDao.getInstance().addBookmark(bookmark);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return b;
     }
    /*
 

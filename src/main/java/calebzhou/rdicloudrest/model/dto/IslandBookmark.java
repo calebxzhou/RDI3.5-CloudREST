@@ -10,6 +10,17 @@ public class IslandBookmark implements Serializable {
     String location;
     Timestamp createTime;
 
+    public IslandBookmark() {
+    }
+
+    public IslandBookmark(String islandId, String creatorPid, String markName, String location, Timestamp createTime) {
+        this.islandId = islandId;
+        this.creatorPid = creatorPid;
+        this.markName = markName;
+        this.location = location;
+        this.createTime = createTime;
+    }
+
     public String getIslandId() {
         return islandId;
     }
