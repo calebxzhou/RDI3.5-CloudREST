@@ -1,14 +1,14 @@
-package calebzhou.rdicloudrest.http;
+package calebzhou.rdicloudrest.http.client;
 
 import calebzhou.rdicloudrest.constants.CloudServiceConstants;
 import calebzhou.rdicloudrest.constants.EColor;
 import calebzhou.rdicloudrest.constants.EWeather;
+import calebzhou.rdicloudrest.http.BasicServlet;
 import calebzhou.rdicloudrest.model.geo.GeoLocation;
 import calebzhou.rdicloudrest.model.geo.WeatherRealTime;
 import calebzhou.rdicloudrest.model.geo.Weather;
 import calebzhou.rdicloudrest.utils.GeographyUtils;
 import calebzhou.rdicloudrest.utils.HttpUtils;
-import calebzhou.rdicloudrest.utils.ResponseUtils;
 import com.google.gson.Gson;
 
 import javax.servlet.annotation.WebServlet;
@@ -17,12 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalTime;
 
-@WebServlet("/getWeather")
-public class WeatherController extends HttpServlet {
+@WebServlet("/api_v1_public/getWeather")
+public class WeatherController extends BasicServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         StringBuilder message = new StringBuilder();
-        String playerIp = req.getParameter("ip");
+        String playerIp = req.getRemoteAddr();
         GeoLocation location = GeographyUtils.getGeoLocationFromIP(playerIp);
         //本地ip等特殊情况
         if (location.status != 0) {
@@ -31,7 +31,7 @@ public class WeatherController extends HttpServlet {
         }
         String nation = location.result.ad_info.nation;
         if (!nation.equals("中国")) {
-            ResponseUtils.write(resp, "抱歉，无法获取您所在地区的天气预报。");
+            responseError(resp, "抱歉，无法获取您所在地区的天气预报。",null);
             return;
         }
         String city = location.result.ad_info.city.replace("市", "");
@@ -73,7 +73,7 @@ public class WeatherController extends HttpServlet {
         int hour = LocalTime.now().getHour();
 
 
-        String msgCityTemp = String.format("%s-%s %s现%s%s℃ ",
+        String msgCityTemp = String.format("\n%s-%s %s 现在 %s%s ℃ ",
                 city, district, EColor.BRIGHT_GREEN.code, EColor.RESET.code, (int) tempNow);
         if (aqi < 50)
             airQ = EColor.BRIGHT_GREEN.code + airQ;
@@ -89,15 +89,15 @@ public class WeatherController extends HttpServlet {
             airQ = EColor.DARK_RED.code + airQ;
         String msgAir = "空气" + airQ + "(" + aqi + ") "+EColor.RESET.code;
         String msgLine1 = msgCityTemp.concat(msgAir);
-        String msgLine2 = String.format("%s今%s%s %s/%s℃ 湿%s%% 降水%s%% 风速%.2fm/s ",
+        String msgLine2 = String.format("\n%s今天 %s%s %s / %s℃ 湿%s%% 降水%s%% 风速%.2fm/s ",
                 EColor.AQUA.code, weatherState.getName(), EColor.RESET.code, lowTmp, hiTmp, humid, preci, wind);
-        String msgLine3 = String.format("%s明%s%s %s/%s℃ 湿%s%% 降水%s%% 风速%.2fm/s ",
+        String msgLine3 = String.format("\n%s明天 %s%s %s / %s℃ 湿%s%% 降水%s%% 风速%.2fm/s ",
                 EColor.AQUA.code, weatherState2.getName(), EColor.RESET.code, lowTmp2, hiTmp2, humid2, preci2,wind2);
         //xx(市) 2020年x月x日 晴 xx~xxC 湿度xx% 降水率xx%
         message.append(msgLine1 + "\n");
         message.append(msgLine2 + "\n");
         if (hour >= 17)
             message.append(msgLine3 + "\n");
-        ResponseUtils.write(resp, message.toString());
+        responseInfo(resp, message.toString(),null);
     }
 }

@@ -1,8 +1,7 @@
-package calebzhou.rdicloudrest.utils;
+package calebzhou.rdicloudrest.dao;
 
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
-import calebzhou.rdicloudrest.model.PlayerHome;
-import org.springframework.util.ReflectionUtils;
+import calebzhou.rdicloudrest.utils.ReflectUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SqlUtils {
+public class GenericDao {
     public static <T extends Serializable> List<T> queryAll(Class<T> clazz) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         String name = clazz.getSimpleName();
         ResultSet rs = DatabaseConnector.getPreparedStatement("select * from "+name).executeQuery();

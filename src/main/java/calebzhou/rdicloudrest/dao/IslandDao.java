@@ -3,7 +3,6 @@ package calebzhou.rdicloudrest.dao;
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.model.dto.Island;
 import calebzhou.rdicloudrest.model.dto.IslandBookmark;
-import calebzhou.rdicloudrest.utils.SqlUtils;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
@@ -12,18 +11,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class IslandDao {
-    private static final IslandDao instance = new IslandDao();
-    public static IslandDao getInstance(){
-        return instance;
-    }
-    private HashMap<String, Island> islandMap = new HashMap<>();//岛ID vs 岛
-    private HashMap<String, IslandBookmark> bookmarkMap = new HashMap<>();//岛ID vs 位置书签
-    private HashMap<String, String> ownIslandMap = new HashMap<>();//玩家ID  vs  岛ID
-    private Multimap<String, String> memberMap = LinkedHashMultimap.create();//岛ID  vs  成员ID
+    private final HashMap<String, Island> islandMap = new HashMap<>();//岛ID vs 岛
+    // private final HashMap<String, IslandBookmark> bookmarkMap = new HashMap<>();//岛ID vs 位置书签
+
+    private final HashMap<String, String> ownIslandMap = new HashMap<>();//玩家ID  vs  岛ID
+    private final Multimap<String, String> memberMap = LinkedHashMultimap.create();//岛ID  vs  成员ID
 
     public IslandDao() {
         try {
@@ -52,7 +47,7 @@ public class IslandDao {
         while(rs.next()){
             memberMap.put(rs.getString(1),rs.getString(2));
         }
-        log.info("载入位置书签缓存");
+       /* log.info("载入位置书签缓存");
         rs=DatabaseConnector.getPreparedStatement("SELECT * from IslandBookmark").executeQuery();
         while (rs.next()){
             String iid=rs.getString(1);
@@ -64,43 +59,42 @@ public class IslandDao {
                     rs.getTimestamp(5)
                     );
             bookmarkMap.put(iid,bookmark);
-        }
+        }*/
     }
     //是否拥有空岛
-    public boolean checkHasIsland(String pid) throws SQLException {
+    public boolean checkHasIsland(String pid) {
         return this.ownIslandMap.containsKey(pid);//DatabaseConnector.getPreparedStatement("SELECT 1 FROM Island WHERE ownerUuid =? LIMIT 1",pid).executeQuery().next();
     }
     //是否加入他人的空岛
-    public boolean checkJoinedIsland(String pid) throws SQLException {
+    public boolean checkJoinedIsland(String pid)  {
         return this.memberMap.containsValue(pid);//DatabaseConnector.getPreparedStatement("SELECT 1 FROM IslandMember WHERE memberUuid =? LIMIT 1",pid).executeQuery().next();
     }
     //通过空岛id获取空岛对象
-    public Island getIslandById(String islandId) throws SQLException{
+    public Island getIslandById(String islandId){
         return this.islandMap.get(islandId);
         /*ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where islandId=?",islandId).executeQuery();
         rs.next();
         try {
-            return SqlUtils.initializeObjectByResultSet(rs,Island.class);
+            return GenericDao.initializeObjectByResultSet(rs,Island.class);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;*/
     }
     //通过玩家id获取空岛
-    public Island getIslandByPlayerUuid(String ownerUuid) throws SQLException{
+    public Island getIslandByPlayerUuid(String ownerUuid) {
         return this.islandMap.get(this.ownIslandMap.get(ownerUuid));
         /*ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where ownerUuid=?",ownerUuid).executeQuery();
         rs.next();
         try {
-            return SqlUtils.initializeObjectByResultSet(rs,Island.class);
+            return GenericDao.initializeObjectByResultSet(rs,Island.class);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;*/
     }
-    //TODO Untested
     //通过玩家id获取加入他人的空岛id
-    public String getIslandIdJoined(String memberUuid) throws SQLException{
+    public String getIslandIdJoined(String memberUuid)  {
         return this.memberMap.entries().stream().filter(e -> e.getValue().equals(memberUuid)).map(Map.Entry::getKey).toList().get(0);
         /*ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from IslandMember where memberUuid=?",memberUuid).executeQuery();
         if(!rs.next())
@@ -114,18 +108,18 @@ public class IslandDao {
         return result;
     }
     public boolean create(Island island) throws SQLException {
-        boolean result = SqlUtils.insertObjectToTable(island,Island.class)==1;
+        boolean result = GenericDao.insertObjectToTable(island,Island.class)==1;
         this.islandMap.put(island.getIslandId(),island);
         this.ownIslandMap.put(island.getOwnerUuid(),island.getIslandId());
         return result;
 
     }
-    public boolean delete(String iid) throws SQLException {
+    public boolean delete(String uid) throws SQLException {
+        String iid = this.ownIslandMap.get(uid);
         DatabaseConnector.getPreparedStatement("delete from IslandMember where islandId=?",iid).executeUpdate();
         boolean result = DatabaseConnector.getPreparedStatement("delete from Island where islandId=?",iid).executeUpdate()==1;
-        String pid = this.islandMap.get(iid).getOwnerUuid();
         this.islandMap.remove(iid);
-        this.ownIslandMap.remove(pid);
+        this.ownIslandMap.remove(uid);
         this.memberMap.removeAll(iid);
         return result;
     }
@@ -136,22 +130,23 @@ public class IslandDao {
          return result;
     }
     public boolean sethome(String iid, CoordLocation location) throws SQLException{
-        boolean result = DatabaseConnector.getPreparedStatement("update Island set location=? where islandId=?", location.toString(), iid).executeUpdate() == 1;
         Island island = this.islandMap.get(iid);
         island.setLocation(location.toString());
         this.islandMap.put(iid,island);
+        boolean result = DatabaseConnector.getPreparedStatement("update Island set location=? where islandId=?", location.toString(), iid).executeUpdate() == 1;
+
         return result;
     }
 
-    public boolean addBookmark(IslandBookmark bookmark) throws SQLException{
+ /*   public boolean addBookmark(IslandBookmark bookmark) throws SQLException{
         this.bookmarkMap.put(bookmark.getIslandId(),bookmark);
-        boolean result = SqlUtils.insertObjectToTable(bookmark,IslandBookmark.class)==1;
+        boolean result = GenericDao.insertObjectToTable(bookmark,IslandBookmark.class)==1;
         return result;
     }
     public boolean deleteBookmark(IslandBookmark bookmark) throws SQLException{
         this.bookmarkMap.remove(bookmark.getIslandId());
         boolean result = DatabaseConnector.getPreparedStatement("delete from IslandBookmark where islandId = ? and markName = ?",bookmark.getIslandId(),bookmark.getMarkName()).executeUpdate()==1;
         return result;
-    }
+    }*/
 
 }

@@ -12,7 +12,13 @@ public class RdicloudrestApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RdicloudrestApplication.class, args);
+		initDaos();
 	}
+
+	private static void initDaos() {
+		DaoFactory.getIslandDao();
+	}
+
 	@Bean
 	public ConfigurableServletWebServerFactory webServerFactory() {
 		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();

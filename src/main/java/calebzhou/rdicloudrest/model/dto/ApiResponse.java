@@ -1,15 +1,30 @@
 package calebzhou.rdicloudrest.model.dto;
 
-public class ApiResponse {
+import com.google.gson.Gson;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.io.Serializable;
+
+public class ApiResponse implements Serializable {
+    private String type;
     private String message;
-    private Object data;
+    private Serializable data;
 
     public ApiResponse() {
     }
 
-    public ApiResponse(String message, Object data) {
+    public ApiResponse(String type, String message, @Nullable Serializable data) {
+        this.type = type;
         this.message = message;
         this.data = data;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getMessage() {
@@ -20,11 +35,17 @@ public class ApiResponse {
         this.message = message;
     }
 
-    public Object getData() {
+    @Nullable
+    public Serializable getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(Serializable data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }

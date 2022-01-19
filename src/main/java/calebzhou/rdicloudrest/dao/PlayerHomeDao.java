@@ -1,7 +1,6 @@
 package calebzhou.rdicloudrest.dao;
 
 import calebzhou.rdicloudrest.model.PlayerHome;
-import calebzhou.rdicloudrest.utils.SqlUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,7 @@ public class PlayerHomeDao {
         ResultSet rs=DatabaseConnector.getPreparedStatement("select * from PlayerHome where playerUuid=?",uuid).executeQuery();
         ArrayList<PlayerHome> playerHomes=new ArrayList<>();
         while(rs.next()){
-            playerHomes.add(SqlUtils.initializeObjectByResultSet(rs,PlayerHome.class));
+            playerHomes.add(GenericDao.initializeObjectByResultSet(rs,PlayerHome.class));
         }
         return playerHomes;
     }
@@ -23,16 +22,16 @@ public class PlayerHomeDao {
         ResultSet rs=DatabaseConnector.getPreparedStatement("select * from PlayerHome where playerUuid=? and homeName=?",uuid,homeName).executeQuery();
         PlayerHome playerHome=new PlayerHome();
         if(rs.next()){
-            playerHome = SqlUtils.initializeObjectByResultSet(rs,PlayerHome.class);
+            playerHome = GenericDao.initializeObjectByResultSet(rs,PlayerHome.class);
         }
         return playerHome;
     }
     public static int updateHomeLocation(String uuid,String homeName,PlayerHome home) throws SQLException, IllegalAccessException {
-        return SqlUtils.updateObject(home,new String[]{"playerUuid=? and ","homeName=?"},uuid,homeName);
+        return GenericDao.updateObject(home,new String[]{"playerUuid=? and ","homeName=?"},uuid,homeName);
     }
     public static int insertHome(PlayerHome home) throws SQLException, IllegalAccessException {
         //TODO
-        return SqlUtils.insertObjectToTable(home,PlayerHome.class);
+        return GenericDao.insertObjectToTable(home,PlayerHome.class);
     }
     public static int deleteHome(String uuid,String homeName)throws SQLException{
         return DatabaseConnector.getPreparedStatement("delete from PlayerHome where playerUuid=? and homeName=?"
