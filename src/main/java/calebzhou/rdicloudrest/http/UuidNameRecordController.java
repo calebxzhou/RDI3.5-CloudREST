@@ -25,10 +25,10 @@ public class UuidNameRecordController extends BasicServlet {
                     record.getPlayerUuid(),record.getPname()).executeQuery();
             if(!rs.next()){
                 GenericDao.insertObjectToTable(record,UuidNameRecord.class);
-                responseSuccess(resp,"success",null);
+                responseSuccess(resp,"success");
             }
             else
-                responseError(resp,"exists",null);
+                responseError(resp,"exists");
         } catch (SQLException e) {
             e.printStackTrace();
         }

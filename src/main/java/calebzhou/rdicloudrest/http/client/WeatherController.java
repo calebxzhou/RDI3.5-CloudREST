@@ -31,7 +31,7 @@ public class WeatherController extends BasicServlet {
         }
         String nation = location.result.ad_info.nation;
         if (!nation.equals("中国")) {
-            responseError(resp, "抱歉，无法获取您所在地区的天气预报。",null);
+            responseError(resp, "抱歉，无法获取您所在地区的天气预报。");
             return;
         }
         String city = location.result.ad_info.city.replace("市", "");
@@ -98,6 +98,6 @@ public class WeatherController extends BasicServlet {
         message.append(msgLine2 + "\n");
         if (hour >= 17)
             message.append(msgLine3 + "\n");
-        responseInfo(resp, message.toString(),null);
+        responseInfo(resp, message.toString());
     }
 }

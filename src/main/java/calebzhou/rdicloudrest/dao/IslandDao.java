@@ -2,7 +2,6 @@ package calebzhou.rdicloudrest.dao;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.model.dto.Island;
-import calebzhou.rdicloudrest.model.dto.IslandBookmark;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
@@ -84,14 +83,10 @@ public class IslandDao {
     //通过玩家id获取空岛
     public Island getIslandByPlayerUuid(String ownerUuid) {
         return this.islandMap.get(this.ownIslandMap.get(ownerUuid));
-        /*ResultSet rs=DatabaseConnector.getPreparedStatement("select * from Island where ownerUuid=?",ownerUuid).executeQuery();
-        rs.next();
-        try {
-            return GenericDao.initializeObjectByResultSet(rs,Island.class);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;*/
+    }
+    //通过玩家id获取空岛id
+    public String getIslandIdByPlayerUuid(String ownerUuid) {
+        return getIslandByPlayerUuid(ownerUuid).getIslandId();
     }
     //通过玩家id获取加入他人的空岛id
     public String getIslandIdJoined(String memberUuid)  {
@@ -102,9 +97,9 @@ public class IslandDao {
         return rs.getString("islandId");*/
     }
     //加入他人的空岛
-    public boolean joinOtherIsland(String pid, String targetIslandId) throws SQLException {
-        boolean result = DatabaseConnector.getPreparedStatement("insert into IslandMember values (?,?)", targetIslandId, pid).executeUpdate() == 1;
-        this.memberMap.put(targetIslandId,pid);
+    public boolean joinOtherIsland( String iid,String pid) throws SQLException {
+        boolean result = DatabaseConnector.getPreparedStatement("insert into IslandMember values (?,?)", iid, pid).executeUpdate() == 1;
+        this.memberMap.put(iid,pid);
         return result;
     }
     public boolean create(Island island) throws SQLException {
@@ -123,9 +118,8 @@ public class IslandDao {
         this.memberMap.removeAll(iid);
         return result;
     }
-    public boolean quit(String memberUuid) throws SQLException{
-         boolean result = DatabaseConnector.getPreparedStatement("delete from IslandMember where memberUuid=?",memberUuid).executeUpdate()==1;
-         String iid = getIslandIdJoined(memberUuid);
+    public boolean deleteMember(String iid, String memberUuid) throws SQLException{
+         boolean result = DatabaseConnector.getPreparedStatement("delete from IslandMember islandId=? and memberUuid=?",iid,memberUuid).executeUpdate()==1;
          this.memberMap.remove(iid,memberUuid);
          return result;
     }

@@ -43,6 +43,7 @@ public abstract class BasicServlet extends HttpServlet {
         setEncoding(req, resp);
     }
 
+
     protected void setEncoding(HttpServletRequest req, HttpServletResponse resp){
         try {
             req.setCharacterEncoding("UTF-8");
@@ -52,7 +53,7 @@ public abstract class BasicServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
     }
-    protected String getPath(HttpServletRequest request){
+    public static String getPath(HttpServletRequest request){
         String requestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
         String servletPath = request.getServletPath();
@@ -71,7 +72,7 @@ public abstract class BasicServlet extends HttpServlet {
         }else
             return new ApiAction(pathSplit[0],pathSplit[1]);
     }*/
-    private void write(HttpServletResponse resp,Serializable content){
+    public static void write(HttpServletResponse resp,Serializable content){
         try {
             resp.setContentType("text/html; charset=UTF-8");
             resp.setCharacterEncoding("UTF-8");
@@ -81,25 +82,41 @@ public abstract class BasicServlet extends HttpServlet {
         }
     }
 
-    protected void responseSuccess(HttpServletResponse resp, String message,Serializable data) {
+
+    public static void responseErrorHasIsland(HttpServletResponse resp,boolean flag){
+        responseError(resp,"抱歉,您"+(flag?"已经拥":"没")+"有空岛.");
+    }
+    public static void responseErrorJoinedIsland(HttpServletResponse resp, boolean flag){
+        responseError(resp,"抱歉,您"+(flag?"已经":"没")+"加入过空岛.");
+    }
+    public static void responseErrorParams(HttpServletResponse resp,String param) {
+        responseError(resp, "参数" + param + "错误");
+    }
+
+
+    public static void responseSuccess(HttpServletResponse resp, String message){
+        responseSuccess(resp, message,null);
+    }
+    public static void responseError(HttpServletResponse resp, String message){
+        responseError(resp, message,null);
+    }
+    public static void responseInfo(HttpServletResponse resp, String message){
+        responseInfo(resp, message,null);
+    }
+
+
+    public static void responseSuccess(HttpServletResponse resp, String message,Serializable data) {
         response(resp,"success",message,data);
     }
-    protected void responseErrorHasIsland(HttpServletResponse resp,boolean flag){
-        responseError(resp,"抱歉,您"+(flag?"已经拥":"没")+"有空岛.",null);
-    }
-    protected void responseErrorJoinedIsland(HttpServletResponse resp, boolean flag){
-        responseError(resp,"抱歉,您"+(flag?"已经":"没")+"加入过空岛.",null);
-    }
-    protected void responseErrorParams(HttpServletResponse resp,String param){
-        responseError(resp,"参数"+param+"错误",null);
-    }
-    protected void responseError(HttpServletResponse resp, String message,Serializable data)  {
+    public static void responseError(HttpServletResponse resp, String message,Serializable data)  {
         response(resp,"error",message,data);
     }
-    protected void responseInfo(HttpServletResponse resp, String message,Serializable data)  {
+    public static void responseInfo(HttpServletResponse resp, String message,Serializable data)  {
         response(resp,"info",message,data);
     }
-    protected void response(HttpServletResponse resp,String type,String message,Serializable data){
+
+
+    public static void response(HttpServletResponse resp,String type,String message,Serializable data){
         write(resp,new ApiResponse(type,message,data));
     }
 
