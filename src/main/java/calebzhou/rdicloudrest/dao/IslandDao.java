@@ -27,8 +27,11 @@ public class IslandDao {
         }
     }
 
-    private void initCache() throws SQLException {
+    public void initCache() throws SQLException {
         log.info("载入空岛缓存");
+        islandMap.clear();
+        ownIslandMap.clear();
+        memberMap.clear();
         ResultSet rs = DatabaseConnector.getPreparedStatement("SELECT * FROM Island").executeQuery();
         while(rs.next()){
             String iid=rs.getString(1);
@@ -90,11 +93,11 @@ public class IslandDao {
     }
     //通过玩家id获取加入他人的空岛id
     public String getIslandIdJoined(String memberUuid)  {
-        return this.memberMap.entries().stream().filter(e -> e.getValue().equals(memberUuid)).map(Map.Entry::getKey).toList().get(0);
-        /*ResultSet rs=DatabaseConnector.getPreparedStatement("select islandId from IslandMember where memberUuid=?",memberUuid).executeQuery();
-        if(!rs.next())
-            return "null";
-        return rs.getString("islandId");*/
+        try {
+            return this.memberMap.entries().stream().filter(e -> e.getValue().equals(memberUuid)).map(Map.Entry::getKey).toList().get(0);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
     }
     //加入他人的空岛
     public boolean joinOtherIsland( String iid,String pid) throws SQLException {

@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ApiResponse implements Serializable {
     private String type;
     private String message;
-    private Serializable data;
+    private String data;
 
     public ApiResponse() {
     }
@@ -16,7 +16,7 @@ public class ApiResponse implements Serializable {
     public ApiResponse(String type, String message, @Nullable Serializable data) {
         this.type = type;
         this.message = message;
-        this.data = data;
+        this.data = data==null?null:data.toString();
     }
 
     public String getType() {
@@ -40,9 +40,6 @@ public class ApiResponse implements Serializable {
         return data;
     }
 
-    public void setData(Serializable data) {
-        this.data = data;
-    }
 
     @Override
     public String toString() {

@@ -15,7 +15,7 @@ public class RdicloudrestApplication {
 		initDaos();
 	}
 
-	private static void initDaos() {
+	public static void initDaos() {
 		DaoFactory.getIslandDao();
 	}
 

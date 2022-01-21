@@ -5,6 +5,7 @@ import calebzhou.rdicloudrest.logic.IslandLogic;
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.model.dto.Island;
 import calebzhou.rdicloudrest.utils.RandomUtils;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,9 +26,7 @@ public class IslandServlet extends BasicServlet {
         super.doPost(req, resp);
             String pid =getPath(req);
             Island island = IslandLogic.createIsland(pid,resp);
-            if(island==null)
-                responseError(resp,"创建岛屿失败, 您不符合创建的条件");
-            else
+            if(island!=null)
                 responseSuccess(resp,"成功创建了岛屿.",island);
     }
 
@@ -52,6 +51,8 @@ public class IslandServlet extends BasicServlet {
             island = DaoFactory.getIslandDao().getIslandById(id);
         }else if(idType.equals("pid")){
             island = DaoFactory.getIslandDao().getIslandByPlayerUuid(id);
+            if(island==null)
+                island = DaoFactory.getIslandDao().getIslandById(DaoFactory.getIslandDao().getIslandIdJoined(id));
         }else{
             responseErrorParams(resp,"");
             return;
@@ -93,7 +94,10 @@ public class IslandServlet extends BasicServlet {
             boolean isOwner = Boolean.parseBoolean(req.getParameter("isOwner"));
             //如果是岛主，则踢出成员
             if(isOwner)
-                IslandLogic.deleteMember(pid,mid,resp);
+                if(IslandLogic.deleteMember(pid, mid, resp))
+                    responseSuccess(resp,"删除成员成功");
+                else
+                    responseErrorHasIsland(resp,false);
             else
                 if(IslandLogic.deleteMember(DaoFactory.getIslandDao().getIslandIdJoined(mid),mid))
                     responseSuccess(resp,"退出成功");
@@ -118,18 +122,18 @@ public class IslandServlet extends BasicServlet {
             return;
         }
         String locas = req.getParameter("location");
-        String mid = req.getParameter("mid");
+        String mid = req.getParameter("member");
         //mid不为空，进入添加成员逻辑
         if(!StringUtils.isEmpty(mid)){
             String iid = DaoFactory.getIslandDao().getIslandIdByPlayerUuid(pid);
             try {
                 if (DaoFactory.getIslandDao().joinOtherIsland(iid,mid))
-                    responseSuccess(resp,"成功加入了空岛!");
+                    responseSuccess(resp,"添加成员成功!");
                 else
                     responseErrorJoinedIsland(resp,true);
-            } catch (SQLException e) {
+            } catch (SQLException e){
                 responseErrorJoinedIsland(resp,true);
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
             return;
         }

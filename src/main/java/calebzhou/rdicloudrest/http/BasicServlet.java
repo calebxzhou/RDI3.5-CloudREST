@@ -84,10 +84,10 @@ public abstract class BasicServlet extends HttpServlet {
 
 
     public static void responseErrorHasIsland(HttpServletResponse resp,boolean flag){
-        responseError(resp,"抱歉,您"+(flag?"已经拥":"没")+"有空岛.");
+        responseError(resp,"抱歉,目标玩家"+(flag?"已经拥":"没")+"有空岛.");
     }
     public static void responseErrorJoinedIsland(HttpServletResponse resp, boolean flag){
-        responseError(resp,"抱歉,您"+(flag?"已经":"没")+"加入过空岛.");
+        responseError(resp,"抱歉,目标玩家"+(flag?"已经":"没")+"加入过空岛.");
     }
     public static void responseErrorParams(HttpServletResponse resp,String param) {
         responseError(resp, "参数" + param + "错误");

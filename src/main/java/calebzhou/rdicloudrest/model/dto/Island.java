@@ -2,6 +2,7 @@ package calebzhou.rdicloudrest.model.dto;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.utils.TimeUtils;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -58,5 +59,10 @@ public class Island implements Serializable {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }
