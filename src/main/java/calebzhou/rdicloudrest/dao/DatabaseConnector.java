@@ -6,7 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseConnector {
-    public static final String DB_URL = "jdbc:mysql://cdb-p243thok.cd.tencentcdb.com:10083/rdi3?useSSL=true";
+
+    public static final String DB_NAME="rdi3";
+    public static final String BLOCK_RECORD_SCHEMA="br";
+    public static final String DB_URL = "jdbc:mysql://cdb-p243thok.cd.tencentcdb.com:10083/"+DB_NAME+"?useSSL=true";
     public static final String USR= "root";
     public static final String PWD = "dmts_avia";
     public static final int TIMEOUT = 240;

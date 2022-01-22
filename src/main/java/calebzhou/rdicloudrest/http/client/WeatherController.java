@@ -22,7 +22,9 @@ public class WeatherController extends BasicServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         StringBuilder message = new StringBuilder();
-        String playerIp = req.getRemoteAddr();
+        String playerIp = req.getParameter("ip");
+        if(playerIp==null)
+            playerIp=req.getRemoteAddr();
         GeoLocation location = GeographyUtils.getGeoLocationFromIP(playerIp);
         //本地ip等特殊情况
         if (location.status != 0) {

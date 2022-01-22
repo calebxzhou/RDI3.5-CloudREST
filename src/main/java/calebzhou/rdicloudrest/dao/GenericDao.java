@@ -14,6 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GenericDao {
+
+    public static boolean isTableExists(String tableName,String schema) throws SQLException {
+        ResultSet set = DatabaseConnector.getPreparedStatement("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = '" + schema + "' AND table_name = '" + tableName.replace(".","").replace(schema,"") + "' LIMIT 1;").executeQuery();
+        return set.next();
+    }
     public static <T extends Serializable> List<T> queryAll(Class<T> clazz) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         String name = clazz.getSimpleName();
         ResultSet rs = DatabaseConnector.getPreparedStatement("select * from "+name).executeQuery();
@@ -35,10 +40,9 @@ public class GenericDao {
         return objInstance;
     }
     //向表中插入对象
-    public static <T extends Serializable> int insertObjectToTable (T objInstance, Class<T> objClass) throws SQLException {
+    public static <T extends Serializable> int insertObjectToTable (T objInstance, Class<T> objClass, String tableName) throws SQLException {
         //全部变量名
         Field[] fields = ReflectUtils.getDeclaredAccessibleFields(objClass);
-        String tableName = objClass.getSimpleName();
         //变量的数量
         int fieldAmount = fields.length;
         StringBuilder sb = new StringBuilder("INSERT INTO " + tableName + "  VALUES (");
@@ -63,6 +67,9 @@ public class GenericDao {
             pstm.setObject(i + 1, value);
         }
         return pstm.executeUpdate();
+    }
+    public static <T extends Serializable> int insertObjectToTable (T objInstance, Class<T> objClass) throws SQLException {
+        return insertObjectToTable(objInstance,objClass,objClass.getSimpleName());
     }
 
     /**

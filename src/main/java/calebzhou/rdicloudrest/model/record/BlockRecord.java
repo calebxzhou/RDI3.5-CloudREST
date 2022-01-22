@@ -1,21 +1,19 @@
 package calebzhou.rdicloudrest.model.record;
 
-import calebzhou.rdicloudrest.constants.BlockAction;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class BlockRecord implements Serializable {
-    String playerUuid;
+    String pid;
     String blockType;
     String blockAction;
-    String dimension;
-    Integer posX;
-    Integer posY;
-    Integer posZ;
-    Timestamp oprTime;
-    public String toString(){
+    String location;
+    Timestamp recTime;
+
+    @Override
+    public String toString() {
         return new Gson().toJson(this);
     }
 }
