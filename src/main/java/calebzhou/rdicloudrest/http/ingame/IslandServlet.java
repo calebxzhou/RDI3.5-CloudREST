@@ -1,11 +1,10 @@
-package calebzhou.rdicloudrest.http;
+package calebzhou.rdicloudrest.http.ingame;
 
 import calebzhou.rdicloudrest.DaoFactory;
+import calebzhou.rdicloudrest.http.BasicServlet;
 import calebzhou.rdicloudrest.logic.IslandLogic;
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.model.dto.Island;
-import calebzhou.rdicloudrest.utils.RandomUtils;
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,9 +30,10 @@ public class IslandServlet extends BasicServlet {
     }
 
     /**
-     * 获取空岛对象 GET island/{id} ? idType=iid or pid
+     * 获取空岛对象 GET
+     * 1. island/{iid or pid}
      * iid{岛ID}  pid{玩家uuid}
-     * TESTED
+     *
      */
 
     @Override

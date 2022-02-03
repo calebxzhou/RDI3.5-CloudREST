@@ -1,5 +1,6 @@
 package calebzhou.rdicloudrest.thread;
 
+import calebzhou.rdicloudrest.ThreadPool;
 import calebzhou.rdicloudrest.dao.BlockRecordDao;
 import calebzhou.rdicloudrest.model.record.BlockRecord;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import java.util.Queue;
 public class BlockRecordThread extends Thread{
     public static Queue<BlockRecord> recordQueue = new LinkedList<>();
     public static void notifyStart(){
-        new BlockRecordThread().start();
+        ThreadPool.newThread(()->new BlockRecordThread().run());
     }
     public BlockRecordThread() {
     }
@@ -24,10 +25,11 @@ public class BlockRecordThread extends Thread{
         if(record!=null){
             try {
                 BlockRecordDao.insertBlockRecord(record);
+                log.info(recordQueue.size()+" 方块记录上传队列内");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            new BlockRecordThread().run();
+            run();
         }
 
 

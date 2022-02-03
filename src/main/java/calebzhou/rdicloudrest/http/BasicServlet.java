@@ -127,7 +127,6 @@ public abstract class BasicServlet extends HttpServlet {
             e.printStackTrace();
         }
         String json  = request.getParameter("obj");
-        log.info("request:"+json);
         return new Gson().fromJson(json,objClass);
     }
 }

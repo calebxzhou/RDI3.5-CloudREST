@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 
 public class Island implements Serializable {
@@ -13,6 +14,8 @@ public class Island implements Serializable {
     String ownerUuid;
     String location;
     Timestamp createTime;
+    String[] members;
+
     public Island() {
     }
 
@@ -23,11 +26,12 @@ public class Island implements Serializable {
         this.createTime = TimeUtils.getNow();
     }
 
-    public Island(String islandId, String ownerUuid, String location,Timestamp time) {
+    public Island(String islandId, String ownerUuid, String location, Timestamp time, String[] members) {
         this.islandId = islandId;
         this.ownerUuid = ownerUuid;
         this.location = location;
         this.createTime = time;
+        this.members=members;
     }
     public String getIslandId() {
         return islandId;
@@ -39,6 +43,14 @@ public class Island implements Serializable {
 
     public String getLocation() {
         return location;
+    }
+
+    public List<String> getMembers() {
+        return Arrays.asList(members);
+    }
+
+    public void setMembers(String[] members) {
+        this.members = members;
     }
 
     public Timestamp getCreateTime() {

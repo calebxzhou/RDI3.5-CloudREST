@@ -1,4 +1,4 @@
-package calebzhou.rdicloudrest.http;
+package calebzhou.rdicloudrest.http.ingame;
 
 import calebzhou.rdicloudrest.constants.FileConst;
 import calebzhou.rdicloudrest.utils.FileUtils;

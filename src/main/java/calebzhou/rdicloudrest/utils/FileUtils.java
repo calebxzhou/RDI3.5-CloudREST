@@ -1,14 +1,13 @@
 package calebzhou.rdicloudrest.utils;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 public class FileUtils {
     public static void writeToFile(File file,Object obj) {
             if (file.getParentFile() != null) {
@@ -25,5 +24,13 @@ public class FileUtils {
                 IOUtils.closeQuietly((Writer)writer);
             }
 
+    }
+    public static void writeLineToFile(File folder,String file,String line){
+        log.info(line);
+        try (FileWriter myWriter = new FileWriter(new File(folder, file + ".txt"))) {
+            myWriter.append(line + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

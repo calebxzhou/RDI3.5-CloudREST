@@ -1,0 +1,2 @@
+${Ansi.GREEN} >> ${build.name} (commit ${git.commit.id})
+${Ansi.FAINT} >> spring-boot ${spring-boot.formatted-version}${Ansi.NORMAL}

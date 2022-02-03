@@ -1,18 +1,16 @@
-package calebzhou.rdicloudrest.http;
+package calebzhou.rdicloudrest.http.ingame;
 
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
+import calebzhou.rdicloudrest.http.BasicServlet;
 import calebzhou.rdicloudrest.model.record.UuidNameRecord;
 
 import calebzhou.rdicloudrest.dao.GenericDao;
-import com.google.gson.Gson;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/UuidNameRecord")
 public class UuidNameRecordController extends BasicServlet {

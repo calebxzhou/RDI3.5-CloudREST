@@ -8,11 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class IslandDao {
+public class IslandDao implements Cacheable{
     private final HashMap<String, Island> islandMap = new HashMap<>();//岛ID vs 岛
     // private final HashMap<String, IslandBookmark> bookmarkMap = new HashMap<>();//岛ID vs 位置书签
 
@@ -36,32 +38,26 @@ public class IslandDao {
         while(rs.next()){
             String iid=rs.getString(1);
             String pid=rs.getString(2);
-            Island island = new Island(
-                    iid,pid,
-                    rs.getString(3),
-                    rs.getTimestamp(4)
-                    );
+
+            Island island = new Island();
+            island.setIslandId(iid);
+            island.setOwnerUuid(pid);
+            island.setLocation(rs.getString(3));
+            island.setCreateTime(rs.getTimestamp(4));
+
+            ResultSet rs2 = DatabaseConnector.getPreparedStatement("SELECT * FROM IslandMember where islandId=?",iid).executeQuery();
+            List<String> memberList = new ArrayList<>();
+            while(rs2.next()){
+                memberList.add(rs2.getString(2));
+                memberMap.put(iid,rs.getString(1));
+            }
+
+            island.setMembers(memberList.toArray(new String[0]));
+
             islandMap.put(iid,island);
             ownIslandMap.put(pid,iid);
         }
         log.info("载入空岛成员缓存");
-        rs=DatabaseConnector.getPreparedStatement("SELECT * FROM IslandMember").executeQuery();
-        while(rs.next()){
-            memberMap.put(rs.getString(1),rs.getString(2));
-        }
-       /* log.info("载入位置书签缓存");
-        rs=DatabaseConnector.getPreparedStatement("SELECT * from IslandBookmark").executeQuery();
-        while (rs.next()){
-            String iid=rs.getString(1);
-            IslandBookmark bookmark = new IslandBookmark(
-                    iid,
-                    rs.getString(2),
-                    rs.getString(3),
-                    rs.getString(4),
-                    rs.getTimestamp(5)
-                    );
-            bookmarkMap.put(iid,bookmark);
-        }*/
     }
     //是否拥有空岛
     public boolean checkHasIsland(String pid) {
@@ -123,7 +119,7 @@ public class IslandDao {
     }
     public boolean deleteMember(String iid, String memberUuid) throws SQLException{
          boolean result = DatabaseConnector.getPreparedStatement("delete from IslandMember islandId=? and memberUuid=?",iid,memberUuid).executeUpdate()==1;
-         this.memberMap.remove(iid,memberUuid);
+         //this.memberMap.remove(iid,memberUuid);
          return result;
     }
     public boolean sethome(String iid, CoordLocation location) throws SQLException{
