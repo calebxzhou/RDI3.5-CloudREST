@@ -2,7 +2,7 @@ package calebzhou.rdicloudrest.http.ingame.v2;
 
 import calebzhou.rdicloudrest.http.BasicServlet;
 import calebzhou.rdicloudrest.logic.IslandLogic;
-import calebzhou.rdicloudrest.model.dto.Island;
+import calebzhou.rdicloudrest.model.Island;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.annotation.WebServlet;

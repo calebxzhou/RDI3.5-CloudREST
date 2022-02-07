@@ -14,7 +14,7 @@ public class BlockRecordDao {
     public static int insertBlockRecord(BlockRecord record) throws SQLException {
         //表 按照日期分割
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date date = new Date();
+        Date date = new Date(record.getRecTime().getTime());
         String tableName = "br.BlockRecord_"+dateFormat.format(date);
         if(!GenericDao.isTableExists(tableName,BLOCK_RECORD_SCHEMA)){
             DatabaseConnector.getPreparedStatement("""

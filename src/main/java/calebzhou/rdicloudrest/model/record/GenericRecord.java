@@ -23,6 +23,50 @@ public class GenericRecord implements Serializable {
         }
     }
 
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public void setRecordType(String recordType) {
+        this.recordType = recordType;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Timestamp getRecTime() {
+        return recTime;
+    }
+
+    public void setRecTime(Timestamp recTime) {
+        this.recTime = recTime;
+    }
+
     public GenericRecord(String pid, RecordType recordType, String src, String target, String content, Timestamp recTime) {
         this.pid = pid;
         this.recordType = recordType.toString();

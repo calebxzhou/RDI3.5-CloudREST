@@ -1,4 +1,4 @@
-package calebzhou.rdicloudrest.model.dto;
+package calebzhou.rdicloudrest.model;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.utils.TimeUtils;
@@ -14,7 +14,7 @@ public class Island implements Serializable {
     String ownerUuid;
     String location;
     Timestamp createTime;
-    String[] members;
+     String[] members;
 
     public Island() {
     }
@@ -52,7 +52,9 @@ public class Island implements Serializable {
     public void setMembers(String[] members) {
         this.members = members;
     }
-
+    public void setMembers(List<String> members) {
+        this.members = members.toArray(new String[0]);
+    }
     public Timestamp getCreateTime() {
         return createTime;
     }

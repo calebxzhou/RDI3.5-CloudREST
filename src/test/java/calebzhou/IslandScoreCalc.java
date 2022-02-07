@@ -45,48 +45,8 @@ public class IslandScoreCalc {
         "block.minecraft.torch",
         "block.minecraft.sugar_cane"
     };
-    private static String getIgnoreBlocksClause(){
-        String sqlCond ="";//= "where 1=1";
-        for(String ignore:ignoreBlocks){
-            sqlCond+=" and blockType<>'"+ignore+"'";
-        }
-        return sqlCond;
-    }
-    private static void clearTables() throws SQLException {
-       /*
-        DatabaseConnector.getPreparedStatement("delete from rdi3.BlockRecord "+sqlCond).executeUpdate();
-        DatabaseConnector.getPreparedStatement("delete from rdi3.BlockRecord2 "+sqlCond).executeUpdate();*/
-    }
-    public static void main(String[] args) throws SQLException, IOException {
-        Connection connection = DatabaseConnector.getConnection();
-
-        ResultSet players = connection.prepareStatement("select pname from rdi3.UuidNameRecord").executeQuery();
-        List<String> playerList = new ArrayList<>();
-        while (players.next()){
-            playerList.add(players.getString(1));
-        }
-        ExecutorService service = Executors.newCachedThreadPool();
-        for(String pl:playerList){
-            service.execute(()->{
-                try {
-                    System.out.println(calc(connection,pl));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-        }
-
-
-
-    }
-
-    private static int calc(Connection connection,String pname) throws SQLException, IOException {
-        FileUtils.writeLineToFile(FileConst.scoreFolder,pname,"-----------计算玩家"+pname+"的岛屿积分！-----------");
-        AtomicInteger dayScore= new AtomicInteger();
-        List<String> tables=new ArrayList<>();
+    static List<String> tables=new ArrayList<>();
+    static {
         tables.add("0122");
         tables.add("0123");
         tables.add("0124");
@@ -100,6 +60,57 @@ public class IslandScoreCalc {
         tables.add("0201");
         tables.add("0202");
         tables.add("0203");
+    }
+
+    private static String getIgnoreBlocksClause(){
+        String sqlCond ="";//= "where 1=1";
+        for(String ignore:ignoreBlocks){
+            sqlCond+=" and blockType<>'"+ignore+"'";
+        }
+        return sqlCond;
+    }
+    private static void clearTables() throws SQLException {
+       /*
+        DatabaseConnector.getPreparedStatement("delete from rdi3.BlockRecord "+sqlCond).executeUpdate();
+        DatabaseConnector.getPreparedStatement("delete from rdi3.BlockRecord2 "+sqlCond).executeUpdate();*/
+    }
+    public static void main(String[] args) throws SQLException, IOException {
+        ResultSet rs = DatabaseConnector.getPreparedStatement("select pid,recordType,src,recTime from GenericRecord where recordType = 'login' or recordType = 'logout'").executeQuery();
+        while(rs.next()){
+            System.out.println(rs.getTimestamp(4));
+            DatabaseConnector.getPreparedStatement("insert into LoginRecord values (?,?,?,?)",
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getTimestamp(4)
+                    ).executeUpdate();
+        }
+
+        /*ResultSet players = connection.prepareStatement("select pname from rdi3.UuidNameRecord").executeQuery();
+        List<String> playerList = new ArrayList<>();
+        while (players.next()){
+            playerList.add(players.getString(1));
+        }
+        ExecutorService service = Executors.newCachedThreadPool();
+        for(String pl:playerList){
+                try {
+                    calc(connection,pl);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+        }*/
+
+
+
+    }
+
+    private static int calc(Connection connection,String pname) throws SQLException, IOException {
+        FileUtils.writeLineToFile(FileConst.scoreFolder,pname,"-----------计算玩家"+pname+"的岛屿积分！-----------");
+        AtomicInteger dayScore= new AtomicInteger();
+
 
 
 
@@ -160,7 +171,7 @@ public class IslandScoreCalc {
         }
 
 
-        FileUtils.writeLineToFile(FileConst.scoreFolder,pname,pname+" 从2021-12-29到今天，总计岛屿积分："+dayScore.get());
+        FileUtils.writeLineToFile(FileConst.scoreFolder,pname,pname+" 从2021-12-29到2022-02-03，总计岛屿积分："+dayScore.get());
         FileUtils.writeLineToFile(FileConst.scoreFolder,pname,"---------------------------------");
         return dayScore.get();
     }

@@ -1,7 +1,7 @@
 package calebzhou.rdicloudrest.dao;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
-import calebzhou.rdicloudrest.model.dto.Island;
+import calebzhou.rdicloudrest.model.Island;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +51,7 @@ public class IslandDao implements Cacheable{
                 memberList.add(rs2.getString(2));
                 memberMap.put(iid,rs.getString(1));
             }
-
+            memberList.add(pid);
             island.setMembers(memberList.toArray(new String[0]));
 
             islandMap.put(iid,island);
@@ -98,11 +98,18 @@ public class IslandDao implements Cacheable{
     //加入他人的空岛
     public boolean joinOtherIsland( String iid,String pid) throws SQLException {
         boolean result = DatabaseConnector.getPreparedStatement("insert into IslandMember values (?,?)", iid, pid).executeUpdate() == 1;
+        Island island = this.islandMap.get(iid);
+        List<String> members = island.getMembers();
+        members.add(pid);
+        island.setMembers(members);
+        this.islandMap.put(iid,island);
         this.memberMap.put(iid,pid);
         return result;
     }
     public boolean create(Island island) throws SQLException {
-        boolean result = GenericDao.insertObjectToTable(island,Island.class)==1;
+
+        boolean result = 1==DatabaseConnector.getPreparedStatement("insert into Island values (?,?,?,?)",
+                island.getIslandId(),island.getOwnerUuid(),island.getLocation(),island.getCreateTime()).executeUpdate();
         this.islandMap.put(island.getIslandId(),island);
         this.ownIslandMap.put(island.getOwnerUuid(),island.getIslandId());
         return result;
@@ -119,7 +126,12 @@ public class IslandDao implements Cacheable{
     }
     public boolean deleteMember(String iid, String memberUuid) throws SQLException{
          boolean result = DatabaseConnector.getPreparedStatement("delete from IslandMember islandId=? and memberUuid=?",iid,memberUuid).executeUpdate()==1;
-         //this.memberMap.remove(iid,memberUuid);
+        Island island = this.islandMap.get(iid);
+        List<String> members = island.getMembers();
+        members.remove(memberUuid);
+        island.setMembers(members);
+        this.islandMap.put(iid,island);
+        this.memberMap.remove(iid,memberUuid);
          return result;
     }
     public boolean sethome(String iid, CoordLocation location) throws SQLException{

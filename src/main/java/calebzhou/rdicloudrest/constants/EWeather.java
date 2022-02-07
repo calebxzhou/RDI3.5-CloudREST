@@ -1,10 +1,10 @@
 package calebzhou.rdicloudrest.constants;
 public enum EWeather {
 
-    CLEAR_DAY(EColor.GOLD.code+"昼晴"+EColor.RESET.code, 0),
-    CLEAR_NIGHT(EColor.GOLD.code+"夜晴"+EColor.RESET.code, 1),
-    PARTLY_CLOUDY_DAY("昼多云", 2),
-    PARTLY_CLOUDY_NIGHT("夜多云", 3),
+    CLEAR_DAY(EColor.GOLD.code+"白天 晴"+EColor.RESET.code, 0),
+    CLEAR_NIGHT(EColor.GOLD.code+"夜间 晴"+EColor.RESET.code, 1),
+    PARTLY_CLOUDY_DAY("白天 多云", 2),
+    PARTLY_CLOUDY_NIGHT("夜间 多云", 3),
     CLOUDY(EColor.GRAY.code+"阴"+EColor.RESET.code, 4),
 
     LIGHT_HAZE("轻霾", 5),

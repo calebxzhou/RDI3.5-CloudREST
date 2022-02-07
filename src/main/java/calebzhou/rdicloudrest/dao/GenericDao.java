@@ -1,6 +1,5 @@
 package calebzhou.rdicloudrest.dao;
 
-import calebzhou.rdicloudrest.dao.DatabaseConnector;
 import calebzhou.rdicloudrest.utils.ReflectUtils;
 
 import java.io.Serializable;
@@ -45,7 +44,7 @@ public class GenericDao {
         Field[] fields = ReflectUtils.getDeclaredAccessibleFields(objClass);
         //变量的数量
         int fieldAmount = fields.length;
-        StringBuilder sb = new StringBuilder("INSERT INTO " + tableName + "  VALUES (");
+        StringBuilder sb = new StringBuilder(String.format("INSERT INTO %s VALUES (",tableName));
         for (int i = 0; i < fieldAmount; i++) {
             sb.append("?");
             //结尾不应该有逗号，所以判断减1
@@ -55,7 +54,7 @@ public class GenericDao {
         }
         sb.append(")");
         String sql = sb.toString();
-        PreparedStatement pstm = DatabaseConnector.getConnection().prepareStatement(sql);
+        PreparedStatement pstm = DatabaseConnector.getRandomConnection().prepareStatement(sql);
         for (int i = 0; i < fieldAmount; i++) {
             Field fn = fields[i];
             Object value = null;
@@ -97,7 +96,7 @@ public class GenericDao {
         }
             sb.append(" where "+condition);
         String sql=sb.toString();
-        PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(sql);
+        PreparedStatement ps = DatabaseConnector.getRandomConnection().prepareStatement(sql);
         for (int i = 0; i < fieldAmount; i++) {
             Field fn = fields[i];
             fn.setAccessible(true);

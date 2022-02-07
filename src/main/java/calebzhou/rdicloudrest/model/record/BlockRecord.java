@@ -12,6 +12,46 @@ public class BlockRecord implements Serializable {
     String location;
     Timestamp recTime;
 
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public String getBlockType() {
+        return blockType;
+    }
+
+    public void setBlockType(String blockType) {
+        this.blockType = blockType;
+    }
+
+    public String getBlockAction() {
+        return blockAction;
+    }
+
+    public void setBlockAction(String blockAction) {
+        this.blockAction = blockAction;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Timestamp getRecTime() {
+        return recTime;
+    }
+
+    public void setRecTime(Timestamp recTime) {
+        this.recTime = recTime;
+    }
+
     @Override
     public String toString() {
         return new Gson().toJson(this);

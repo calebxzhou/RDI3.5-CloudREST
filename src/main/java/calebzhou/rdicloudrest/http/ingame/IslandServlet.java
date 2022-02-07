@@ -4,7 +4,7 @@ import calebzhou.rdicloudrest.DaoFactory;
 import calebzhou.rdicloudrest.http.BasicServlet;
 import calebzhou.rdicloudrest.logic.IslandLogic;
 import calebzhou.rdicloudrest.model.CoordLocation;
-import calebzhou.rdicloudrest.model.dto.Island;
+import calebzhou.rdicloudrest.model.Island;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,11 +47,14 @@ public class IslandServlet extends BasicServlet {
             return;
         }
         Island island = null;
+        //如果提供岛id，就根据岛id寻找岛屿对象
         if(idType.equals("iid")){
             island = DaoFactory.getIslandDao().getIslandById(id);
         }else if(idType.equals("pid")){
+            //如果提供uuid，就看他有没有空岛
             island = DaoFactory.getIslandDao().getIslandByPlayerUuid(id);
             if(island==null)
+                //没有空岛，加入了哪个？
                 island = DaoFactory.getIslandDao().getIslandById(DaoFactory.getIslandDao().getIslandIdJoined(id));
         }else{
             responseErrorParams(resp,"");
@@ -59,9 +62,9 @@ public class IslandServlet extends BasicServlet {
         }
 
         if(island==null)
-            responseError(resp,"无法获取空岛信息");
+            responseError(resp,"找不到您的空岛。您可以通过/create指令创建一个，或者让朋友通过/invite指令邀请您。");
         else
-            responseSuccess(resp,"成功获取空岛信息",island);
+            responseSuccess(resp,"成功获取空岛信息。",island);
     }
     /**
      * DELETE
@@ -111,7 +114,7 @@ public class IslandServlet extends BasicServlet {
      * PUT
      * 修改空岛位置 island/{pid}?location={loca}
      * 添加成员 island/{pid}?member={mid}
-     * TESTED
+     *
      */
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
@@ -123,9 +126,10 @@ public class IslandServlet extends BasicServlet {
         }
         String locas = req.getParameter("location");
         String mid = req.getParameter("member");
-        //mid不为空，进入添加成员逻辑
-        if(!StringUtils.isEmpty(mid)){
-            String iid = DaoFactory.getIslandDao().getIslandIdByPlayerUuid(pid);
+        String iid = req.getParameter("iid");
+        //mid不为空，iid为空 进入邀请成员逻辑
+        if(!StringUtils.isEmpty(mid) && StringUtils.isEmpty(iid)){
+            iid = DaoFactory.getIslandDao().getIslandIdByPlayerUuid(pid);
             try {
                 if (DaoFactory.getIslandDao().joinOtherIsland(iid,mid))
                     responseSuccess(resp,"添加成员成功!");
@@ -136,6 +140,20 @@ public class IslandServlet extends BasicServlet {
                 log.error(e.getMessage());
             }
             return;
+
+        }else if(!StringUtils.isEmpty(iid) && !StringUtils.isEmpty(mid)){
+                //iid不为空，mid不为空 进入加入空岛逻辑
+            try {
+                if (DaoFactory.getIslandDao().joinOtherIsland(iid,mid))
+                    responseSuccess(resp,"成功!");
+                else
+                    responseErrorJoinedIsland(resp,true);
+            } catch (SQLException e){
+                responseErrorJoinedIsland(resp,true);
+                log.error(e.getMessage());
+            }
+            return;
+
         }
         if(locas==null){
             responseError(resp,"参数错误");
@@ -148,7 +166,7 @@ public class IslandServlet extends BasicServlet {
             responseError(resp,"位置格式错误");
             return;
         }
-        String iid = DaoFactory.getIslandDao().getIslandByPlayerUuid(pid).getIslandId();
+        iid = DaoFactory.getIslandDao().getIslandByPlayerUuid(pid).getIslandId();
         try {
             boolean b = DaoFactory.getIslandDao().sethome(iid,location);
             if(b)

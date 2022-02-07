@@ -26,11 +26,11 @@ public class FileUtils {
 
     }
     public static void writeLineToFile(File folder,String file,String line){
-        log.info(line);
-        try (FileWriter myWriter = new FileWriter(new File(folder, file + ".txt"))) {
+        System.out.println(line);
+    /*    try (FileWriter myWriter = new FileWriter(new File(folder, file + ".txt"))) {
             myWriter.append(line + "\n");
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
