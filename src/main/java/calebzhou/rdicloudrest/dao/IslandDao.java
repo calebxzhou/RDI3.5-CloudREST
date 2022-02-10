@@ -90,8 +90,18 @@ public class IslandDao implements Cacheable{
     //通过玩家id获取加入他人的空岛id
     public String getIslandIdJoined(String memberUuid)  {
         try {
-            return this.memberMap.entries().stream().filter(e -> e.getValue().equals(memberUuid)).map(Map.Entry::getKey).toList().get(0);
+            List<String> list = this.memberMap.entries().stream().filter(e -> e.getValue().equals(memberUuid)).map(Map.Entry::getKey).toList();
+            if(list==null||list.isEmpty()){
+                this.islandMap.values().forEach(island -> {
+                    if(island.getMembers().contains(memberUuid))
+                        return; island.getIslandId();
+                });
+                return null;
+            }else{
+                return list.get(0);
+            }
         } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
             return null;
         }
     }
