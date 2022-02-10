@@ -25,9 +25,8 @@ public class GenericRecordServlet extends BasicServlet {
                 DatabaseConnector.getPreparedStatement("insert into DeathRecord values (?,?,?)",
                         record.getPid(),record.getSrc(),record.getRecTime()).executeUpdate();
             }else if(type==RecordType.login||type==RecordType.logout){
-                if( ! record.getSrc().equals("127.0.0.1"))
                 DatabaseConnector.getPreparedStatement("insert into LoginRecord values (?,?,?,?)",
-                        record.getPid(),type.toString(),record.getSrc(),record.getRecTime());
+                        record.getPid(),type.toString(),record.getSrc(),record.getRecTime()).executeUpdate();
             }
             else{
                 GenericDao.insertObjectToTable(record, GenericRecord.class);
