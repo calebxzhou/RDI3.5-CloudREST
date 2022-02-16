@@ -2,7 +2,7 @@ package calebzhou.rdicloudrest.logic;
 
 import calebzhou.rdicloudrest.DaoFactory;
 import calebzhou.rdicloudrest.model.CoordLocation;
-import calebzhou.rdicloudrest.model.Island;
+import calebzhou.rdicloudrest.module.island.Island;
 import calebzhou.rdicloudrest.utils.RandomUtils;
 
 import javax.servlet.http.HttpServletResponse;

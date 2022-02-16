@@ -1,20 +1,28 @@
-package calebzhou.rdicloudrest.model;
+package calebzhou.rdicloudrest.module.island;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
 import calebzhou.rdicloudrest.utils.TimeUtils;
 import com.google.gson.Gson;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.List;
 
+@Entity
+@Table
 public class Island implements Serializable {
+    @Id @Column
     String islandId;
+    @Column
     String ownerUuid;
+    @Column
     String location;
+    @Column
     Timestamp createTime;
-     String[] members;
+    @OneToMany(mappedBy = "island")
+    private List<IslandCrew> members;
+
 
     public Island() {
     }
@@ -26,13 +34,7 @@ public class Island implements Serializable {
         this.createTime = TimeUtils.getNow();
     }
 
-    public Island(String islandId, String ownerUuid, String location, Timestamp time, String[] members) {
-        this.islandId = islandId;
-        this.ownerUuid = ownerUuid;
-        this.location = location;
-        this.createTime = time;
-        this.members=members;
-    }
+
     public String getIslandId() {
         return islandId;
     }
@@ -45,16 +47,6 @@ public class Island implements Serializable {
         return location;
     }
 
-    public List<String> getMembers() {
-        return Arrays.asList(members);
-    }
-
-    public void setMembers(String[] members) {
-        this.members = members;
-    }
-    public void setMembers(List<String> members) {
-        this.members = members.toArray(new String[0]);
-    }
     public Timestamp getCreateTime() {
         return createTime;
     }

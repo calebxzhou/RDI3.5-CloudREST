@@ -4,7 +4,7 @@ import calebzhou.rdicloudrest.DaoFactory;
 import calebzhou.rdicloudrest.http.BasicServlet;
 import calebzhou.rdicloudrest.logic.IslandLogic;
 import calebzhou.rdicloudrest.model.CoordLocation;
-import calebzhou.rdicloudrest.model.Island;
+import calebzhou.rdicloudrest.module.island.Island;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 

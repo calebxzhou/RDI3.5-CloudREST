@@ -1,7 +1,7 @@
 package calebzhou.rdicloudrest.dao;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
-import calebzhou.rdicloudrest.model.Island;
+import calebzhou.rdicloudrest.module.island.Island;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class IslandDao implements Cacheable{
                 memberMap.put(iid,rs.getString(1));
             }
             memberList.add(pid);
-            island.setMembers(memberList.toArray(new String[0]));
+            //island.setMembers(memberList.toArray(new String[0]));
 
             islandMap.put(iid,island);
             ownIslandMap.put(pid,iid);
@@ -93,8 +93,8 @@ public class IslandDao implements Cacheable{
             List<String> list = this.memberMap.entries().stream().filter(e -> e.getValue().equals(memberUuid)).map(Map.Entry::getKey).toList();
             if(list==null||list.isEmpty()){
                 this.islandMap.values().forEach(island -> {
-                    if(island.getMembers().contains(memberUuid))
-                        return; island.getIslandId();
+                    /*if(island.getMembers().contains(memberUuid))
+                        return; island.getIslandId();*/
                 });
                 return null;
             }else{
@@ -109,9 +109,9 @@ public class IslandDao implements Cacheable{
     public boolean joinOtherIsland( String iid,String pid) throws SQLException {
         boolean result = DatabaseConnector.getPreparedStatement("insert into IslandMember values (?,?)", iid, pid).executeUpdate() == 1;
         Island island = this.islandMap.get(iid);
-        List<String> members = island.getMembers();
+        /*List<String> members = island.getMembers();
         members.add(pid);
-        island.setMembers(members);
+        island.setMembers(members);*/
         this.islandMap.put(iid,island);
         this.memberMap.put(iid,pid);
         return result;
@@ -137,9 +137,9 @@ public class IslandDao implements Cacheable{
     public boolean deleteMember(String iid, String memberUuid) throws SQLException{
          boolean result = DatabaseConnector.getPreparedStatement("delete from IslandMember islandId=? and memberUuid=?",iid,memberUuid).executeUpdate()==1;
         Island island = this.islandMap.get(iid);
-        List<String> members = island.getMembers();
+        /*List<String> members = island.getMembers();
         members.remove(memberUuid);
-        island.setMembers(members);
+        island.setMembers(members);*/
         this.islandMap.put(iid,island);
         this.memberMap.remove(iid,memberUuid);
          return result;
