@@ -47,13 +47,17 @@ public class IslandAspect {
         if(!success){
             String errMsg="";
             if(status.needOwnIsland())
-                errMsg+=("您需要拥有一个岛屿，才能使用本指令。");
+                errMsg+=("您需要拥有岛屿。");
             if(!status.needOwnIsland())
-                errMsg+=("要使用本指令，您不能拥有任何岛屿。");
+                errMsg+=("您不可以拥有岛屿。");
+            if(status.condition()==LogicCondition.OR)
+                errMsg+="或者，";
+            if(status.condition()==LogicCondition.AND)
+                errMsg+="并且，";
             if(status.needJoinIsland())
-                errMsg+="您需要加入一个岛屿，才能使用本指令。";
+                errMsg+="您需要加入他人的岛屿。";
             if(!status.needJoinIsland())
-                errMsg+="要使用本指令，您不能加入任何岛屿。";
+                errMsg+="您不可以加入他人的岛屿。";
 
             throw new IslandException(errMsg);
         }

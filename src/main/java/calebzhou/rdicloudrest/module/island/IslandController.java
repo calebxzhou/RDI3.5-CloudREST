@@ -30,8 +30,9 @@ public class IslandController {
     }
 
     @RequestMapping(value = "/island/{pid}",method = RequestMethod.DELETE)
-    public void delete(@PathVariable(value = "pid") String pid){
+    public SuccessResponse<Void> delete(@PathVariable(value = "pid") String pid){
         service.delete(pid);
+        return new SuccessResponse<Void>(null,"删除成功");
     }
 
     @RequestMapping(value = "/island/{pid}",method = RequestMethod.PUT)
