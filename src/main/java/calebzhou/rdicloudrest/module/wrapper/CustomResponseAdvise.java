@@ -23,8 +23,7 @@ public class CustomResponseAdvise implements ResponseBodyAdvice<Object> {
 
             if (methodParameter.getMethod().isAnnotationPresent(IgnoreResponseBinding.class) == false) {
                 if ((!(o instanceof ErrorResponse)) && (!(o instanceof SuccessResponse))) {
-                    SuccessResponse<Object> responseBody = new SuccessResponse<>(o);
-                    return responseBody;
+                    return new SuccessResponse<>(o);
                 }
             }
         }

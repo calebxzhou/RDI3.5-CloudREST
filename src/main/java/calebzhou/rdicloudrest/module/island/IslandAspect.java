@@ -13,45 +13,48 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class IslandAspect {
     @Autowired
-    IslandRepo repo;
+    IslandService service;
 
     @Around("@annotation(status) && args(pid,..)")
     public Object beforeIsland(ProceedingJoinPoint point,CheckIslandStatus status,String pid) throws Throwable {
-        boolean joinRequired = status.joinIsland();
-        boolean ownRequired = status.ownIsland();
-        boolean join = repo.isPlayerJoinIsland(pid);
-        boolean own = repo.isPlayerOwnIsland(pid);
-        log.info("{} {} {} {}",joinRequired,ownRequired,join,own);
+        //TODO 创建了空岛以后还能创建一个
         boolean success = false;
-        boolean flagJoin,flagOwn;
-        if(joinRequired){
-            flagJoin= join;
+        boolean isPlayerJoinIsland = service.isPlayerJoinIsland(pid);
+        boolean isPlayerOwnIsland = service.isPlayerOwnIsland(pid);
+        /*boolean flagJoin,flagOwn;
+        if(status.needJoinIsland()){
+            flagJoin= service.isPlayerJoinIsland(pid);
         }else{
-            flagJoin= !join;
+            flagJoin= !service.isPlayerJoinIsland(pid);
         }
-
-        if(ownRequired){
-            flagOwn=own;
+        log.info(flagJoin+"");
+        if(status.needOwnIsland()){
+            flagOwn=service.isPlayerOwnIsland(pid);
         }else {
-            flagOwn=!own;
-        }
+            flagOwn=!service.isPlayerOwnIsland(pid);
+        }*/
         if(status.condition() == LogicCondition.AND){
-            success = flagJoin && flagOwn;
+            success = (status.needJoinIsland() == isPlayerJoinIsland)
+                    &&
+                    (status.needOwnIsland() == isPlayerOwnIsland);
         }
         if(status.condition() == LogicCondition.OR){
-            success = flagJoin || flagOwn;
+            success = (status.needJoinIsland() == isPlayerJoinIsland)
+                    ||
+                    (status.needOwnIsland() == isPlayerOwnIsland);
         }
 
         if(!success){
             String errMsg="";
-            if(joinRequired)
-                errMsg+="您需要加入一个岛屿，才能使用本指令。";
-            if(!joinRequired)
-                errMsg+="要使用本指令，您不能加入任何岛屿。";
-            if(ownRequired)
+            if(status.needOwnIsland())
                 errMsg+=("您需要拥有一个岛屿，才能使用本指令。");
-            if(!ownRequired)
+            if(!status.needOwnIsland())
                 errMsg+=("要使用本指令，您不能拥有任何岛屿。");
+            if(status.needJoinIsland())
+                errMsg+="您需要加入一个岛屿，才能使用本指令。";
+            if(!status.needJoinIsland())
+                errMsg+="要使用本指令，您不能加入任何岛屿。";
+
             throw new IslandException(errMsg);
         }
         Object proc = point.proceed();

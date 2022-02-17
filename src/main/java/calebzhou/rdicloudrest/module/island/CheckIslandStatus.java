@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Inherited
 //满足什么条件才执行岛操作
 public @interface CheckIslandStatus {
-    boolean ownIsland();
+    boolean needOwnIsland();
     LogicCondition condition();
-    boolean joinIsland();
+    boolean needJoinIsland();
 }

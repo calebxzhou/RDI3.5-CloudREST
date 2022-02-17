@@ -1,7 +1,7 @@
 package calebzhou.rdicloudrest.module.island;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
-import calebzhou.rdicloudrest.module.wrapper.SuccessDTO;
+import calebzhou.rdicloudrest.module.wrapper.SuccessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +15,8 @@ public class IslandController {
     IslandService service;
 
     @RequestMapping(value = "/island/{pid}",method = RequestMethod.POST)
-    public SuccessDTO<Island> createIsland(@PathVariable(value = "pid") Optional<String> pid){
-        return new SuccessDTO<>(service.create(pid.get()),"您成功创建了空岛。");
+    public SuccessResponse<Island> createIsland(@PathVariable(value = "pid") String pid){
+        return new SuccessResponse<>(service.create(pid),"您成功创建了空岛。");
     }
 
     @RequestMapping(value = "/island",method = RequestMethod.GET)
@@ -35,8 +35,8 @@ public class IslandController {
     }
 
     @RequestMapping(value = "/island/{pid}",method = RequestMethod.PUT)
-    public SuccessDTO<Island> changeLocation(@PathVariable(value = "pid") String pid,@RequestParam Optional<String> location){
-        return new SuccessDTO<>(service.updateLocation(pid, CoordLocation.fromString(location.get())),"成功更改了空岛坐标。");
+    public SuccessResponse<Island> changeLocation(@PathVariable(value = "pid") String pid,@RequestParam Optional<String> location){
+        return new SuccessResponse<>(service.updateLocation(pid, CoordLocation.fromString(location.get())),"成功更改了空岛坐标。");
     }
 
 }

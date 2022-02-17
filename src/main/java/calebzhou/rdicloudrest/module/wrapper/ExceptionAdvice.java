@@ -19,7 +19,7 @@ public class ExceptionAdvice {
     @ResponseBody
     public ErrorResponse<List<StackTraceElement>> processAllError(Exception ex) {
         List<StackTraceElement> ele = null;
-        if (stackTrace == true) {
+        if (stackTrace) {
             ele = Arrays.asList(ex.getStackTrace());
         }
         ErrorResponse<List<StackTraceElement>> response = new ErrorResponse<>(ele, ex.getMessage());
