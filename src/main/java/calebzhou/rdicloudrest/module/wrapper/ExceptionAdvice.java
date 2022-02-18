@@ -18,6 +18,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponse<List<StackTraceElement>> processAllError(Exception ex) {
+       // ex.printStackTrace();
         List<StackTraceElement> ele = null;
         if (stackTrace) {
             ele = Arrays.asList(ex.getStackTrace());

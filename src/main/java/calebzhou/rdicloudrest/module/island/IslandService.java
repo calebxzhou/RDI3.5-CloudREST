@@ -50,6 +50,23 @@ public class IslandService {
         return repo.save(is);
     }
 
+    @CheckIslandStatus(needOwnIsland = true, needJoinIsland = false,condition = AND)
+    public void addMember(String pid,String mpid){
+        Island island = repo.findById(getIidOwn(pid)).get();
+        if(island.isMemberExists(mpid))
+            throw new IslandException("此玩家已经是您的空岛成员了，不可以重复添加。");
+        island.addMember(new IslandCrew(island,mpid));
+        repo.save(island);
+    }
+    @CheckIslandStatus(needOwnIsland = true, needJoinIsland = false,condition = AND)
+    public void removeMember(String pid,String mpid){
+        Island island = repo.findById(getIidOwn(pid)).get();
+        if(!island.isMemberExists(mpid))
+            throw new IslandException("此玩家不是您的空岛成员，不可以删除他。");
+        island.removeMember(new IslandCrew(island,mpid));
+        repo.save(island);
+    }
+
     public boolean isPlayerOwnIsland(String pid){
         String iid = getIidOwn(pid);
         return !StringUtils.isEmpty(iid);

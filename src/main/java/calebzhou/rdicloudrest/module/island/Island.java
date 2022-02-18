@@ -7,7 +7,9 @@ import com.google.gson.Gson;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Entity
 @Table
@@ -20,20 +22,26 @@ public class Island implements Serializable {
     String location;
     @Column
     Timestamp createTime;
-    @OneToMany(mappedBy = "island")
-    private List<IslandCrew> members;
+    @OneToMany(mappedBy = "island",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<IslandCrew> members = new HashSet<>();
 
-
-    public Island() {
+    public void addMember(IslandCrew member){
+        members.add(member);
+        member.setIsland(this);
     }
-
-    public Island(String islandId, String ownerUuid, CoordLocation location) {
-        this.islandId = islandId;
-        this.ownerUuid = ownerUuid;
-        this.location = location.toString();
-        this.createTime = TimeUtils.getNow();
+    public void removeMember(IslandCrew member){
+        members.remove(member);
+        member.setIsland(null);
     }
-
+    public boolean isMemberExists(String mpid){
+        AtomicBoolean exists= new AtomicBoolean(false);
+        members.forEach(islandCrew -> {
+            if (islandCrew.getMpid().equalsIgnoreCase(mpid)) {
+                exists.set(true);
+            }
+        });
+        return exists.get();
+    }
 
     public String getIslandId() {
         return islandId;
@@ -70,5 +78,14 @@ public class Island implements Serializable {
     @Override
     public String toString() {
         return new Gson().toJson(this);
+    }
+    public Island() {
+    }
+
+    public Island(String islandId, String ownerUuid, CoordLocation location) {
+        this.islandId = islandId;
+        this.ownerUuid = ownerUuid;
+        this.location = location.toString();
+        this.createTime = TimeUtils.getNow();
     }
 }

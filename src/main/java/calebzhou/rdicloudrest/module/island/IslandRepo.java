@@ -15,7 +15,7 @@ public interface IslandRepo extends JpaRepository<Island,String> {
     //@Cacheable("islandId")
     String findIslandIdOwnByPid(@Param("pid")String pid);
 
-    @Query(value = "select islandId from IslandCrew where mpid=:pid",nativeQuery = true)
+    @Query(value = "select island from IslandCrew where mpid=:pid",nativeQuery = true)
    // @Cacheable("islandId")
     String findIslandIdJoinByPid(@Param("pid")String pid);
 
