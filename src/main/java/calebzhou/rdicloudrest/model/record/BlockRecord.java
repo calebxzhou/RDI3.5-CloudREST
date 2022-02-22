@@ -12,6 +12,16 @@ public class BlockRecord implements Serializable {
     String location;
     Timestamp recTime;
 
+    public BlockRecord() {
+    }
+
+    public BlockRecord(String pid, String blockType, String blockAction, String location) {
+        this.pid = pid;
+        this.blockType = blockType;
+        this.blockAction = blockAction;
+        this.location = location;
+    }
+
     public String getPid() {
         return pid;
     }

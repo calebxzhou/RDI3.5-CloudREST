@@ -17,7 +17,7 @@ public class DatabaseConnector {
     public static final String PWD = "dmts_avia";
     public static final int TIMEOUT = 240;
     //连接数
-    public static final int CONN_MAX_AMOUNT = 10;
+    public static final int CONN_MAX_AMOUNT = 24;
     static {
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
