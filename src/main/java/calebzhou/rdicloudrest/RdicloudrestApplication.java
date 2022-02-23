@@ -17,12 +17,8 @@ public class RdicloudrestApplication {
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(RdicloudrestApplication.class);
 		app.run(args);
-		initDaos();
 	}
 
-	public static void initDaos() {
-		DaoFactory.getIslandDao();
-	}
 
 	@Bean
 	public ConfigurableServletWebServerFactory webServerFactory() {

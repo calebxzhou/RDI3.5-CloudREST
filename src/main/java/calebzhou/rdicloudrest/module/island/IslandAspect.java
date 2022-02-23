@@ -21,18 +21,7 @@ public class IslandAspect {
         boolean success = false;
         boolean isPlayerJoinIsland = service.isPlayerJoinIsland(pid);
         boolean isPlayerOwnIsland = service.isPlayerOwnIsland(pid);
-        /*boolean flagJoin,flagOwn;
-        if(status.needJoinIsland()){
-            flagJoin= service.isPlayerJoinIsland(pid);
-        }else{
-            flagJoin= !service.isPlayerJoinIsland(pid);
-        }
-        log.info(flagJoin+"");
-        if(status.needOwnIsland()){
-            flagOwn=service.isPlayerOwnIsland(pid);
-        }else {
-            flagOwn=!service.isPlayerOwnIsland(pid);
-        }*/
+
         if(status.condition() == LogicCondition.AND){
             success = (status.needJoinIsland() == isPlayerJoinIsland)
                     &&
@@ -47,9 +36,9 @@ public class IslandAspect {
         if(!success){
             String errMsg="";
             if(status.needOwnIsland())
-                errMsg+=("您需要拥有岛屿。");
+                errMsg+=("您需要拥有岛屿，");
             if(!status.needOwnIsland())
-                errMsg+=("您不可以拥有岛屿。");
+                errMsg+=("您不可以拥有岛屿，");
             if(status.condition()==LogicCondition.OR)
                 errMsg+="或者，";
             if(status.condition()==LogicCondition.AND)
