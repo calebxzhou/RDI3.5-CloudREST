@@ -1,4 +1,4 @@
-package calebzhou.rdicloudrest.model.geo;
+package calebzhou.rdicloudrest.module.weather.geo;
 
 public class WeatherRealTime {
     public String status;

@@ -1,9 +1,9 @@
 package calebzhou.rdicloudrest.utils;
 
 import calebzhou.rdicloudrest.constants.CloudServiceConstants;
-import calebzhou.rdicloudrest.model.geo.GeoLocation;
-import calebzhou.rdicloudrest.model.geo.GeoLocationForeign;
-import calebzhou.rdicloudrest.model.geo.SimpleGeoLocation;
+import calebzhou.rdicloudrest.module.weather.geo.GeoLocation;
+import calebzhou.rdicloudrest.module.weather.geo.GeoLocationForeign;
+import calebzhou.rdicloudrest.module.weather.geo.SimpleGeoLocation;
 import com.google.gson.Gson;
 
 public class GeographyUtils {

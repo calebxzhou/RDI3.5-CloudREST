@@ -1,18 +1,17 @@
-package calebzhou.rdicloudrest.http.client;
+package calebzhou.rdicloudrest.module.weather;
 
 import calebzhou.rdicloudrest.constants.CloudServiceConstants;
 import calebzhou.rdicloudrest.constants.EColor;
 import calebzhou.rdicloudrest.constants.EWeather;
 import calebzhou.rdicloudrest.http.BasicServlet;
-import calebzhou.rdicloudrest.model.geo.GeoLocation;
-import calebzhou.rdicloudrest.model.geo.WeatherRealTime;
-import calebzhou.rdicloudrest.model.geo.Weather;
+import calebzhou.rdicloudrest.module.weather.geo.GeoLocation;
+import calebzhou.rdicloudrest.module.weather.geo.WeatherRealTime;
+import calebzhou.rdicloudrest.module.weather.geo.Weather;
 import calebzhou.rdicloudrest.utils.GeographyUtils;
 import calebzhou.rdicloudrest.utils.HttpUtils;
 import com.google.gson.Gson;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalTime;

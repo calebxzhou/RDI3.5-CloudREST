@@ -1,19 +1,21 @@
 package calebzhou.rdicloudrest.dao;
 
 
-import calebzhou.rdicloudrest.model.record.BlockRecord;
+import calebzhou.rdicloudrest.module.blockrec.BlockRecord;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import static calebzhou.rdicloudrest.dao.DatabaseConnector.BLOCK_RECORD_SCHEMA;
 
 public class BlockRecordDao {
-
+    MongoClient mongo = new MongoClient( "frp.davisoft.cn" , 7890 );
+    MongoDatabase db = mongo.getDatabase("rdi");
+    MongoCollection<Document> collection = db.getCollection("br");
     public static int insertBlockRecord(BlockRecord record) throws SQLException {
         //表 按照日期分割
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
+        return 1;
+        /*SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         Date date = new Date(record.getRecTime().getTime());
         String tableName = "br.BlockRecord_"+dateFormat.format(date);
         if(!GenericDao.isTableExists(tableName,BLOCK_RECORD_SCHEMA)){
@@ -28,6 +30,6 @@ public class BlockRecordDao {
                     );
                     """.formatted(tableName)).executeUpdate();
         }
-        return GenericDao.insertObjectToTable(record, BlockRecord.class,tableName);
+        return GenericDao.insertObjectToTable(record, BlockRecord.class,tableName);*/
     }
 }

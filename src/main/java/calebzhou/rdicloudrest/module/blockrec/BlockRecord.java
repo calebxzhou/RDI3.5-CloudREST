@@ -1,25 +1,37 @@
-package calebzhou.rdicloudrest.model.record;
+package calebzhou.rdicloudrest.module.blockrec;
 
-import com.google.gson.Gson;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
+import javax.persistence.Id;
 import java.sql.Timestamp;
 
-public class BlockRecord implements Serializable {
+@Document("br")
+public class BlockRecord {
+    @Id
+    public String id;
     String pid;
     String blockType;
     String blockAction;
     String location;
     Timestamp recTime;
 
-    public BlockRecord() {
-    }
-
-    public BlockRecord(String pid, String blockType, String blockAction, String location) {
+    public BlockRecord(String pid, String blockType, String blockAction, String location, Timestamp recTime) {
         this.pid = pid;
         this.blockType = blockType;
         this.blockAction = blockAction;
         this.location = location;
+        this.recTime = recTime;
+    }
+
+    public BlockRecord() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPid() {
@@ -60,10 +72,5 @@ public class BlockRecord implements Serializable {
 
     public void setRecTime(Timestamp recTime) {
         this.recTime = recTime;
-    }
-
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
     }
 }
