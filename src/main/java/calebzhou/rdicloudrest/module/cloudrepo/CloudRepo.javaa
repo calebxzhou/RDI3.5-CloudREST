@@ -5,7 +5,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.Id;
 
 @Document("cloudRepo")
-public class ModelCloudRepo {
+public class CloudRepo {
+    public CloudRepo() {
+    }
+
     @Id
     public String id;
     String pid;
@@ -27,7 +30,7 @@ public class ModelCloudRepo {
         this.stacks = stacks;
     }
 
-    public ModelCloudRepo(String pid, String stacks) {
+    public CloudRepo(String pid, String stacks) {
         this.pid = pid;
         this.stacks = stacks;
     }

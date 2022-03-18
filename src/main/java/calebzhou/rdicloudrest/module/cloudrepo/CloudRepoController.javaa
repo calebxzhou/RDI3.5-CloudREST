@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/")
 public class CloudRepoController {
-    @Autowired CloudRepo repo;
+    @Autowired
+    CloudRepoRepo repo;
 
     @RequestMapping(value = "/island/{pid}",method = RequestMethod.POST)
     public SuccessResponse<Void> saveRepo(@PathVariable(value = "pid") String pid, @RequestParam(value = "obj")String obj){
-        repo.save(new ModelCloudRepo(pid,obj));
+        repo.save(new CloudRepo(pid,obj));
         return new SuccessResponse<>(null,"保存成功。");
     }
     @RequestMapping(value = "/island/{pid}",method = RequestMethod.GET)
@@ -20,7 +21,7 @@ public class CloudRepoController {
     }
     @RequestMapping(value = "/island/{pid}",method = RequestMethod.DELETE)
     public SuccessResponse<Void> deleteRepo(@PathVariable(value = "pid") String pid, @RequestParam(value = "obj")String obj){
-        repo.save(new ModelCloudRepo(pid,obj));
+        repo.save(new CloudRepo(pid,obj));
         return new SuccessResponse<>(null,"删除成功。");
     }
 }

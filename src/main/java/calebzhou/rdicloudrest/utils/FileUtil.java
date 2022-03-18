@@ -6,9 +6,13 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Slf4j
-public class FileUtils {
+public class FileUtil {
+    public static final File blockRecFolder = new File(new File("."),"block_rec");
     public static void writeToFile(File file,Object obj) {
             if (file.getParentFile() != null) {
                 file.getParentFile().mkdirs();
@@ -25,12 +29,25 @@ public class FileUtils {
             }
 
     }
-    public static void writeLineToFile(File folder,String file,String line){
-        System.out.println(line);
-    /*    try (FileWriter myWriter = new FileWriter(new File(folder, file + ".txt"))) {
-            myWriter.append(line + "\n");
+    public static void writeLineToFile(File file,Object line){
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(file);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        printWriter.println(line.toString());
+    }
+    public static String readAllLines(File file){
+        Path path = Paths.get(file.getAbsolutePath());
+        String read = "";
+        try {
+
+            read = Files.readAllLines(path).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return read;
     }
 }

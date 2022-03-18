@@ -1,19 +1,21 @@
 package calebzhou.rdicloudrest.module.blockrec;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Document("br")
+@Entity
 public class BlockRecord {
     @Id
-    public String id;
-    String pid;
-    String blockType;
-    String blockAction;
-    String location;
-    Timestamp recTime;
+    private String id;
+    private String pid;
+    private String blockType;
+    private  String blockAction;
+    private  String location;
+    private  Timestamp recTime;
 
     public BlockRecord(String pid, String blockType, String blockAction, String location, Timestamp recTime) {
         this.pid = pid;
@@ -72,5 +74,17 @@ public class BlockRecord {
 
     public void setRecTime(Timestamp recTime) {
         this.recTime = recTime;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+                .append("id", id)
+                .append("pid", pid)
+                .append("blockType", blockType)
+                .append("blockAction", blockAction)
+                .append("location", location)
+                .append("recTime", recTime)
+                .toString();
     }
 }

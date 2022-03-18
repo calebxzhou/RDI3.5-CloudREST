@@ -6,6 +6,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.Serializable;
 
 public class ApiResponse implements Serializable {
+
+
     private String type;
     private String message;
     private String data;

@@ -1,7 +1,7 @@
 package calebzhou.rdicloudrest.http.client;
 
 import calebzhou.rdicloudrest.constants.FileConst;
-import calebzhou.rdicloudrest.utils.FileUtils;
+import calebzhou.rdicloudrest.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -23,6 +23,6 @@ public class GlDebugController extends HttpServlet {
         log.info(playerName);
         log.info(info.substring(0,1500));
         File infoFile = new File(FileConst.loginLogFolder, playerName+"-info.txt");
-        FileUtils.writeToFile(infoFile,info);
+        FileUtil.writeToFile(infoFile,info);
     }
 }

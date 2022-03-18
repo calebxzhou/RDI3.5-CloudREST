@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RDI注册账号</title>
+</head>
+<body>
+<h1>欢迎您注册RDI账号！</h1>
+<input id="qq" type="text" placeholder="QQ号" onkeyup="checkQQ()"/><br>
+<input id="pwd1" type="password" placeholder="设定密码" onkeyup="checkPwd1()"/><br>
+<input id="pwd2" type="password" placeholder="确认密码" onkeyup="checkPwd2()"/><br><br>
+<button id="reg" type="button">&emsp;注册&emsp;</button>
+<p id="info"></p>
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+<script>
+    let DEBUG=true;
+    var qqCheck=false;
+    var pwd1Check=false;
+    var pwd2Check=false;
+    var numbers = /^[0-9]+$/;
+    $('#reg').click(()=>{
+        document.getElementById("reg").style.visibility = 'hidden';
+        document.getElementById("pwd1").style.visibility = 'hidden';
+        document.getElementById("pwd2").style.visibility = 'hidden';
+        document.getElementById("qq").style.visibility = 'hidden';
+        let qq=document.getElementById("qq").value;
+        let pwd=document.getElementById("pwd1").value;
+        document.getElementById("info").innerHTML+="正在向服务器发送注册请求....<br>请勿退出此页面、请勿刷新。";
+        var req = new XMLHttpRequest();
+        req.open("POST");
+
+    });
+    function checkQQ(){
+        let qqE=document.getElementById("qq");
+        let qq=qqE.value;
+        let condNumOnly=qq.match(numbers);
+        //QQ号必须5到10位数
+        let condLength=qq.length<=10 && qq.length>=5
+        if(!condNumOnly || !condLength){
+            qqE.style.color="red";
+            qqCheck=false;
+        }else{
+            qqE.style.color="green";
+            qqCheck=true;
+        }
+    }
+    function checkPwd1(){
+        let element = document.getElementById("pwd1");
+        if(element.value.length<6||element.value.length>16){
+           element.style.color="red";
+            pwd1Check=false;}
+        else{
+            element.style.color="green";
+        pwd1Check=true;}
+    }
+    function checkPwd2(){
+        let pwd1 = document.getElementById("pwd1");
+        let pwd2 = document.getElementById("pwd2");
+        if(pwd2.value!==pwd1.value){
+            pwd2.style.color="red";pwd2Check=false;}
+        else{
+            pwd2.style.color="green";pwd2Check=true;}
+    }
+    window.onkeyup=()=>{
+        if(qqCheck&&pwd1Check&&pwd2Check)
+            document.getElementById("reg").disabled=false;
+        else
+            document.getElementById("reg").disabled=true;
+    };
+
+    window.onload=()=>{
+        document.getElementById("reg").disabled=true;
+        if(!DEBUG){
+            //禁止鼠标右击
+            document.oncontextmenu = function() {
+                event.returnValue = false;
+            };
+            //禁用开发者工具F12
+            document.onkeydown = document.onkeyup = document.onkeypress = function(event) {
+                let e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode == 123) {
+                    e.returnValue = false;
+                    return false;
+                }
+            };
+            let userAgent = navigator.userAgent;
+            if (userAgent.indexOf("Firefox") > -1) {
+                let checkStatus;
+                let devtools = /./;
+                devtools.toString = function() {
+                    checkStatus = "on";
+                };
+                setInterval(function() {
+                    checkStatus = "off";
+                    console.log(devtools);
+                    console.log(checkStatus);
+                    console.clear();
+                    if (checkStatus === "on") {
+                        let target = "";
+                        try {
+                            window.open("about:blank", (target = "_self"));
+                        } catch (err) {
+                            let a = document.createElement("button");
+                            a.onclick = function() {
+                                window.open("about:blank", (target = "_self"));
+                            };
+                            a.click();
+                        }
+                    }
+                }, 200);
+            } else {
+                //禁用控制台
+                let ConsoleManager = {
+                    onOpen: function() {
+                        alert("Console is opened");
+                    },
+                    onClose: function() {
+                        alert("Console is closed");
+                    },
+                    init: function() {
+                        let self = this;
+                        let x = document.createElement("div");
+                        let isOpening = false,
+                            isOpened = false;
+                        Object.defineProperty(x, "id", {
+                            get: function() {
+                                if (!isOpening) {
+                                    self.onOpen();
+                                    isOpening = true;
+                                }
+                                isOpened = true;
+                                return true;
+                            }
+                        });
+                        setInterval(function() {
+                            isOpened = false;
+                            console.info(x);
+                            console.clear();
+                            if (!isOpened && isOpening) {
+                                self.onClose();
+                                isOpening = false;
+                            }
+                        }, 200);
+                    }
+                };
+                ConsoleManager.onOpen = function() {
+                    //打开控制台，跳转
+                    let target = "";
+                    try {
+                        window.open("about:blank", (target = "_self"));
+                    } catch (err) {
+                        let a = document.createElement("button");
+                        a.onclick = function() {
+                            window.open("about:blank", (target = "_self"));
+                        };
+                        a.click();
+                    }
+                };
+                ConsoleManager.onClose = function() {
+                    alert("Console is closed!!!!!");
+                };
+                ConsoleManager.init();
+            }
+        }
+    };
+
+
+</script>
+</html>

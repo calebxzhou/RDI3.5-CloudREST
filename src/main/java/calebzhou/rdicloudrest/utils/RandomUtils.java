@@ -32,6 +32,6 @@ public class RandomUtils {
     public static CoordLocation getRandomCoordinate(){
         int x=RandomUtils.generateRandomInt(-49999,49999);
         int z=RandomUtils.generateRandomInt(-49999,49999);
-        return new CoordLocation(x,220,z);
+        return new CoordLocation(x,128,z);
     }
 }
