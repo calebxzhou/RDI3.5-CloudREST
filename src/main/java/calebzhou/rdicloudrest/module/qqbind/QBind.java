@@ -9,31 +9,31 @@ import javax.persistence.Table;
 @Table
 public class QBind {
     @Id @Column
-    String qq;
+    String id;
     @Column
-    String pid;
+    String qq;
 
     public QBind() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String qq) {
+        this.id = qq;
     }
 
     public String getQq() {
         return qq;
     }
 
-    public void setQq(String qq) {
+    public void setQq(String pid) {
+        this.qq = pid;
+    }
+
+    public QBind(String id, String qq) {
+        this.id = id;
         this.qq = qq;
-    }
-
-    public String getPid() {
-        return pid;
-    }
-
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
-
-    public QBind(String qq, String pid) {
-        this.qq = qq;
-        this.pid = pid;
     }
 }

@@ -1,5 +1,8 @@
 package calebzhou.rdicloudrest;
 
+import calebzhou.rdicloudrest.qqbot.BotLoader;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -19,6 +22,12 @@ public class RdicloudrestApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(RdicloudrestApplication.class);
 		app.run(args);
+		//注册机器人
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(BotLoader.class);
+		beanFactory.registerBeanDefinition("botLoader", builder.getBeanDefinition());
+		BotLoader bot = beanFactory.getBean(BotLoader.class);
+		bot.initBot().login();
 	}
 
 	@Override

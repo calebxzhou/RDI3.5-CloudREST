@@ -10,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface QBindRepo extends JpaRepository<QBind,String> {
     @Transactional
     @Modifying
-    @Query("delete from QBind q where q.pid = ?1")
+    @Query("delete from QBind q where q.qq = ?1")
     void deleteByPid(String pid);
 }
