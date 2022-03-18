@@ -1,5 +1,7 @@
 package calebzhou.rdicloudrest.qqbot;
 
+import calebzhou.rdicloudrest.module.account.Account;
+import calebzhou.rdicloudrest.module.account.AccountRepo;
 import calebzhou.rdicloudrest.utils.ServerListPing;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
@@ -9,10 +11,12 @@ import net.mamoe.mirai.event.events.NewFriendRequestEvent;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.utils.BotConfiguration;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -49,10 +53,12 @@ public class BotLoader {
         return bot;
     }
 
+    @Autowired
+    AccountRepo accountRepo;
     private void reg(Friend friend) {
         //qq号
         long id = friend.getId();
-
+        accountRepo.save(new Account(id, new Date()));
        /* String qq = RegisterController.qqCodeMap.get(code);
         if(qq==null || friend.getId()!=Long.parseLong(qq)){
             friend.sendMessage("验证码错误！");

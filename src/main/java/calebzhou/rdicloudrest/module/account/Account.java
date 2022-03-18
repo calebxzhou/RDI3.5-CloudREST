@@ -1,40 +1,40 @@
 package calebzhou.rdicloudrest.module.account;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Table
 @Entity
 public final class Account {
     @Id
     @Column
-    private int id;
+    private long qq;
+
     @Column
-    private String pwd;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date regDate;
 
     public Account() {
     }
 
-    public Account(int id, String pwd) {
-        this.id = id;
-        this.pwd = pwd;
+    public Account(long qq, Date regDate) {
+        this.qq = qq;
+        this.regDate = regDate;
     }
 
-    public int getId() {
-        return id;
+    public long getQq() {
+        return qq;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setQq(long qq) {
+        this.qq = qq;
     }
 
-    public String getPwd() {
-        return pwd;
+    public Date getRegDate() {
+        return regDate;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setRegDate(Date regDate) {
+        this.regDate = regDate;
     }
 }
