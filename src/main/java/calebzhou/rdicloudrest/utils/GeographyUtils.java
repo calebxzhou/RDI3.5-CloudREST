@@ -1,5 +1,6 @@
 package calebzhou.rdicloudrest.utils;
 
+import calebzhou.rdicloudrest.App;
 import calebzhou.rdicloudrest.constants.CloudServiceConstants;
 import calebzhou.rdicloudrest.module.weather.geo.GeoLocation;
 import calebzhou.rdicloudrest.module.weather.geo.GeoLocationForeign;
@@ -8,7 +9,8 @@ import com.google.gson.Gson;
 
 public class GeographyUtils {
     public static SimpleGeoLocation getSimpleGeoLocation(String ip){
-
+        if(App.DEBUG)
+            ip="42.177.210.38";
         SimpleGeoLocation geoLocation = new SimpleGeoLocation();
         GeoLocation location = getGeoLocationFromIP(ip);
         if(location.result.ad_info.nation.equals("中国")){

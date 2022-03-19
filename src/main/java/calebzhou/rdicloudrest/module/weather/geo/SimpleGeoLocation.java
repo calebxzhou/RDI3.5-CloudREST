@@ -1,10 +1,23 @@
 package calebzhou.rdicloudrest.module.weather.geo;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class SimpleGeoLocation {
     String country;
     String province;
     String city;
     String district;
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
+                .append("country", country)
+                .append("province", province)
+                .append("city", city)
+                .append("district", district)
+                .toString();
+    }
 
     public String getCountry() {
         return country;

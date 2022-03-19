@@ -26,11 +26,11 @@ import java.util.List;
 
 @ServletComponentScan
 @SpringBootApplication
-public class RdicloudrestApplication extends SpringBootServletInitializer {
-
+public class App extends SpringBootServletInitializer {
+	public static final boolean DEBUG = true;
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(RdicloudrestApplication.class);
+		SpringApplication app = new SpringApplication(App.class);
 		app.run(args);
 		//注册机器人
 
@@ -43,7 +43,7 @@ public class RdicloudrestApplication extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder.sources(RdicloudrestApplication.class);
+		return builder.sources(App.class);
 	}
 
 	@Bean
@@ -53,6 +53,7 @@ public class RdicloudrestApplication extends SpringBootServletInitializer {
 		return factory;
 	}
 
+	public static Bot BOT;
 //机器人——————————————
 	@Autowired AccountService service;
 	public static final String CMD_PREFIX = "r#";
@@ -73,27 +74,22 @@ public class RdicloudrestApplication extends SpringBootServletInitializer {
 			String content = friendMessageEvent.getMessage().contentToString();
 			if(!content.startsWith(CMD_PREFIX)) return;
 			String cmd = content.replace(CMD_PREFIX,"").replace("，",",");
-			String arg = StringUtils.substringAfter(cmd,",");
-			switch (StringUtils.substringBefore(cmd,",")){
+			String arg = StringUtils.substringAfter(cmd,"=");
+			switch (StringUtils.substringBefore(cmd,"=")){
 				//获取服务器在线人数
-				case "list"->sendPlayerList(friend);
-				case "reg" -> register(friend);
+				case "list"-> sendPlayerList(friend);
+				case "reg" -> friend.sendMessage(service.register(friend.getId()));
+				case "info" -> friend.sendMessage(service.getinfo(friend.getId()));
+				case "login" -> friend.sendMessage(service.login(friend.getId(),arg));
 			}
 
 
 
 		});
 		bot.login();
+		BOT=bot;
 		return bot;
 	}
-
-	private void register(Friend friend) {
-		//qq号
-		long qq= friend.getId();
-		String s = service.register(qq);
-		friend.sendMessage(s);
-	}
-
 	private void sendPlayerList(Friend friend) {
 		ServerListPing ping = new ServerListPing("test3.davisoft.cn",26088);
 		ServerListPing.StatusResponse data = null;
