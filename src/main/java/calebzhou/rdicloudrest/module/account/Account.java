@@ -17,9 +17,9 @@ public final class Account {
     public Account() {
     }
 
-    public Account(long qq, Date regDate) {
-        this.qq = qq;
-        this.regDate = regDate;
+    public Account(long qq) {
+        this.qq = (qq);
+        this.regDate = new Date();
     }
 
     public long getQq() {

@@ -10,6 +10,42 @@ public class AccountUtils {
     public static final Char2CharMap charMap = new Char2CharOpenHashMap();
     //反向
     public static final Char2CharMap charMapRev = new Char2CharOpenHashMap();
+
+    public static String qq2rdi(long qq){
+        // eg 1037414277 -> 3DD5AF85 -> dwwfzrkf
+        return hex2rdi(qq2hex(qq));
+    }
+    public static String qq2hex(long qq){
+        // eg 1037414277 -> 3DD5AF85
+        return Long.toHexString(qq);
+    }
+    public static String hex2rdi(String hex){
+        // eg 3DD5AF85 -> dwwfzrkf
+        return hex.chars()
+                .mapToObj(intValue -> charMap.get((char) intValue))
+                .collect(Collector.of(
+                        StringBuilder::new,
+                        StringBuilder::append,
+                        StringBuilder::append,
+                        StringBuilder::toString));
+    }
+    public static String rdi2hex(String rdi){
+        return rdi.chars()
+                .mapToObj(intVal -> charMapRev.get((char) intVal))
+                .collect(Collector.of(
+                        StringBuilder::new,
+                        StringBuilder::append,
+                        StringBuilder::append,
+                        StringBuilder::toString));
+    }
+    public static long hex2qq(String hex){
+        return Long.parseLong(hex,16);
+    }
+    public static long rdi2qq(String rdi){
+        //eg dwwfzrkf -> 1037414277
+        return hex2qq(rdi2hex(rdi));
+    }
+
     static{
         charMap.put('0','a');
         charMap.put('1','b');
@@ -27,29 +63,6 @@ public class AccountUtils {
         charMap.put('d','w');
         charMap.put('e','t');
         charMap.put('f','r');
-        charMap.char2CharEntrySet().stream().forEach(entry -> charMapRev.put(entry.getCharValue(),entry.getCharKey()));
-    }
-    public static String qq2rdiAccount(long qq){
-        // eg 1037414277 -> 3DD5AF85 -> dwwfzrkf
-        return Long.toHexString(qq)
-                .chars()
-                .mapToObj(intValue -> charMap.get((char) intValue))
-                .collect(Collector.of(
-                StringBuilder::new,
-                StringBuilder::append,
-                StringBuilder::append,
-                StringBuilder::toString));
-    }
-    public static long rdi2qqAccount(String rdi){
-        //eg dwwfzrkf -> 1037414277
-        return Long.parseLong(
-                rdi.chars()
-                .mapToObj(intVal -> charMapRev.get((char) intVal))
-                .collect(Collector.of(
-                StringBuilder::new,
-                StringBuilder::append,
-                StringBuilder::append,
-                StringBuilder::toString))
-        ,16);
+        charMap.char2CharEntrySet().forEach(entry -> charMapRev.put(entry.getCharValue(),entry.getCharKey()));
     }
 }
