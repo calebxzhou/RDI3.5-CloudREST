@@ -158,7 +158,14 @@
 			<artifactId>kotlin-stdlib-jdk8</artifactId>
 			<version>${kotlin.version}</version>
 		</dependency>
-    </dependencies>
+		<!-- https://mvnrepository.com/artifact/it.unimi.dsi/fastutil -->
+		<dependency>
+			<groupId>it.unimi.dsi</groupId>
+			<artifactId>fastutil</artifactId>
+			<version>8.5.8</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>
