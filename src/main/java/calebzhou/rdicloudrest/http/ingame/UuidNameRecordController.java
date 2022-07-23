@@ -4,8 +4,6 @@ import calebzhou.rdicloudrest.dao.DatabaseConnector;
 import calebzhou.rdicloudrest.http.BasicServlet;
 import calebzhou.rdicloudrest.model.record.UuidNameRecord;
 
-import calebzhou.rdicloudrest.dao.GenericDao;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,5 +1,6 @@
 package calebzhou.rdicloudrest.module.blockrec;
 
+import calebzhou.rdicloudrest.model.BlockRecord;
 import calebzhou.rdicloudrest.utils.FileUtil;
 import calebzhou.rdicloudrest.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;

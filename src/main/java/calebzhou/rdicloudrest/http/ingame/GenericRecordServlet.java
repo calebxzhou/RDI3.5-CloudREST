@@ -3,7 +3,6 @@ package calebzhou.rdicloudrest.http.ingame;
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
 import calebzhou.rdicloudrest.http.BasicServlet;
 import calebzhou.rdicloudrest.model.record.GenericRecord;
-import calebzhou.rdicloudrest.dao.GenericDao;
 import calebzhou.rdicloudrest.model.record.RecordType;
 
 import javax.servlet.annotation.WebServlet;

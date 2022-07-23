@@ -1,16 +1,6 @@
 package calebzhou.rdicloudrest;
 
-import calebzhou.rdicloudrest.module.account.AccountService;
-import calebzhou.rdicloudrest.utils.DateUtil;
-import calebzhou.rdicloudrest.utils.ServerListPing;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.BotFactory;
-import net.mamoe.mirai.contact.Friend;
-import net.mamoe.mirai.event.events.FriendMessageEvent;
-import net.mamoe.mirai.event.events.NewFriendRequestEvent;
-import net.mamoe.mirai.utils.BotConfiguration;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -20,15 +10,11 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 @ServletComponentScan
 @SpringBootApplication
 public class App extends SpringBootServletInitializer {
 	public static final boolean DEBUG = true;
-
+	public static final int VERSION =0x350;
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(App.class);
 		app.run(args);
@@ -55,9 +41,9 @@ public class App extends SpringBootServletInitializer {
 
 	public static Bot BOT;
 //机器人——————————————
-	@Autowired AccountService service;
+	//@Autowired AccountService service;
 	public static final String CMD_PREFIX = "r#";
-	@Bean
+	/*@Bean
 	public Bot initBot() {
 		Bot bot = BotFactory.INSTANCE.newBot(3168960758L, "69@QQ.com", new BotConfiguration() {
 			{
@@ -101,6 +87,6 @@ public class App extends SpringBootServletInitializer {
 		List<String> sample = data != null ? data.getPlayers().getSample().stream().map(ServerListPing.Player::getName).toList() : new ArrayList<>();
 		int  number = data.getPlayers().getOnline();
 		friend.sendMessage("当前在线"+number+"人："+sample.toString());
-	}
+	}*/
 //————————————————————
 }

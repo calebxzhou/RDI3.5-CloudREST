@@ -1,10 +1,10 @@
 package calebzhou.rdicloudrest.utils;
 
 import calebzhou.rdicloudrest.App;
-import calebzhou.rdicloudrest.constants.CloudServiceConstants;
-import calebzhou.rdicloudrest.module.weather.geo.GeoLocation;
-import calebzhou.rdicloudrest.module.weather.geo.GeoLocationForeign;
-import calebzhou.rdicloudrest.module.weather.geo.SimpleGeoLocation;
+import calebzhou.rdicloudrest.constants.CloudConst;
+import calebzhou.rdicloudrest.model.geo.GeoLocation;
+import calebzhou.rdicloudrest.model.geo.GeoLocationForeign;
+import calebzhou.rdicloudrest.model.geo.SimpleGeoLocation;
 import com.google.gson.Gson;
 
 public class GeographyUtils {
@@ -28,12 +28,12 @@ public class GeographyUtils {
         return geoLocation;
     }
     public static GeoLocation getGeoLocationFromIP(String ip) {
-        String httpurl = "https://apis.map.qq.com/ws/location/v1/ip?ip=" + ip + "&key=" + CloudServiceConstants.tencentLbsKey;
+        String httpurl = "https://apis.map.qq.com/ws/location/v1/ip?ip=" + ip + "&key=" + CloudConst.tencentLbsKey;
         String locationResult = HttpUtils.doGet(httpurl);
         return new Gson().fromJson(locationResult, GeoLocation.class);
     }
     public static GeoLocationForeign getLocationFromForeignIP(String ip){
-        String url="http://api.ipstack.com/"+ip+"?access_key="+CloudServiceConstants.ipStackKey;
+        String url="http://api.ipstack.com/"+ip+"?access_key="+ CloudConst.ipStackKey;
         String res=HttpUtils.doGet(url);
         return new Gson().fromJson(res, GeoLocationForeign.class);
     }

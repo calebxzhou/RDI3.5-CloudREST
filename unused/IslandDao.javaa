@@ -1,7 +1,7 @@
 package calebzhou.rdicloudrest.dao;
 
 import calebzhou.rdicloudrest.model.CoordLocation;
-import calebzhou.rdicloudrest.module.island.Island;
+import calebzhou.rdicloudrest.model.Island;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.extern.slf4j.Slf4j;

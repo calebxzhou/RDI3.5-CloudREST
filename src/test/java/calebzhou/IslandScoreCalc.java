@@ -1,7 +1,7 @@
 package calebzhou;
 
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
-import calebzhou.rdicloudrest.module.blockrec.BlockRecord;
+import calebzhou.rdicloudrest.model.BlockRecord;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.SneakyThrows;
@@ -189,7 +189,7 @@ public class IslandScoreCalc {
                 blockAction= rs.getString("blockAction");
                 /*if(ignoreBlocks.contains(blockType))
                     continue;*/
-                map.put(pid,new BlockRecord(null,blockType,blockAction,null,null));
+                //map.put(pid,new BlockRecord(null,blockType,blockAction,null,null));
 
             }
         } catch (SQLException e) {
