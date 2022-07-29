@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface IslandRepo extends JpaRepository<Island,String> {
 
 
-    @Query(value = "select islandId from Island where ownerUuid=:pid",nativeQuery = true)
+    @Query(value = "select iid from Island where pid=:pid",nativeQuery = true)
     String findIslandIdOwnByPid(@Param("pid")String pid);
 
-    @Query(value = "select island from IslandCrew where mpid=:pid",nativeQuery = true)
+    @Query(value = "select iid from IslandCrew where mpid=:pid",nativeQuery = true)
     String findIslandIdJoinByPid(@Param("pid")String pid);
 
     @Override

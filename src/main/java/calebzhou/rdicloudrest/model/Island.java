@@ -18,7 +18,7 @@ import java.util.Set;
 @Table
 public class Island implements Serializable {
     @Id @GeneratedValue
-    String iid;
+    int iid;
     String pid;
     int x;
     int y;
