@@ -9,23 +9,21 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface IslandRepo extends JpaRepository<Island,String> {
+public interface IslandRepo extends JpaRepository<Island,Integer> {
 
 
     @Query(value = "select iid from Island where pid=:pid",nativeQuery = true)
-    String findIslandIdOwnByPid(@Param("pid")String pid);
+    Integer findIslandIdOwnByPid(@Param("pid")String pid);
 
     @Query(value = "select iid from IslandCrew where mpid=:pid",nativeQuery = true)
-    String findIslandIdJoinByPid(@Param("pid")String pid);
+    Integer findIslandIdJoinByPid(@Param("pid")String pid);
 
     @Override
     <S extends Island> S save(S entity);
 
-    @Override
-    void deleteById(String s);
+    void deleteByIid(Integer s);
 
-    @Override
-    Optional<Island> findById(String s);
+    Optional<Island> findByIid(Integer s);
 
     /*@Query("select case when count(i)> 0 then true else false end from Island i where lower(i.ownerUuid) like lower(:pid)")
     boolean isPlayerOwnIsland(@Param("pid")String pid);

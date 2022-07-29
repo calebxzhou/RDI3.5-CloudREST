@@ -2,11 +2,12 @@ package calebzhou.rdicloudrest.model;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Getter
@@ -24,20 +25,23 @@ public class Island implements Serializable {
     int y;
     int z;
     Timestamp ts;
-    @OneToMany(mappedBy = "iid",cascade = CascadeType.ALL,orphanRemoval = true)
-    @ToString.Exclude
-    private Set<IslandCrew> crew = new HashSet<>();
 
-    public void addMember(IslandCrew member){
-        crew.add(member);
-        member.setIid(this);
+    String crew ;
+
+    public void addMember(String mpid){
+        crew+=","+mpid;
     }
-    public void removeMember(IslandCrew member){
-        crew.remove(member);
-        member.setIid(null);
+    public void removeMember(String mpid){
+        String newCrew="";
+        String[] split = crew.split(",");
+        for(String mpidIn:split){
+            if(!mpidIn.equals(mpid))
+                newCrew+=mpid+",";
+        }
+        crew=newCrew;
     }
     public boolean isMemberExists(String mpid){
-        return crew.stream().anyMatch(crew->crew.getMpid().equals(mpid));
+        return crew.contains(mpid);
         /*AtomicBoolean exists= new AtomicBoolean(false);
         crew.forEach(islandCrew -> {
             if (islandCrew.getMpid().equalsIgnoreCase(mpid)) {
