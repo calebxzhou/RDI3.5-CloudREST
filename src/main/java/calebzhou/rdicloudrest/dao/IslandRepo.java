@@ -15,7 +15,7 @@ public interface IslandRepo extends JpaRepository<Island,Integer> {
     @Query(value = "select iid from Island where pid=:pid",nativeQuery = true)
     Integer findIslandIdOwnByPid(@Param("pid")String pid);
 
-    @Query(value = "select iid from IslandCrew where mpid=:pid",nativeQuery = true)
+    @Query(value = "select iid from Island where crew like %:pid%",nativeQuery = true)
     Integer findIslandIdJoinByPid(@Param("pid")String pid);
 
     @Override

@@ -19,19 +19,19 @@ public class IslandCtrler {
     }
     public boolean isPlayerOwnIsland(String pid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
-        return iid!=0;
+        return iid!=null;
     }
     public boolean isPlayerJoinIsland(String pid){
         Integer iid = repo.findIslandIdJoinByPid(pid);
-        return iid!=0;
+        return iid!=null;
     }
     //提供玩家pid获取空岛坐标x,y,z
     @RequestMapping(value = "/{pid}",method = RequestMethod.GET)
     public String getIsland(@PathVariable String pid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
-        if(iid==0)
+        if(iid==null)
             iid=repo.findIslandIdJoinByPid(pid);
-        if(iid==0)
+        if(iid==null)
             return "fail";
         Island is = repo.findByIid(iid).get();
         return is.getLocation();
@@ -56,7 +56,7 @@ public class IslandCtrler {
     //提供玩家pid删除空岛
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)
     public int deleteIsland(@PathVariable String pid){
-        int iid = repo.findIslandIdOwnByPid(pid);
+        Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须拥有空岛才能删除
         if(iid!=0){
             repo.deleteByIid(iid);
@@ -66,9 +66,9 @@ public class IslandCtrler {
     }
 
     //提供玩家pid修改空岛坐标，参数x,y,z坐标
-    @RequestMapping(value = "/{pid}",method = RequestMethod.PUT)
-    public int changeLocation(@PathVariable String pid, @RequestParam String xyz){
-        int iid = repo.findIslandIdOwnByPid(pid);
+    @RequestMapping(value = "/{pid}/{xyz}",method = RequestMethod.PUT)
+    public int changeLocation(@PathVariable String pid, @PathVariable String xyz){
+        Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须岛主才能改变坐标
         Optional<Island> isl = repo.findByIid(iid);
         if(isl.isEmpty()){
@@ -83,9 +83,9 @@ public class IslandCtrler {
     //添加空岛成员，提供岛主pid和成员pid
     @RequestMapping(value = "/crew/{pid}/{mpid}",method = RequestMethod.POST)
     public int addMember(@PathVariable String pid,@PathVariable String mpid){
-        int iid = repo.findIslandIdOwnByPid(pid);
+        Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须拥有空岛才能添加成员
-        if(iid==0)
+        if(iid==null)
             return 0;
         //成员不能重复添加
         Island is = repo.findByIid(iid).get();
@@ -98,9 +98,9 @@ public class IslandCtrler {
     //删除空岛成员，提供岛主pid和成员pid
     @RequestMapping(value = "/crew/{pid}/{mpid}",method = RequestMethod.DELETE)
     public int removeMember(@PathVariable String pid,@PathVariable String mpid){
-        int iid = repo.findIslandIdOwnByPid(pid);
+        Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须拥有空岛才能删除成员
-        if(iid==0)
+        if(iid==null)
             return 0;
         //成员不能重复删除
         Island is = repo.findByIid(iid).get();
