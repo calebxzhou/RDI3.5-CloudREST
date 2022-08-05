@@ -1,6 +1,14 @@
 package calebzhou.rdicloudrest;
 
+import calebzhou.rdicloudrest.utils.DateUtil;
+import calebzhou.rdicloudrest.utils.ServerListPing;
 import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.BotFactory;
+import net.mamoe.mirai.contact.Friend;
+import net.mamoe.mirai.event.events.FriendMessageEvent;
+import net.mamoe.mirai.event.events.NewFriendRequestEvent;
+import net.mamoe.mirai.utils.BotConfiguration;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,10 +18,16 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @ServletComponentScan
 @SpringBootApplication
 public class App extends SpringBootServletInitializer {
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final int VERSION =0x350;
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(App.class);
@@ -41,9 +55,8 @@ public class App extends SpringBootServletInitializer {
 
 	public static Bot BOT;
 //机器人——————————————
-	//@Autowired AccountService service;
 	public static final String CMD_PREFIX = "r#";
-	/*@Bean
+	@Bean
 	public Bot initBot() {
 		Bot bot = BotFactory.INSTANCE.newBot(3168960758L, "69@QQ.com", new BotConfiguration() {
 			{
@@ -56,7 +69,7 @@ public class App extends SpringBootServletInitializer {
 
 		bot.getEventChannel().subscribeAlways(FriendMessageEvent.class, friendMessageEvent -> {
 			Friend friend = friendMessageEvent.getFriend();
-			friend.sendMessage(String.format("%s好，%s~",DateUtil.getTimePeriod(),friend.getNick()));
+			friend.sendMessage(String.format("%s好，%s~", DateUtil.getTimePeriod(),friend.getNick()));
 			String content = friendMessageEvent.getMessage().contentToString();
 			if(!content.startsWith(CMD_PREFIX)) return;
 			String cmd = content.replace(CMD_PREFIX,"").replace("，",",");
@@ -64,9 +77,7 @@ public class App extends SpringBootServletInitializer {
 			switch (StringUtils.substringBefore(cmd,"=")){
 				//获取服务器在线人数
 				case "list"-> sendPlayerList(friend);
-				case "reg" -> friend.sendMessage(service.register(friend.getId()));
-				case "info" -> friend.sendMessage(service.getinfo(friend.getId()));
-				case "login" -> friend.sendMessage(service.login(friend.getId(),arg));
+				case "uuid"-> calcUuid(friend,arg);
 			}
 
 
@@ -76,8 +87,14 @@ public class App extends SpringBootServletInitializer {
 		BOT=bot;
 		return bot;
 	}
+
+	private void calcUuid(Friend friend,String name) {
+		String uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8)).toString().replace("-", "");
+		friend.sendMessage(uuid);
+	}
+
 	private void sendPlayerList(Friend friend) {
-		ServerListPing ping = new ServerListPing("test3.davisoft.cn",26088);
+		ServerListPing ping = new ServerListPing("test3.davisoft.cn",26085);
 		ServerListPing.StatusResponse data = null;
 		try {
 			data = ping.fetchData();
@@ -87,6 +104,6 @@ public class App extends SpringBootServletInitializer {
 		List<String> sample = data != null ? data.getPlayers().getSample().stream().map(ServerListPing.Player::getName).toList() : new ArrayList<>();
 		int  number = data.getPlayers().getOnline();
 		friend.sendMessage("当前在线"+number+"人："+sample.toString());
-	}*/
+	}
 //————————————————————
 }
