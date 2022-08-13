@@ -1,21 +1,18 @@
 package calebzhou.rdicloudrest.dao;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.SplittableRandom;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Slf4j
 public class DatabaseConnector {
 static SplittableRandom rand = new SplittableRandom();
-    public static final String DB_NAME="rdi3";
+    public static final String DB_NAME="rdi35";
     public static final String BLOCK_RECORD_SCHEMA="br";
     public static final String DB_URL = "jdbc:mysql://cdb-p243thok.cd.tencentcdb.com:10083/"+DB_NAME+"?useSSL=true";
     public static final String USR= "root";
@@ -23,14 +20,20 @@ static SplittableRandom rand = new SplittableRandom();
     public static final int TIMEOUT = 240;
     //连接数
     public static final int CONN_MAX_AMOUNT = 10;
+    private static final HikariDataSource dataSource;
     static {
-        try {
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName("com.mysql.jdbc.Driver");
+        config.setJdbcUrl(DB_URL);
+        config.setUsername(USR);
+        config.setPassword(PWD);
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+        dataSource= new HikariDataSource(config);
     }
-    private static final List<Connection> connections = new ArrayList<>();
+   /* private static final List<Connection> connections = new ArrayList<>();
     public static void refreshConnection() throws SQLException {
         ExecutorService executor = Executors.newFixedThreadPool(CONN_MAX_AMOUNT);
         connections.forEach(connection-> {
@@ -53,12 +56,12 @@ static SplittableRandom rand = new SplittableRandom();
            // });
 
         }
-        /*try {
+        *//*try {
             executor.shutdown();
             executor.awaitTermination(30000L, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }*//*
     }
     public static boolean checkConnection(int num) throws SQLException {
         boolean flag = true;
@@ -77,18 +80,19 @@ static SplittableRandom rand = new SplittableRandom();
             refreshConnection();
 
         return true;
+    }*/
+    public static Connection getConnection() throws SQLException{
+        /*checkConnection(num);
+        return connections.get(num);*/
+        return dataSource.getConnection();
     }
-    public static Connection getConnection(int num) throws SQLException{
-        checkConnection(num);
-        return connections.get(num);
-    }
-    public static Connection getRandomConnection() throws SQLException {
+    /*public static Connection getRandomConnection() throws SQLException {
         int ran = rand.nextInt(0, CONN_MAX_AMOUNT) ;
         log.info("获取连接 {}",ran);
         return getConnection(ran);
-    }
+    }*/
     public static PreparedStatement getPreparedStatement(String sql,Object... params) throws  SQLException{
-        PreparedStatement ps= getRandomConnection().prepareStatement(sql);
+        PreparedStatement ps= getConnection().prepareStatement(sql);
         int paramAmount=params.length;
         for(int i=0;i<paramAmount;i++){
             ps.setObject(i+1,params[i]);

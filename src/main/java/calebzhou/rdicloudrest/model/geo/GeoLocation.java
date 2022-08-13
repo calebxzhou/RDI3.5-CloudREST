@@ -24,19 +24,19 @@ public class GeoLocation {
     public String message;
     public Result result;
 
-    public class Result {
+    public static class Result {
         public String ip;
 
         public Location location;
 
-        public class Location {
+        public static class Location {
             public double lng;
             public double lat;
         }
 
         public Ad_info ad_info;
 
-        public class Ad_info {
+        public static class Ad_info {
             public String nation;
             public String province;
             public String city;

@@ -56,7 +56,7 @@ public class App extends SpringBootServletInitializer {
 	public static Bot BOT;
 //机器人——————————————
 	public static final String CMD_PREFIX = "r#";
-	@Bean
+	//@Bean
 	public Bot initBot() {
 		Bot bot = BotFactory.INSTANCE.newBot(3168960758L, "69@QQ.com", new BotConfiguration() {
 			{
@@ -69,11 +69,12 @@ public class App extends SpringBootServletInitializer {
 
 		bot.getEventChannel().subscribeAlways(FriendMessageEvent.class, friendMessageEvent -> {
 			Friend friend = friendMessageEvent.getFriend();
-			friend.sendMessage(String.format("%s好，%s~", DateUtil.getTimePeriod(),friend.getNick()));
 			String content = friendMessageEvent.getMessage().contentToString();
 			if(!content.startsWith(CMD_PREFIX)) return;
+
 			String cmd = content.replace(CMD_PREFIX,"").replace("，",",");
 			String arg = StringUtils.substringAfter(cmd,"=");
+			friend.sendMessage(String.format("%s好，%s~", DateUtil.getTimePeriod(),friend.getNick()));
 			switch (StringUtils.substringBefore(cmd,"=")){
 				//获取服务器在线人数
 				case "list"-> sendPlayerList(friend);

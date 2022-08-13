@@ -1,13 +1,15 @@
 package calebzhou.rdicloudrest.ctrler;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+@Transactional
 @RestController
 @RequestMapping("/record")
 public class RecordCtrler {
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -19,6 +21,7 @@ public class RecordCtrler {
                 .setParameter(2,cont)
                 .executeUpdate();
     }
+
     //记录登入
 /*
     @RequestMapping(value = "/login",method = RequestMethod.POST)
