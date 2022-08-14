@@ -56,7 +56,7 @@ public class App extends SpringBootServletInitializer {
 	public static Bot BOT;
 //机器人——————————————
 	public static final String CMD_PREFIX = "r#";
-	//@Bean
+	@Bean
 	public Bot initBot() {
 		Bot bot = BotFactory.INSTANCE.newBot(3168960758L, "69@QQ.com", new BotConfiguration() {
 			{
