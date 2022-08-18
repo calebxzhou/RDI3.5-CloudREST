@@ -2,10 +2,11 @@ package calebzhou.rdicloudrest.utils;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +14,7 @@ import java.nio.file.Paths;
 @Slf4j
 public class FileUtil {
     public static final File blockRecFolder = new File(new File("."),"block_rec");
-    public static void writeToFile(File file,Object obj) {
+   /* public static void writeToFile(File file,Object obj) {
             if (file.getParentFile() != null) {
                 file.getParentFile().mkdirs();
             }
@@ -28,7 +29,7 @@ public class FileUtil {
                 IOUtils.closeQuietly((Writer)writer);
             }
 
-    }
+    }*/
     public static void writeLineToFile(File file,Object line){
         FileWriter fileWriter = null;
         try {

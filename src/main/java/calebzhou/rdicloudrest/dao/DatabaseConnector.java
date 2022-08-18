@@ -5,7 +5,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -16,6 +15,7 @@ public class DatabaseConnector {
     public static final String USR= "root";
     public static final String PWD = "dmts_avia";
     private static final HikariDataSource dataSource;
+    private static Connection connection;
     static {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("com.mysql.jdbc.Driver");
@@ -28,9 +28,14 @@ public class DatabaseConnector {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
         dataSource= new HikariDataSource(config);
+        try {
+            connection=dataSource.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     public static Connection getConnection() throws SQLException{
-        return DriverManager.getConnection(DB_URL,USR,PWD);
+        return connection;//DriverManager.getConnection(DB_URL,USR,PWD);
     }
     public static PreparedStatement getPreparedStatement(String sql,Object... params) throws  SQLException{
         PreparedStatement ps= getConnection().prepareStatement(sql);

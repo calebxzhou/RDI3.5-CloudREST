@@ -2,7 +2,6 @@ package calebzhou.rdicloudrest.ctrler;
 
 import calebzhou.rdicloudrest.dao.IslandRepo;
 import calebzhou.rdicloudrest.model.Island;
-import calebzhou.rdicloudrest.utils.RandomUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,22 +35,20 @@ public class IslandCtrler {
         Island is = repo.findByIid(iid).get();
         return is.getLocation();
     }
-    //提供玩家pid创建新的空岛，返回x,y,z格式位置
+    //提供玩家pid和xyz创建新的空岛，返回是否成功
     @RequestMapping(value = "/{pid}",method = RequestMethod.POST)
-    public String createIsland(@PathVariable String pid){
+    public int createIsland(@PathVariable String pid,@RequestParam int x,@RequestParam int y,@RequestParam int z){
         if(isPlayerOwnIsland(pid) || isPlayerJoinIsland(pid)){
-            return "fail";
+            return 0;
         }
         Island is = new Island();
         is.setPid(pid);
-        int x = RandomUtils.generateRandomInt(-49999, 49999);
-        int y = 128;
-        int z = RandomUtils.generateRandomInt(-49999, 49999);
+
         is.setX(x);
         is.setY(y);
         is.setZ(z);
         repo.save(is);
-        return is.getLocation();
+        return 1;
     }
     //提供玩家pid删除空岛
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)

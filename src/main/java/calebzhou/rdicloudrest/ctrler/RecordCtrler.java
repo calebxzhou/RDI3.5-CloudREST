@@ -23,7 +23,7 @@ public class RecordCtrler {
                      DatabaseConnector.getPreparedStatement("insert into RecordChat (pid,cont,ts) values (?,?,?)", pid, cont, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            ps.getConnection().close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +37,7 @@ public class RecordCtrler {
                      DatabaseConnector.getPreparedStatement("insert into RecordDeath (pid,src,ts) values (?,?,?)", pid, src, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            ps.getConnection().close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +51,7 @@ public class RecordCtrler {
                      DatabaseConnector.getPreparedStatement("insert into RecordLogin (pid,ip,geo,ts) values (?,?,?,?)", pid, ip, geo, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            ps.getConnection().close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,7 +64,7 @@ public class RecordCtrler {
                              Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            ps.getConnection().close();
+            
         } catch (SQLException e) {
             if(!e.getMessage().equals("EXISTS!"))
                 throw new RuntimeException(e);
@@ -77,7 +77,7 @@ public class RecordCtrler {
         try (PreparedStatement ps = DatabaseConnector.getPreparedStatement("insert into RecordLogout (pid,ts) values (?,?)", pid, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            ps.getConnection().close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -93,9 +93,9 @@ public class RecordCtrler {
                             @RequestParam int y,
                             @RequestParam int z) {
 
-        try ( Connection connection = DatabaseConnector.getConnection();
-              PreparedStatement ps = connection.prepareStatement("insert into RecordBlock (pid,act,bid,world,x,y,z,ts) values (?,?,?,?,?,?,?,?)");
-        ) {
+        try  {
+            Connection connection = DatabaseConnector.getConnection();
+            PreparedStatement ps = connection.prepareStatement("insert into RecordBlock (pid,act,bid,world,x,y,z,ts) values (?,?,?,?,?,?,?,?)");
             ps.setString(1, pid);
             ps.setInt(2, act);
             ps.setString(3, bid);
@@ -105,6 +105,7 @@ public class RecordCtrler {
             ps.setInt(7, z);
             ps.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
