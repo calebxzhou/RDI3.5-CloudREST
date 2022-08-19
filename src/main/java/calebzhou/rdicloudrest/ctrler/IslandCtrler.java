@@ -55,7 +55,7 @@ public class IslandCtrler {
     public int deleteIsland(@PathVariable String pid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须拥有空岛才能删除
-        if(iid!=0){
+        if(iid!=null){
             repo.deleteByIid(iid);
             return 1;
         }
