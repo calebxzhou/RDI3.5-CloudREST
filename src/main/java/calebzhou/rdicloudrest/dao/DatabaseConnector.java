@@ -26,16 +26,16 @@ public class DatabaseConnector {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-
+        config.setConnectionTimeout(600000);
+        config.setMaximumPoolSize(500);
+        config.setMinimumIdle(20);
+        config.setValidationTimeout(3000);
+        config.setMaxLifetime(3*60*1000);//3分
+        config.setIdleTimeout(60000);
         dataSource= new HikariDataSource(config);
-        try {
-            connection=dataSource.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
     public static Connection getConnection() throws SQLException{
-        return connection;//DriverManager.getConnection(DB_URL,USR,PWD);
+        return dataSource.getConnection();//DriverManager.getConnection(DB_URL,USR,PWD);
     }
     public static PreparedStatement getPreparedStatement(String sql,Object... params) throws  SQLException{
         PreparedStatement ps= getConnection().prepareStatement(sql);

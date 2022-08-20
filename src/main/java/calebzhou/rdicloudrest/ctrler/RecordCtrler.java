@@ -23,7 +23,7 @@ public class RecordCtrler {
                      DatabaseConnector.getPreparedStatement("insert into RecordChat (pid,cont,ts) values (?,?,?)", pid, cont, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            
+            ps.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +37,7 @@ public class RecordCtrler {
                      DatabaseConnector.getPreparedStatement("insert into RecordDeath (pid,src,ts) values (?,?,?)", pid, src, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            
+            ps.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +51,7 @@ public class RecordCtrler {
                      DatabaseConnector.getPreparedStatement("insert into RecordLogin (pid,ip,geo,ts) values (?,?,?,?)", pid, ip, geo, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            
+            ps.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,7 +64,7 @@ public class RecordCtrler {
                              Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            
+            ps.getConnection().close();
         } catch (SQLException e) {
             if(!e.getMessage().equals("EXISTS!"))
                 throw new RuntimeException(e);
@@ -77,7 +77,7 @@ public class RecordCtrler {
         try (PreparedStatement ps = DatabaseConnector.getPreparedStatement("insert into RecordLogout (pid,ts) values (?,?)", pid, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
-            
+            ps.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -106,6 +106,7 @@ public class RecordCtrler {
             ps.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
             ps.executeUpdate();
             ps.close();
+            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
