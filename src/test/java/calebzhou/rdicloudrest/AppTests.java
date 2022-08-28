@@ -3,6 +3,7 @@ package calebzhou.rdicloudrest;
 import calebzhou.rdicloudrest.config.MyBatisConfig;
 import calebzhou.rdicloudrest.dao.Island2Mapper;
 import calebzhou.rdicloudrest.model.Island2;
+import calebzhou.rdicloudrest.utils.RandomUtils;
 import calebzhou.rdicloudrest.utils.RdiSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,4 +25,12 @@ class AppTests {
 		System.out.println(RdiSerializer.GSON.toJson(article));
 	}
 
+	@Test
+	void randomTesT(){
+		long t1 = System.nanoTime();
+		String randomString = RandomUtils.getRandomString(192);
+		long t2 = System.nanoTime();
+		System.out.println(randomString);
+		System.out.println(t2-t1);
+	}
 }

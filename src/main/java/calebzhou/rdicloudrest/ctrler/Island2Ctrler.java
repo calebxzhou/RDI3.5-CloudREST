@@ -50,28 +50,62 @@ public class Island2Ctrler {
         mapper.insertIsland(island2);
         return mapper.getPlayerOwnIslandId(pid);
     }
-    //提供玩家pid删除空岛
+    //提供玩家pid删除空岛，返回删除的岛屿id
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)
     public int deleteIsland(@PathVariable String pid){
         //没岛不删
         if(!mapper.isPlayerOwnIsland(pid)){
             return Island2Error.sourceNotOwnIsland;
         }
-        Integer playerOwnIslandId = mapper.getPlayerOwnIslandId(pid);
-        if(playerOwnIslandId == null)
+        Integer iid = mapper.getPlayerOwnIslandId(pid);
+        if(iid == null)
             return Island2Error.sourceNotOwnIsland;
+        mapper.deleteIsland(iid);
+        return iid;
+    }
+    //提供玩家pid修改岛主
+    @RequestMapping(value = "/transfer/{pid}/{targetPid}",method = RequestMethod.PUT)
+    public int transferIsland(@PathVariable String pid,@PathVariable String targetPid){
+        //不能转给自己,自己必须有岛，自己不能加岛，对方不能有岛，对方不能加岛，
+        if(pid.equals(targetPid)){
+            return Island2Error.sourceEqualsTarget;
+        }
+        if(!mapper.isPlayerOwnIsland(pid)){
+            return Island2Error.sourceNotOwnIsland;
+        }
+        if(mapper.isPlayerJoinAnyIsland(pid)){
+            return Island2Error.sourceAlreadyJoinAnyIsland;
+        }
+        if(mapper.isPlayerOwnIsland(targetPid)){
+            return Island2Error.targetAlreadyOwnIsland;
+        }
+        if(mapper.isPlayerJoinAnyIsland(targetPid)){
+            return Island2Error.targetAlreadyJoinAnyIsland;
+        }
+        Integer iid = mapper.getPlayerOwnIslandId(pid);
+        mapper.updateIslandPid(iid,targetPid);
         return 1;
     }
 
     //提供玩家pid修改空岛传送点，参数x,y,z,w,p坐标 0失败1成功
-    @RequestMapping(value = "/{pid}",method = RequestMethod.PUT)
-    public int changeLocation(@PathVariable String pid, @RequestParam double x,@RequestParam double y,@RequestParam double z,
+    @RequestMapping(value = "/loca/{pid}",method = RequestMethod.PUT)
+    public int changeLocation(@PathVariable String pid,@RequestParam String dim, @RequestParam double x,@RequestParam double y,@RequestParam double z,
                               @RequestParam double w,@RequestParam double p){
         //没有岛屿改不了
         if(!mapper.isPlayerOwnIsland(pid)){
             return Island2Error.sourceNotOwnIsland;
         }
         int iid = mapper.getPlayerOwnIslandId(pid);
+        String iids = dim.replace("rdict3:i_","");
+        int iidsi;
+        try {
+            iidsi = Integer.parseInt(iids);
+        } catch (NumberFormatException e) {
+            return Island2Error.sourceNotInsideOwnIsland;
+        }
+        if(iidsi!=iid){
+            return Island2Error.sourceNotInsideOwnIsland;
+        }
         mapper.updateIslandLocation(iid,x,y,z,w,p);
         return 1;
     }

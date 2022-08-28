@@ -67,12 +67,13 @@ public interface Island2Mapper {
                               @Param("p")double p
                               );
 
+    @Update("update Island2 set pid=#{newPid} where iid=#{iid}")
+    void updateIslandPid(@Param("iid")Integer iid,@Param("newPid")String newPid);
     @Insert("insert into Island2Crew (pid,iid) values (#{mpid},#{iid})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insertMember(@Param("pid")String mpid,@Param("iid")Integer iid);
+    void insertMember(@Param("mpid")String mpid,@Param("iid")Integer iid);
 
 
     @Delete("delete from Island2Crew where pid=#{mpid} and iid=#{iid}")
-    void deleteMember(@Param("pid")String mpid,@Param("iid")Integer iid);
+    void deleteMember(@Param("mpid")String mpid,@Param("iid")Integer iid);
 
 }

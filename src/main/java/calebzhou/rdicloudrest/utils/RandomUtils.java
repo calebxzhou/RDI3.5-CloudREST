@@ -14,13 +14,12 @@ public class RandomUtils {
         return ran < ranPerc;
     }
     public static char generateRandomChar(){
-        String chars = "qwertyuiopasdfghjklzxcvbnm1234567890";
+        String chars = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
         return chars.charAt(random.nextInt(chars.length()));
     }
-    public static String getRandomIslandId(){
-        final int iidLen=16;
+    public static String getRandomString(int len){
         StringBuilder iid = new StringBuilder();
-        for(int i=0;i<iidLen;++i){
+        for(int i=0;i<len;++i){
             iid.append(generateRandomChar());
         }
         return iid.toString();
