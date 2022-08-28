@@ -1,0 +1,75 @@
+2022-08-28 09:43:21.824  INFO 17604 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 17604 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 09:43:21.825  INFO 17604 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 09:43:21.997  INFO 17604 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 09:43:22.630  INFO 17604 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 09:43:22.705  INFO 17604 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.079 seconds (JVM running for 1.643)
+2022-08-28 09:44:35.141  INFO 28148 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 28148 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 09:44:35.142  INFO 28148 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 09:44:35.291  INFO 28148 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 09:44:35.914  INFO 28148 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 09:44:35.979  INFO 28148 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.03 seconds (JVM running for 1.565)
+2022-08-28 09:48:26.000  INFO 18224 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 18224 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 09:48:26.001  INFO 18224 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 09:48:26.150  INFO 18224 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 09:48:26.804  INFO 18224 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 09:48:26.864  INFO 18224 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.05 seconds (JVM running for 1.588)
+2022-08-28 16:18:31.030  INFO 16920 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 16920 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:18:31.031  INFO 16920 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:18:31.212  INFO 16920 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:18:31.926  INFO 16920 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:18:31.998  INFO 16920 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.168 seconds (JVM running for 1.745)
+2022-08-28 16:18:55.858  INFO 15660 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 15660 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:18:55.859  INFO 15660 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:18:56.035  INFO 15660 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:18:56.672  INFO 15660 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:18:56.751  INFO 15660 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.107 seconds (JVM running for 1.711)
+2022-08-28 16:20:38.215  INFO 23892 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 23892 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:20:38.216  INFO 23892 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:20:38.374  INFO 23892 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:20:39.002  INFO 23892 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:20:39.072  INFO 23892 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.053 seconds (JVM running for 1.612)
+2022-08-28 16:21:43.964  INFO 31068 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 31068 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:21:43.965  INFO 31068 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:21:44.136  INFO 31068 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:21:44.780  INFO 31068 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:21:44.869  INFO 31068 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.101 seconds (JVM running for 1.672)
+2022-08-28 16:22:25.828  INFO 12856 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 12856 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:22:25.829  INFO 12856 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:22:26.010  INFO 12856 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:22:26.667  INFO 12856 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:22:26.745  INFO 12856 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.121 seconds (JVM running for 1.691)
+2022-08-28 16:24:33.520  INFO 11540 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 11540 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:24:33.521  INFO 11540 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:24:33.684  INFO 11540 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:24:34.307  INFO 11540 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:24:34.384  INFO 11540 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.086 seconds (JVM running for 1.639)
+2022-08-28 16:25:23.386  INFO 33152 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 33152 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:25:23.387  INFO 33152 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:25:23.559  INFO 33152 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:25:24.215  INFO 33152 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:25:24.285  INFO 33152 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.106 seconds (JVM running for 1.646)
+2022-08-28 16:25:34.272  INFO 18456 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 18456 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:25:34.273  INFO 18456 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:25:34.448  INFO 18456 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:25:35.212  INFO 18456 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:25:35.290  INFO 18456 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.214 seconds (JVM running for 1.776)
+2022-08-28 16:25:52.109  INFO 18496 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 18496 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:25:52.110  INFO 18496 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:25:52.275  INFO 18496 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:25:52.929  INFO 18496 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:25:53.008  INFO 18496 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.099 seconds (JVM running for 1.679)
+2022-08-28 16:26:15.700  INFO 15232 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 15232 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:26:15.701  INFO 15232 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:26:15.862  INFO 15232 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:26:17.247  INFO 15232 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:26:17.319  INFO 15232 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.815 seconds (JVM running for 2.375)
+2022-08-28 16:27:55.574  INFO 32616 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 32616 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:27:55.574  INFO 32616 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:27:55.745  INFO 32616 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:27:56.372  INFO 32616 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:27:56.451  INFO 32616 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.083 seconds (JVM running for 1.644)
+2022-08-28 16:28:47.764  INFO 18064 --- [main] calebzhou.rdicloudrest.AppTests          : Starting AppTests using Java 17.0.2 on DESKTOP-BLRQ4VF with PID 18064 (started by liberatorch in C:\Users\liberatorch\IdeaProjects\rdicloudrest)
+2022-08-28 16:28:47.764  INFO 18064 --- [main] calebzhou.rdicloudrest.AppTests          : No active profile set, falling back to default profiles: default
+2022-08-28 16:28:47.928  INFO 18064 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-08-28 16:28:49.259  INFO 18064 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-08-28 16:28:49.331  INFO 18064 --- [main] calebzhou.rdicloudrest.AppTests          : Started AppTests in 1.77 seconds (JVM running for 2.328)

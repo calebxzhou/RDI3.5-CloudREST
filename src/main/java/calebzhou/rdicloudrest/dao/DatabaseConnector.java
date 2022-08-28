@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -33,6 +34,9 @@ public class DatabaseConnector {
         config.setMaxLifetime(3*60*1000);//3分
         config.setIdleTimeout(60000);
         dataSource= new HikariDataSource(config);
+    }
+    public static DataSource getHikariDataSource(){
+        return dataSource;
     }
     public static Connection getConnection() throws SQLException{
         return dataSource.getConnection();//DriverManager.getConnection(DB_URL,USR,PWD);

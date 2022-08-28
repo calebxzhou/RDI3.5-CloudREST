@@ -1,21 +1,14 @@
 package calebzhou.rdicloudrest.model;
 
-public class Island2Loca {
-    int id,iid;
-    double x,y,z,w,p;
 
-    public Island2Loca(int id, int iid, double x, double y, double z, double w, double p) {
-        this.id = id;
-        this.iid = iid;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
-        this.p = p;
-    }
+import java.io.Serializable;
 
-    @Override
-    public String toString() {
-        return "%.12f,%.12f,%.12f,%.12f,%.12f".formatted(x,y,z,w,p);
-    }
+public class Island2Loca implements Serializable {
+    transient int id;
+    transient int iid;
+    double x;
+    double y;
+    double z;
+    double w;
+    double p;
 }
