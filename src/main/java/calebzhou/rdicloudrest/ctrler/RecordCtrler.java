@@ -1,21 +1,29 @@
 package calebzhou.rdicloudrest.ctrler;
 
+import calebzhou.rdicloudrest.ThreadPool;
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import calebzhou.rdicloudrest.dao.RecordMapper;
+import calebzhou.rdicloudrest.model.RecordBlock;
+import calebzhou.rdicloudrest.utils.RdiSerializer;
+import calebzhou.rdicloudrest.utils.TimeUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Transactional
 @RestController
 @RequestMapping("/record")
 public class RecordCtrler {
-
-
+    final RecordMapper mapper;
+    public RecordCtrler(RecordMapper mapper) {
+        this.mapper = mapper;
+    }
     //记录说话、指令
     @RequestMapping(value = "/chat", method = RequestMethod.POST)
     public void recordChat(@RequestParam String pid, @RequestParam String cont) {
@@ -85,15 +93,17 @@ public class RecordCtrler {
 
     //方块破坏/放置
     @RequestMapping(value = "/block", method = RequestMethod.POST)
-    public void recordBlock(@RequestParam String pid,
+    public void recordBlock(@RequestParam(required=false,defaultValue = "00000000-0000-0000-0000-000000000000") String pid,
                             @RequestParam String bid,
                             @RequestParam int act,
                             @RequestParam String world,
                             @RequestParam int x,
                             @RequestParam int y,
                             @RequestParam int z) {
+        ThreadPool.newThread(()->mapper.insertRecordBlock(new RecordBlock(pid,bid,act,world,x,y,z, TimeUtils.getNow())));
 
-        try  {
+
+        /*try  {
             Connection connection = DatabaseConnector.getConnection();
             PreparedStatement ps = connection.prepareStatement("insert into RecordBlock (pid,act,bid,world,x,y,z,ts) values (?,?,?,?,?,?,?,?)");
             ps.setString(1, pid);
@@ -109,7 +119,13 @@ public class RecordCtrler {
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+    }
+
+    @RequestMapping(value = "/block",method = RequestMethod.GET)
+    public String queryBlockRecord(@RequestParam String dim,@RequestParam int x,@RequestParam int y,@RequestParam int z){
+        List<RecordBlock> recordBlocks = mapper.getRecordBlocksByCoord(dim, x, y, z);
+        return RdiSerializer.GSON.toJson(recordBlocks);
     }
 
 

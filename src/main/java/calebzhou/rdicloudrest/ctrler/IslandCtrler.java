@@ -2,8 +2,10 @@ package calebzhou.rdicloudrest.ctrler;
 
 import calebzhou.rdicloudrest.dao.IslandRepo;
 import calebzhou.rdicloudrest.model.Island;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 @RestController
@@ -35,7 +37,7 @@ public class IslandCtrler {
         return is.getLocation();
     }
     //提供玩家pid和xyz创建新的空岛，返回是否成功
-    @RequestMapping(value = "/{pid}",method = RequestMethod.POST)
+    /*@RequestMapping(value = "/{pid}",method = RequestMethod.POST)
     public int createIsland(@PathVariable String pid,@RequestParam int x,@RequestParam int y,@RequestParam int z){
         if(isPlayerOwnIsland(pid) || isPlayerJoinIsland(pid)){
             return 0;
@@ -48,7 +50,7 @@ public class IslandCtrler {
         is.setZ(z);
         repo.save(is);
         return 1;
-    }
+    }*/
     //提供玩家pid删除空岛
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)
     public int deleteIsland(@PathVariable String pid){

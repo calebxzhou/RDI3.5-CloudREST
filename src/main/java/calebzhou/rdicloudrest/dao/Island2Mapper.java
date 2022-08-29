@@ -4,9 +4,10 @@ import calebzhou.rdicloudrest.model.Island2;
 import calebzhou.rdicloudrest.model.Island2Crew;
 import calebzhou.rdicloudrest.model.Island2Loca;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface Island2Mapper {
     //岛屿本体 =======
     //根据岛屿id获取岛屿对象
