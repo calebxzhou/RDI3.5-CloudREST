@@ -1,16 +1,15 @@
 package calebzhou.rdicloudrest.ctrler;
 
-import calebzhou.rdicloudrest.ThreadPool;
 import calebzhou.rdicloudrest.dao.DatabaseConnector;
 import calebzhou.rdicloudrest.dao.RecordMapper;
 import calebzhou.rdicloudrest.model.RecordBlock;
 import calebzhou.rdicloudrest.utils.RdiSerializer;
-import calebzhou.rdicloudrest.utils.TimeUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -100,10 +99,8 @@ public class RecordCtrler {
                             @RequestParam int x,
                             @RequestParam int y,
                             @RequestParam int z) {
-        ThreadPool.newThread(()->mapper.insertRecordBlock(new RecordBlock(pid,bid,act,world,x,y,z, TimeUtils.getNow())));
-
-
-        /*try  {
+        //ThreadPool.newThread(()->mapper.insertRecordBlock(new RecordBlock(pid,bid,act,world,x,y,z, TimeUtils.getNow())));
+        try  {
             Connection connection = DatabaseConnector.getConnection();
             PreparedStatement ps = connection.prepareStatement("insert into RecordBlock (pid,act,bid,world,x,y,z,ts) values (?,?,?,?,?,?,?,?)");
             ps.setString(1, pid);
@@ -119,7 +116,7 @@ public class RecordCtrler {
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 
     @RequestMapping(value = "/block",method = RequestMethod.GET)
