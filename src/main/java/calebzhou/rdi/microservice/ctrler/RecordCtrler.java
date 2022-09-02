@@ -4,6 +4,7 @@ import calebzhou.rdi.microservice.utils.RdiSerializer;
 import calebzhou.rdi.microservice.dao.DatabaseConnector;
 import calebzhou.rdi.microservice.dao.RecordMapper;
 import calebzhou.rdi.microservice.model.RecordBlock;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/record")
 public class RecordCtrler {
@@ -99,6 +101,21 @@ public class RecordCtrler {
                             @RequestParam int x,
                             @RequestParam int y,
                             @RequestParam int z) {
+        //主世界主城以外的地方不记录
+        if("minecraft:overworld".equals(world)){
+            boolean rangeInSpawn = (x > -256 && x < 256) && (z > -256 && z < 256);
+            if(!rangeInSpawn){
+                return;
+            }
+        }
+        //末地 地狱不记录
+        if("minecraft:the_end".equals(world))
+            return;
+        if("minecraft:the_nether".equals(world))
+            return;
+
+        log.info("方块记录：{},{},{},{},{},{}",bid,act,world,x,y,z);
+
         //ThreadPool.newThread(()->mapper.insertRecordBlock(new RecordBlock(pid,bid,act,world,x,y,z, TimeUtils.getNow())));
         try  {
             Connection connection = DatabaseConnector.getConnection();
@@ -115,12 +132,13 @@ public class RecordCtrler {
             ps.close();
             connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
     @RequestMapping(value = "/block",method = RequestMethod.GET)
     public String queryBlockRecord(@RequestParam String dim,@RequestParam int x,@RequestParam int y,@RequestParam int z){
+
         List<RecordBlock> recordBlocks = mapper.getRecordBlocksByCoord(dim, x, y, z);
         return RdiSerializer.GSON.toJson(recordBlocks);
     }

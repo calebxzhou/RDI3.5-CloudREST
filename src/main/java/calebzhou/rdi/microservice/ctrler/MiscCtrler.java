@@ -1,13 +1,12 @@
 package calebzhou.rdi.microservice.ctrler;
 
 import calebzhou.rdi.microservice.constants.ColorConst;
-import calebzhou.rdi.microservice.model.geo.GeoLocation;
+import calebzhou.rdi.microservice.model.json.TencentIpLocation;
 import calebzhou.rdi.microservice.model.geo.Weather;
 import calebzhou.rdi.microservice.constants.CloudConst;
 import calebzhou.rdi.microservice.constants.WeatherConst;
 import calebzhou.rdi.microservice.model.geo.WeatherRealTime;
 import calebzhou.rdi.microservice.utils.GeographyUtils;
-import calebzhou.rdi.microservice.utils.HttpUtils;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +20,27 @@ import java.time.LocalTime;
 @RestController
 @RequestMapping("/misc")
 public class MiscCtrler {
+    /*
+    {
+    "status": 0,
+    "message": "Success",
+    "result": {
+        "ip": "111.206.145.41",
+        "location": {
+            "lat": 39.90469,
+            "lng": 116.40717
+        },
+        "ad_info": {
+            "nation": "中国",
+            "province": "北京市",
+            "city": "北京市",
+            "district": "",
+            "adcode": 110000
+        }
+    }
+    }
+    https://apis.map.qq.com/ws/location/v1/ip?ip=111.206.145.41&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77
+     */
     //天气预报
     @RequestMapping(value = "/weather",method = RequestMethod.GET)
     public String getWeather(@RequestParam String ip, HttpServletRequest req){
@@ -28,7 +48,7 @@ public class MiscCtrler {
         if(StringUtils.isEmpty(ip))
             ip=req.getRemoteAddr();
         StringBuilder message = new StringBuilder();
-        GeoLocation location = GeographyUtils.getGeoLocationFromIP(ip);
+        TencentIpLocation location = GeographyUtils.getGeoLocationFromIP(ip);
         //本地ip等特殊情况
         if (location.status != 0) {
             location = GeographyUtils.getGeoLocationFromIP("202.107.26.39");
@@ -47,8 +67,8 @@ public class MiscCtrler {
         //经度
         double longitude = location.result.location.lng;
         //获取天气预报json
-        String weatherJsonData = HttpUtils.doGet(CloudConst.caiyunUrl + longitude + "," + latitude + "/daily.json");
-        String weatherRTJsonData = HttpUtils.doGet(CloudConst.caiyunUrl + longitude + "," + latitude + "/realtime.json?alert=true");
+        String weatherJsonData = RdiHttpClient.sendRequestAsync(CloudConst.caiyunUrl + longitude + "," + latitude + "/daily.json");
+        String weatherRTJsonData = RdiHttpClient.sendRequestAsync(CloudConst.caiyunUrl + longitude + "," + latitude + "/realtime.json?alert=true");
         Weather we = new Gson().fromJson(weatherJsonData, Weather.class);
         WeatherRealTime rtwe = new Gson().fromJson(weatherRTJsonData, WeatherRealTime.class);
         Weather.Result.Daily daily = we.result.daily;

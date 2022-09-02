@@ -1,6 +1,6 @@
-package calebzhou.rdi.microservice.model.geo;
+package calebzhou.rdi.microservice.model.json;
 
-public class GeoLocation {
+public class TencentIpLocation {
     /*{
     "status": 0,
     "message": "query ok",
@@ -21,17 +21,14 @@ public class GeoLocation {
 }
 */
     public int status;
-    public String message;
     public Result result;
 
     public static class Result {
-        public String ip;
-
         public Location location;
 
         public static class Location {
-            public double lng;
-            public double lat;
+            public float lng;
+            public float lat;
         }
 
         public Ad_info ad_info;
@@ -41,7 +38,6 @@ public class GeoLocation {
             public String province;
             public String city;
             public String district;
-            public int adcode;
         }
 
     }

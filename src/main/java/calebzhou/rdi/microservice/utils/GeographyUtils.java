@@ -2,7 +2,7 @@ package calebzhou.rdi.microservice.utils;
 
 import calebzhou.rdi.microservice.App;
 import calebzhou.rdi.microservice.constants.CloudConst;
-import calebzhou.rdi.microservice.model.geo.GeoLocation;
+import calebzhou.rdi.microservice.model.json.TencentIpLocation;
 import calebzhou.rdi.microservice.model.geo.GeoLocationForeign;
 import calebzhou.rdi.microservice.model.geo.SimpleGeoLocation;
 import com.google.gson.Gson;
@@ -12,7 +12,7 @@ public class GeographyUtils {
         if(App.DEBUG)
             ip="42.177.210.38";
         SimpleGeoLocation geoLocation = new SimpleGeoLocation();
-        GeoLocation location = getGeoLocationFromIP(ip);
+        TencentIpLocation location = getGeoLocationFromIP(ip);
         if(location.result.ad_info.nation.equals("中国")){
             geoLocation.setCountry(location.result.ad_info.nation)
                     .setProvince(location.result.ad_info.province)
@@ -27,14 +27,17 @@ public class GeographyUtils {
         }
         return geoLocation;
     }
-    public static GeoLocation getGeoLocationFromIP(String ip) {
+    public static TencentIpLocation getGeoLocationFromIP(String ip) {
         String httpurl = "https://apis.map.qq.com/ws/location/v1/ip?ip=" + ip + "&key=" + CloudConst.tencentLbsKey;
-        String locationResult = HttpUtils.doGet(httpurl);
-        return new Gson().fromJson(locationResult, GeoLocation.class);
+        String locationResult = RdiHttpClient.sendRequestAsync(new RdiHttpClient(RdiHttpClient.Type.get,
+                httpurl),result -> {
+
+        });
+        return new Gson().fromJson(locationResult, TencentIpLocation.class);
     }
     public static GeoLocationForeign getLocationFromForeignIP(String ip){
         String url="http://api.ipstack.com/"+ip+"?access_key="+ CloudConst.ipStackKey;
-        String res=HttpUtils.doGet(url);
+        String res= RdiHttpClient.sendRequestAsync(url);
         return new Gson().fromJson(res, GeoLocationForeign.class);
     }
 }
