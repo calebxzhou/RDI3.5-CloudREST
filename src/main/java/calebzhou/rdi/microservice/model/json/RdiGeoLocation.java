@@ -9,7 +9,7 @@ public class RdiGeoLocation {
     public String province;
     public String city;
     public String district;
-    public String carrier;
+    public String isp;
     public float latitude;
     public float longitude;
 }

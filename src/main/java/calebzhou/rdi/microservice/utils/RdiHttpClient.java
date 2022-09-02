@@ -97,7 +97,9 @@ public class RdiHttpClient {
         public Request build(){
             return okhttpRequestBuilder
                     .url(urlBuilder.build())
-                    .method(requestType.name(), formBodyBuilder.build())
+                    .method(requestType.name(),
+                            this.requestType != RequestType.GET ?
+                                    formBodyBuilder.build() : null)
                     .build();
 
         }

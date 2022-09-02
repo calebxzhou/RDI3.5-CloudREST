@@ -6,7 +6,8 @@ import calebzhou.rdi.microservice.model.geo.Weather;
 import calebzhou.rdi.microservice.constants.CloudConst;
 import calebzhou.rdi.microservice.constants.WeatherConst;
 import calebzhou.rdi.microservice.model.geo.WeatherRealTime;
-import calebzhou.rdi.microservice.utils.GeographyUtils;
+import calebzhou.rdi.microservice.utils.IpRegionUtils;
+import calebzhou.rdi.microservice.utils.RdiHttpClient;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,21 +43,18 @@ public class MiscCtrler {
     https://apis.map.qq.com/ws/location/v1/ip?ip=111.206.145.41&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77
      */
     //天气预报
-    @RequestMapping(value = "/weather",method = RequestMethod.GET)
+   /* @RequestMapping(value = "/weather",method = RequestMethod.GET)
     public String getWeather(@RequestParam String ip, HttpServletRequest req){
         //未指定ip参数，就使用远程的ip
         if(StringUtils.isEmpty(ip))
             ip=req.getRemoteAddr();
         StringBuilder message = new StringBuilder();
-        TencentIpLocation location = GeographyUtils.getGeoLocationFromIP(ip);
+        TencentIpLocation location = IpRegionUtils.getGeoLocationFromIP(ip);
         //本地ip等特殊情况
         if (location.status != 0) {
-            location = GeographyUtils.getGeoLocationFromIP("202.107.26.39");
+            location = IpRegionUtils.getGeoLocationFromIP("202.107.26.39");
         }
         String nation = location.result.ad_info.nation;
-        /*if (!nation.equals("中国")) {
-            return null;
-        }*/
         String province = location.result.ad_info.province.replace("省","");
         String city = location.result.ad_info.city.replace("市", "");
         String district = location.result.ad_info.district.replace("区", "")
@@ -125,5 +123,5 @@ public class MiscCtrler {
             message.append(msgLine3);
         return message.toString();
 
-    }
+    }*/
 }
