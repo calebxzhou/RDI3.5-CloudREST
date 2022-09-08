@@ -1,0 +1,34 @@
+
+package calebzhou.rdi.microservice.model.json.weather;
+
+import javax.annotation.Generated;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+@Generated("jsonschema2pojo")
+public class Pm25 {
+
+    @SerializedName("datetime")
+    @Expose
+    private String datetime;
+    @SerializedName("value")
+    @Expose
+    private Integer value;
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+}

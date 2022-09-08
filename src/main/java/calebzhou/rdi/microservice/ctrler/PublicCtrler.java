@@ -1,28 +1,29 @@
 package calebzhou.rdi.microservice.ctrler;
 
 
-import calebzhou.rdi.microservice.constants.CloudConst;
+import calebzhou.rdi.microservice.constant.CloudConst;
 import calebzhou.rdi.microservice.model.json.RdiGeoLocation;
+import calebzhou.rdi.microservice.model.json.RdiWeather;
+import calebzhou.rdi.microservice.model.json.weather.CaiyunWeather;
 import calebzhou.rdi.microservice.utils.IpRegionUtils;
 import calebzhou.rdi.microservice.utils.RdiHttpClient;
 import calebzhou.rdi.microservice.model.json.TencentIpLocation;
 import calebzhou.rdi.microservice.utils.RdiSerializer;
 import okhttp3.Request;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/public")
 public class PublicCtrler {
 
     //ip转换成 国省市区
-    @RequestMapping(value = "/ip2loca",method = RequestMethod.GET)
-    public String  china_ip2loca(HttpServletRequest req){
-        String ip = req.getRemoteAddr();//"119.117.129.78"
+    @GetMapping("/ip2loca")
+    public RdiGeoLocation  china_ip2loca(HttpServletRequest req){
+        String ip = req.getRemoteAddr();
+        if(ip.startsWith("0:0:0:0:0:0:0:") || ip.equals("127.0.0.1"))
+            ip = "119.117.129.78";
         Request request = new RdiHttpClient.RequestBuilder()
                 .type(RdiHttpClient.RequestType.GET)
                 .url("https://apis.map.qq.com/ws/location/v1/ip")
@@ -42,7 +43,19 @@ public class PublicCtrler {
                 lbs.result.location.lat,
                 lbs.result.location.lng
         );
-        return RdiSerializer.GSON.toJson(rdiGeoLocation);
+        return rdiGeoLocation;
 
+    }
+    @GetMapping( "/weather")
+    public RdiWeather globalWeatherNow(@RequestParam double latitude,@RequestParam double longitude){
+        Request request = new RdiHttpClient.RequestBuilder()
+                .type(RdiHttpClient.RequestType.GET)
+                .url("https://api.caiyunapp.com/v2.5/%s/%f,%f/weather.json".formatted(CloudConst.caiyunWeatherKey,longitude,latitude))
+                .param("alert", "true")
+                .build();
+        String json = RdiHttpClient.sendRequest(request);
+        CaiyunWeather weather = RdiSerializer.GSON.fromJson(json, CaiyunWeather.class);
+        RdiWeather rdiWeather = RdiWeather.fromCaiyunWeather(weather);
+        return rdiWeather;
     }
 }
