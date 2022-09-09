@@ -1,5 +1,6 @@
-package calebzhou.rdi.microservice.ctrler;
+package calebzhou.rdi.microservice.ctrler.v37;
 
+import calebzhou.rdi.microservice.component.PassToken;
 import calebzhou.rdi.microservice.utils.RdiSerializer;
 import calebzhou.rdi.microservice.dao.DatabaseConnector;
 import calebzhou.rdi.microservice.dao.RecordMapper;
@@ -19,7 +20,9 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/record")
+@RequestMapping("/v37/record")
+//这个是专门为mc服务端准备的
+@PassToken
 public class RecordCtrler {
     final RecordMapper mapper;
     public RecordCtrler(RecordMapper mapper) {

@@ -1,4 +1,4 @@
-package calebzhou.rdi.microservice.ctrler;
+package calebzhou.rdi.microservice.ctrler.v37;
 
 
 import calebzhou.rdi.microservice.constant.CloudConst;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping("/v37/public")
 public class PublicCtrler {
 
     //ip转换成 国省市区

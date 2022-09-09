@@ -1,4 +1,4 @@
-package calebzhou.rdi.microservice;
+package calebzhou.rdi.microservice.component;
 
 import calebzhou.rdi.microservice.constant.ResultCode;
 import calebzhou.rdi.microservice.model.dto.ResultData;
@@ -23,8 +23,8 @@ public class RdiResponseAdvice implements ResponseBodyAdvice<Object> {
     @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        if(body instanceof String)
-            return RdiSerializer.GSON.toJson(ResultData.success(body));
+        /*if(body instanceof String)
+            return RdiSerializer.GSON.toJson(ResultData.success(body));*/
         if(body instanceof ResultData<?>)
             return body;
         if(body instanceof ResultCode resultCode)

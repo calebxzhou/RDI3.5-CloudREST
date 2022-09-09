@@ -14,9 +14,12 @@ import org.springframework.context.annotation.ComponentScan;
 //@ServletComponentScan
 @SpringBootApplication
 public class App extends SpringBootServletInitializer {
-	public static final boolean DEBUG = false;
+	public static boolean DEBUG = false;
 	public static final int VERSION =0x350;
 	public static void main(String[] args) {
+		if("true".equals(System.getProperty("rdi.debug"))){
+			DEBUG = true;
+		}
 		SpringApplication app = new SpringApplication(App.class);
 		app.run(args);
 

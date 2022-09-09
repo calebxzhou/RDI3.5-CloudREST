@@ -1,4 +1,4 @@
-package calebzhou.rdi.microservice.ctrler;
+package calebzhou.rdi.microservice.ctrler.v37;
 
 import calebzhou.rdi.microservice.constant.ResultCode;
 import calebzhou.rdi.microservice.dao.Island2Mapper;

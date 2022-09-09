@@ -1,6 +1,8 @@
-package calebzhou.rdi.microservice;
+package calebzhou.rdi.microservice.component;
 
+import calebzhou.rdi.microservice.App;
 import calebzhou.rdi.microservice.constant.ResultCode;
+import calebzhou.rdi.microservice.exception.RdiTokenFailureException;
 import calebzhou.rdi.microservice.model.dto.ResultData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,18 @@ public class RdiExceptionHandler {
      * @param e the e
      * @return ResultData
      */
+
+    //处理token无效异常
+    @ExceptionHandler(RdiTokenFailureException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResultData handleRdiTokenFailure(RdiTokenFailureException exception) {
+        if(App.DEBUG){
+            exception.printStackTrace();
+        }
+        return ResultCode.tokenInvalid.toResultData();
+    }
+
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResultData<String> exception(Exception e) {

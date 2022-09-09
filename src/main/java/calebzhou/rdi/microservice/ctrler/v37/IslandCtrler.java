@@ -1,4 +1,4 @@
-package calebzhou.rdi.microservice.ctrler;
+package calebzhou.rdi.microservice.ctrler.v37;
 
 import calebzhou.rdi.microservice.dao.IslandRepo;
 import calebzhou.rdi.microservice.model.Island;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 @RestController
-@RequestMapping("/island")
+@RequestMapping("/v37/island")
 public class IslandCtrler {
 
     final IslandRepo repo;
@@ -17,14 +17,14 @@ public class IslandCtrler {
     public IslandCtrler(IslandRepo repo) {
         this.repo = repo;
     }
-    public boolean isPlayerOwnIsland(String pid){
+/*    public boolean isPlayerOwnIsland(String pid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
         return iid!=null;
     }
     public boolean isPlayerJoinIsland(String pid){
         Integer iid = repo.findIslandIdJoinByPid(pid);
         return iid!=null;
-    }
+    }*/
     //提供玩家pid获取空岛坐标x,y,z
     @RequestMapping(value = "/{pid}",method = RequestMethod.GET)
     public String getIsland(@PathVariable String pid){
@@ -64,7 +64,7 @@ public class IslandCtrler {
     }
 
     //提供玩家pid修改空岛坐标，参数x,y,z坐标
-    @RequestMapping(value = "/{pid}/{xyz}",method = RequestMethod.PUT)
+   /* @RequestMapping(value = "/{pid}/{xyz}",method = RequestMethod.PUT)
     public int changeLocation(@PathVariable String pid, @PathVariable String xyz){
         Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须岛主才能改变坐标
@@ -77,9 +77,9 @@ public class IslandCtrler {
 
         return 1;
     }
-
+*/
     //添加空岛成员，提供岛主pid和成员pid
-    @RequestMapping(value = "/crew/{pid}/{mpid}",method = RequestMethod.POST)
+   /* @RequestMapping(value = "/crew/{pid}/{mpid}",method = RequestMethod.POST)
     public int addMember(@PathVariable String pid,@PathVariable String mpid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须拥有空岛才能添加成员
@@ -92,9 +92,9 @@ public class IslandCtrler {
         is.addMember(mpid);
         repo.save(is);
         return 1;
-    }
+    }*/
     //删除空岛成员，提供岛主pid和成员pid
-    @RequestMapping(value = "/crew/{pid}/{mpid}",method = RequestMethod.DELETE)
+   /* @RequestMapping(value = "/crew/{pid}/{mpid}",method = RequestMethod.DELETE)
     public int removeMember(@PathVariable String pid,@PathVariable String mpid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须拥有空岛才能删除成员
@@ -108,7 +108,7 @@ public class IslandCtrler {
         repo.save(is);
         return 1;
     }
-
+*/
 
 
 
