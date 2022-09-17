@@ -49,7 +49,7 @@ public class AccountCtrler {
         }
         if (mapper.isIdMatchesPwd(id,pwd)) {
             //登录成功，返回token
-            return JwtUtils.createToken(id,pname);
+            return ResultData.success(JwtUtils.createToken(id,pname));
         }else{
             return ResultCode.sourceIdNotMatchPassword;
         }

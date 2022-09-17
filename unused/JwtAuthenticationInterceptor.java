@@ -29,7 +29,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
         // 从请求头中取出 token  这里需要和前端约定好把jwt放到请求头一个叫token的地方
-        String token = StringUtils.substringAfter(httpServletRequest.getHeader("Authorization"),"Bearer ");
+        String token = httpServletRequest.getHeader("rauth");
         //检查是否有passtoken注释，有则跳过认证
         if (handlerMethod.getMethodAnnotation(PassToken.class)!=null) {
             return true;

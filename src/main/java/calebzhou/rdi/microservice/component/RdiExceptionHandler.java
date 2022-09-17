@@ -32,7 +32,7 @@ public class RdiExceptionHandler {
         if(App.DEBUG){
             exception.printStackTrace();
         }
-        return ResultCode.tokenInvalid.toResultData();
+        return ResultData.fail(ResultCode.accessDenied.getCode(), exception.getMessage());
     }
 
 

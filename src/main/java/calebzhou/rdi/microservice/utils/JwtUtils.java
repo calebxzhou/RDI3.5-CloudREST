@@ -81,7 +81,10 @@ public class JwtUtils {
         }
         return pid;
     }
-
+//获取玩家名
+    public static String getPname(String token){
+        return getClaimByName(token, "pname").asString();
+    }
 
     /**
      * 通过载荷名字获取载荷的值

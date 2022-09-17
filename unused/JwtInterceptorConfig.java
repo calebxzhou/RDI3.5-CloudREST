@@ -16,10 +16,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class JwtInterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
+        //先不开启jwt验证 以后再说
         //默认拦截所有路径
         registry.addInterceptor(authenticationInterceptor())
-                .order(0)
+                .order(1)
                 .addPathPatterns("/**");
     }
     @Bean

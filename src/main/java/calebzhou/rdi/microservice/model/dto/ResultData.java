@@ -1,6 +1,7 @@
 package calebzhou.rdi.microservice.model.dto;
 
 import calebzhou.rdi.microservice.constant.ResultCode;
+import calebzhou.rdi.microservice.utils.RdiSerializer;
 import lombok.*;
 
 @Getter
@@ -30,5 +31,10 @@ public class ResultData<T> {
         resultData.setStatus(code);
         resultData.setMessage(message);
         return resultData;
+    }
+
+    @Override
+    public String toString() {
+        return RdiSerializer.GSON.toJson(this);
     }
 }

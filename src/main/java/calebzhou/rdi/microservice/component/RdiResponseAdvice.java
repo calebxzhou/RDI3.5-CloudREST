@@ -23,12 +23,14 @@ public class RdiResponseAdvice implements ResponseBodyAdvice<Object> {
     @SneakyThrows
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        /*if(body instanceof String)
-            return RdiSerializer.GSON.toJson(ResultData.success(body));*/
+        if(body instanceof String st)
+            return ResultData.success(st);
         if(body instanceof ResultData<?>)
             return body;
         if(body instanceof ResultCode resultCode)
             return resultCode.toResultData();
+        /*if(String.valueOf(body).contains("Not Found") && String.valueOf(body).contains("404"))
+            return ResultCode.notFound.toResultData();*/
         return ResultData.success(body);
     }
 }

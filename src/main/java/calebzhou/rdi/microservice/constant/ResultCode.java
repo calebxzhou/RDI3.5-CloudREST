@@ -29,6 +29,7 @@ public enum ResultCode {
     targetNotJoinAnyIsland(-113,"目标未加入任何一个岛屿"),
 
     sourceEqualsTarget(-120,"请求者和目标相同"),
+    sourceNotOwnTarget(-121,"请求者所操作的资源不属于自己"),
 
     ;
 

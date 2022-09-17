@@ -1,15 +1,13 @@
 package calebzhou.rdi.microservice.ctrler.v37;
 
+import calebzhou.rdi.microservice.annotation.PidTokenCheck;
 import calebzhou.rdi.microservice.dao.IslandRepo;
 import calebzhou.rdi.microservice.model.Island;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 @RestController
-@RequestMapping("/v37/island")
+@RequestMapping("/v37/island1")
 public class IslandCtrler {
 
     final IslandRepo repo;
@@ -27,7 +25,7 @@ public class IslandCtrler {
     }*/
     //提供玩家pid获取空岛坐标x,y,z
     @RequestMapping(value = "/{pid}",method = RequestMethod.GET)
-    public String getIsland(@PathVariable String pid){
+    public String getIsland(@RequestHeader("rauth")String token,@PathVariable String pid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
         if(iid==null)
             iid=repo.findIslandIdJoinByPid(pid);
@@ -52,8 +50,9 @@ public class IslandCtrler {
         return 1;
     }*/
     //提供玩家pid删除空岛
+  /*  @PidTokenCheck
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)
-    public int deleteIsland(@PathVariable String pid){
+    public int deleteIsland(@RequestHeader("rauth")String token, @PathVariable String pid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
         //必须拥有空岛才能删除
         if(iid!=null){
@@ -61,7 +60,7 @@ public class IslandCtrler {
             return 1;
         }
         return 0;
-    }
+    }*/
 
     //提供玩家pid修改空岛坐标，参数x,y,z坐标
    /* @RequestMapping(value = "/{pid}/{xyz}",method = RequestMethod.PUT)

@@ -1,4 +1,4 @@
-package calebzhou.rdi.microservice.ctrler.v37;
+package calebzhou.rdi.microservice.ctrler.mcs;
 
 import calebzhou.rdi.microservice.component.PassToken;
 import calebzhou.rdi.microservice.utils.RdiSerializer;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/v37/record")
+@RequestMapping("/mcs/record")
 //这个是专门为mc服务端准备的
 @PassToken
 public class RecordCtrler {
@@ -29,6 +29,7 @@ public class RecordCtrler {
         this.mapper = mapper;
     }
     //记录说话、指令
+    @PassToken
     @RequestMapping(value = "/chat", method = RequestMethod.POST)
     public void recordChat(@RequestParam String pid, @RequestParam String cont) {
         try (PreparedStatement ps =
@@ -43,7 +44,7 @@ public class RecordCtrler {
 
 
     //记录死亡
-    @RequestMapping(value = "/death", method = RequestMethod.POST)
+    @PassToken @RequestMapping(value = "/death", method = RequestMethod.POST)
     public void recordDeath(@RequestParam String pid, @RequestParam String src) {
         try (PreparedStatement ps =
                      DatabaseConnector.getPreparedStatement("insert into RecordDeath (pid,src,ts) values (?,?,?)", pid, src, Timestamp.valueOf(LocalDateTime.now()))
@@ -57,7 +58,7 @@ public class RecordCtrler {
     }
 
     //记录登入
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PassToken  @RequestMapping(value = "/login", method = RequestMethod.POST)
     public void recordLogin(@RequestParam String pid, @RequestParam String ip, @RequestParam String geo) {
         try (PreparedStatement ps =
                      DatabaseConnector.getPreparedStatement("insert into RecordLogin (pid,ip,weather,ts) values (?,?,?,?)", pid, ip, geo, Timestamp.valueOf(LocalDateTime.now()))
@@ -69,7 +70,7 @@ public class RecordCtrler {
         }
     }
     //记录UUID和昵称的对应关系（进入服务器时）
-    @RequestMapping(value = "/idname", method = RequestMethod.POST)
+    @PassToken @RequestMapping(value = "/idname", method = RequestMethod.POST)
     public void recordIdName(@RequestParam String pid, @RequestParam String name) {
         try (PreparedStatement ps =
                      DatabaseConnector.getPreparedStatement("insert into RecordIdName (pid,pname,ts) values (?,?,?)", pid, name,
@@ -84,7 +85,7 @@ public class RecordCtrler {
     }
 
     //记录登出
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @PassToken @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public void recordLogout(@RequestParam String pid) {
         try (PreparedStatement ps = DatabaseConnector.getPreparedStatement("insert into RecordLogout (pid,ts) values (?,?)", pid, Timestamp.valueOf(LocalDateTime.now()))
         ) {
@@ -96,7 +97,7 @@ public class RecordCtrler {
     }
 
     //方块破坏/放置
-    @RequestMapping(value = "/block", method = RequestMethod.POST)
+    @PassToken @RequestMapping(value = "/block", method = RequestMethod.POST)
     public void recordBlock(@RequestParam(required=false,defaultValue = "00000000-0000-0000-0000-000000000000") String pid,
                             @RequestParam String bid,
                             @RequestParam int act,
@@ -139,7 +140,7 @@ public class RecordCtrler {
         }
     }
 
-    @RequestMapping(value = "/block",method = RequestMethod.GET)
+    @PassToken @RequestMapping(value = "/block",method = RequestMethod.GET)
     public String queryBlockRecord(@RequestParam String dim,@RequestParam int x,@RequestParam int y,@RequestParam int z){
 
         List<RecordBlock> recordBlocks = mapper.getRecordBlocksByCoord(dim, x, y, z);
