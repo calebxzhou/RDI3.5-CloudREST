@@ -103,16 +103,6 @@ public class Island2Ctrler {
             return ResultCode.sourceNotOwnIsland;
         }
         int iid = mapper.getPlayerOwnIslandId(pid);
-        String iids = dim.replace("rdict3:i_","");
-        int iidsi;
-        try {
-            iidsi = Integer.parseInt(iids);
-        } catch (NumberFormatException e) {
-            return ResultCode.sourceNotInsideOwnIsland;
-        }
-        if(iidsi!=iid){
-            return ResultCode.sourceNotInsideOwnIsland;
-        }
         mapper.updateIslandLocation(iid,x,y,z,w,p);
         return ResultCode.success;
     }
@@ -141,24 +131,24 @@ public class Island2Ctrler {
     }
     //删除空岛成员，提供岛主pid和成员pid 1成功0失败
     @PidTokenCheck
-    @RequestMapping(value = "/crew/{pid}/{mpid}",method = RequestMethod.DELETE)
-    public ResultCode removeMember(@RequestHeader("rauth") String token,@PathVariable String pid,@PathVariable String mpid){
+    @RequestMapping(value = "/crew/{mpid}",method = RequestMethod.DELETE)
+    public ResultCode removeMember(@RequestHeader("rauth") String token/*,@PathVariable String pid*/,@PathVariable String mpid){
         //自己没有岛 不删
-        if(!mapper.isPlayerOwnIsland(pid))
-            return ResultCode.sourceNotOwnIsland;
+        /*if(!mapper.isPlayerOwnIsland(pid))
+            return ResultCode.sourceNotOwnIsland;*/
         //不能删除自己
-        if(pid.equals(mpid))
-            return ResultCode.sourceEqualsTarget;
+        /*if(pid.equals(mpid))
+            return ResultCode.sourceEqualsTarget;*/
         //目标有自己的岛，不删
         if(mapper.isPlayerOwnIsland(mpid))
             return ResultCode.targetAlreadyOwnIsland;
         //目标没进任何岛 不删
         if(!mapper.isPlayerJoinAnyIsland(mpid))
             return ResultCode.targetNotJoinAnyIsland;
-        Integer iidOwn = mapper.getPlayerOwnIslandId(pid);
+        //Integer iidOwn = mapper.getPlayerJoinIslandId(mpid);
         //目标加入的岛不归自己 不删
-        if(mapper.isPlayerJoinAnyIsland(mpid) && !mapper.isPlayerJoinOneIsland(mpid,iidOwn))
-            return ResultCode.sourceNotOwnTarget;
+        /*if(mapper.isPlayerJoinAnyIsland(mpid) && !mapper.isPlayerJoinOneIsland(mpid,iidOwn))
+            return ResultCode.sourceNotOwnTarget;*/
         Integer iid = mapper.getPlayerJoinIslandId(mpid);
         mapper.deleteMember(mpid,iid);
         return ResultCode.success;
