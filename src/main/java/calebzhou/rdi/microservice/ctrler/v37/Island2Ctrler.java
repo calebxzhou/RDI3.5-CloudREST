@@ -10,7 +10,7 @@ import calebzhou.rdi.microservice.utils.TimeUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v37/island")
+@RequestMapping("/v37/island2")
 public class Island2Ctrler {
     final Island2Mapper mapper;
     public Island2Ctrler(Island2Mapper mapper) {
@@ -57,7 +57,7 @@ public class Island2Ctrler {
     //提供玩家pid删除空岛，返回删除的岛屿id
     @PidTokenCheck
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)
-    public Object deleteIsland(@RequestHeader("rauth") String token,@PathVariable String pid){
+    public Object sxstdeleteIsland(@RequestHeader("rauth") String token,@PathVariable String pid){
         //没岛不删
         if(!mapper.isPlayerOwnIsland(pid)){
             return ResultCode.sourceNotOwnIsland;

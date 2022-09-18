@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 @RestController
-@RequestMapping("/v37/island1")
+@RequestMapping("/v37/island")
 public class IslandCtrler {
 
     final IslandRepo repo;

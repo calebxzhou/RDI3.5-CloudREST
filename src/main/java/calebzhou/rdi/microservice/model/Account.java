@@ -13,6 +13,6 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 public class Account {
-    String id,pwd,regMac,regIp;
+    String id,pwd,regIp;
     Timestamp regTime;
 }

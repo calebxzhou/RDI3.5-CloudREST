@@ -9,10 +9,7 @@ import calebzhou.rdi.microservice.utils.JwtUtils;
 import calebzhou.rdi.microservice.utils.TimeUtils;
 import com.auth0.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,32 +21,34 @@ public class AccountCtrler {
     public AccountCtrler(AccountMapper mapper) {
         this.mapper = mapper;
     }
+    //设定密码
+
 
     //客户端发起注册请求
     @PassToken
-    @PostMapping("/register")
-    public ResultCode register(@RequestParam String id, @RequestParam String pwd, @RequestParam String mac, HttpServletRequest request){
-        String ip = request.getRemoteAddr();
-        //看mac地址有没有注册过
-        if (mapper.isMacAddressAlreadyRegistered(mac)) {
-            return ResultCode.sourceAlreadyRegistered;
-        }
+    @PostMapping("/register/{id}")
+    public ResultCode register(@PathVariable String id, @RequestParam String pwd, @RequestParam String ip){
         if(mapper.isIdAlreadyRegistered(id)){
             return ResultCode.sourceAlreadyRegistered;
         }
-        mapper.insertAccount(new Account(id,pwd,mac,ip, TimeUtils.getNow()));
+        mapper.insertAccount(new Account(id,pwd,ip, TimeUtils.getNow()));
         return ResultCode.success;
     }
     @PassToken
-    @PostMapping("/login")
-    public Object login(@RequestParam String id, @RequestParam String pname,@RequestParam String pwd){
+    @GetMapping("/isreg/{id}")
+    public boolean isRegistered(@PathVariable String id){
+        return mapper.isIdAlreadyRegistered(id);
+    }
+    @PassToken
+    @GetMapping("/login/{id}")
+    public Object login(@PathVariable String id, /*@RequestParam String pname,*/@RequestParam String pwd){
         //看id注册过吗
         if (!mapper.isIdAlreadyRegistered(id)) {
             return ResultCode.sourceNotRegistered;
         }
         if (mapper.isIdMatchesPwd(id,pwd)) {
             //登录成功，返回token
-            return ResultData.success(JwtUtils.createToken(id,pname));
+            return ResultCode.success;//ResultData.success(/*JwtUtils.createToken(id,pname)*/);
         }else{
             return ResultCode.sourceIdNotMatchPassword;
         }

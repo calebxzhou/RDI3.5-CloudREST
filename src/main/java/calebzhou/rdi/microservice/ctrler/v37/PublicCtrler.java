@@ -20,8 +20,7 @@ public class PublicCtrler {
 
     //ip转换成 国省市区
     @GetMapping("/ip2loca")
-    public RdiGeoLocation  china_ip2loca(HttpServletRequest req){
-        String ip = req.getRemoteAddr();
+    public RdiGeoLocation  china_ip2loca(HttpServletRequest req,@RequestParam String ip){
         if(ip.startsWith("0:0:0:0:0:0:0:") || ip.equals("127.0.0.1"))
             ip = "119.117.129.78";
         Request request = new RdiHttpClient.RequestBuilder()
@@ -34,7 +33,7 @@ public class PublicCtrler {
         String isp = IpRegionUtils.getIspByIp(ip);
         TencentIpLocation lbs = RdiSerializer.GSON.fromJson(json, TencentIpLocation.class);
 
-        RdiGeoLocation rdiGeoLocation = new RdiGeoLocation(
+        return new RdiGeoLocation(
                 lbs.result.ad_info.nation,
                 lbs.result.ad_info.province,
                 lbs.result.ad_info.city,
@@ -43,7 +42,6 @@ public class PublicCtrler {
                 lbs.result.location.lat,
                 lbs.result.location.lng
         );
-        return rdiGeoLocation;
 
     }
     @GetMapping( "/weather")
@@ -55,7 +53,6 @@ public class PublicCtrler {
                 .build();
         String json = RdiHttpClient.sendRequest(request);
         CaiyunWeather weather = RdiSerializer.GSON.fromJson(json, CaiyunWeather.class);
-        RdiWeather rdiWeather = RdiWeather.fromCaiyunWeather(weather);
-        return rdiWeather;
+        return RdiWeather.fromCaiyunWeather(weather);
     }
 }
