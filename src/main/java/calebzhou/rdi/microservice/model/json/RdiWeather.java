@@ -35,6 +35,7 @@ public class RdiWeather {
         double windDirection = realtime.getWind().getDirection();
         double pressure = realtime.getPressure();
         int aqi = realtime.getAirQuality().getAqi().getChn();
+        String aqiChn = realtime.getAirQuality().getDescription().getChn();
         Minutely minutely = result.getMinutely();
         double rainStrength = minutely.getPrecipitation().get(0);
         double rainProba = minutely.getProbability().get(0);
@@ -53,7 +54,7 @@ public class RdiWeather {
                 skycon,
                 visibility,
                 windSpeed,
-                windDirection,pressure,aqi,rainStrength,rainProba,rainDescr,hourlyDescr,
+                windDirection,pressure,aqi,aqiChn,rainStrength,rainProba,rainDescr,hourlyDescr,
                 sunrise,
                 sunset,
                 getTomorrowWeather(daily));
@@ -67,6 +68,7 @@ public class RdiWeather {
     public double windDirection;
     public double pressure;
     public int aqi;
+    public String aqiChn;
     public double rainStrength;
     public double rainProba;
     public String rainDescr;

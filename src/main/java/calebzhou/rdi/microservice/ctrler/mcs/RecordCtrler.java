@@ -61,7 +61,7 @@ public class RecordCtrler {
     @PassToken  @RequestMapping(value = "/login", method = RequestMethod.POST)
     public void recordLogin(@RequestParam String pid, @RequestParam String ip, @RequestParam String geo) {
         try (PreparedStatement ps =
-                     DatabaseConnector.getPreparedStatement("insert into RecordLogin (pid,ip,weather,ts) values (?,?,?,?)", pid, ip, geo, Timestamp.valueOf(LocalDateTime.now()))
+                     DatabaseConnector.getPreparedStatement("insert into RecordLogin (pid,ip,geo,ts) values (?,?,?,?)", pid, ip, geo, Timestamp.valueOf(LocalDateTime.now()))
         ) {
             ps.executeUpdate();
             ps.getConnection().close();

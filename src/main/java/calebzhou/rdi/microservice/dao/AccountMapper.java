@@ -12,12 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountMapper {
 
-    @Select("select exists(select 1 from Account where regMac=#{mac} limit 1)")
-    boolean isMacAddressAlreadyRegistered(@Param("mac")String mac);
     @Select("select exists(select 1 from Account where id=#{id} limit 1)")
     boolean isIdAlreadyRegistered(@Param("id")String id);
 
-    @Insert("insert into Account values (#{id},#{pwd},#{regMac},#{regIp},#{regTime})")
+    @Insert("insert into Account values (#{id},#{pwd},#{regIp},#{regTime})")
     void insertAccount(Account account);
 
     @Select("select exists(select 1 from Account where id=#{id} and pwd=#{pwd})")

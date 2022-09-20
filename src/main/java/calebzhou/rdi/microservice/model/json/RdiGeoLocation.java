@@ -10,6 +10,5 @@ public class RdiGeoLocation {
     public String city;
     public String district;
     public String isp;
-    public float latitude;
-    public float longitude;
+    public GeoLocation location;
 }
