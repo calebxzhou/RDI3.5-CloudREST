@@ -15,7 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class App extends SpringBootServletInitializer {
 	public static boolean DEBUG = false;
-	public static final int VERSION =0x350;
 	public static void main(String[] args) {
 		if("true".equals(System.getProperty("rdi.debug"))){
 			DEBUG = true;

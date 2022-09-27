@@ -1,6 +1,7 @@
 package calebzhou.rdi.microservice.utils;
 
 import calebzhou.rdi.microservice.App;
+import calebzhou.rdi.microservice.model.Ip2RegionData;
 import org.lionsoul.ip2region.xdb.Searcher;
 
 import java.io.IOException;
@@ -15,20 +16,16 @@ public class IpRegionUtils {
             throw new RuntimeException(e);
         }
     }
-    public static String searchRegionByIp(String ip){
+    public static Ip2RegionData searchRegionByIp(String ip){
         try {
-            return ipSearcher.search(ip);
+            String searchedString = ipSearcher.search(ip);
+            String[] split = searchedString.split("\\|");
+            return new Ip2RegionData(split[0],split[2],split[3],split[4]);
         } catch (Exception e) {
-                    throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
-    public static String getIspByIp(String ip){
-        String region = searchRegionByIp(ip);
-        String isp = region.split("\\|")[4];
-        if("0".equals(isp))
-            isp="未知";
-        return isp;
-    }
+
    /* public static SimpleGeoLocation getSimpleGeoLocation(String ip){
         if(App.DEBUG)
             ip="42.177.210.38";

@@ -57,7 +57,7 @@ public class Island2Ctrler {
     //提供玩家pid删除空岛，返回删除的岛屿id
     @PidTokenCheck
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)
-    public Object sxstdeleteIsland(/*@RequestHeader("rauth") String token,*/@PathVariable String pid){
+    public Object deleteIsland(/*@RequestHeader("rauth") String token,*/@PathVariable String pid){
         //没岛不删
         if(!mapper.isPlayerOwnIsland(pid)){
             return ResultCode.sourceNotOwnIsland;
@@ -132,7 +132,7 @@ public class Island2Ctrler {
     //删除空岛成员，提供岛主pid和成员pid 1成功0失败
     @PidTokenCheck
     @RequestMapping(value = "/crew/{mpid}",method = RequestMethod.DELETE)
-    public ResultCode removeMember(@RequestHeader("rauth") String token/*,@PathVariable String pid*/,@PathVariable String mpid){
+    public ResultCode removeMember(/*@RequestHeader("rauth") String token*//*,@PathVariable String pid,*/@PathVariable String mpid){
         //自己没有岛 不删
         /*if(!mapper.isPlayerOwnIsland(pid))
             return ResultCode.sourceNotOwnIsland;*/

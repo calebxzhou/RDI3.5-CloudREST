@@ -2,9 +2,12 @@ package calebzhou.rdi.microservice.ctrler.v37;
 
 
 import calebzhou.rdi.microservice.constant.CloudConst;
+import calebzhou.rdi.microservice.model.Ip2RegionData;
 import calebzhou.rdi.microservice.model.json.GeoLocation;
 import calebzhou.rdi.microservice.model.json.RdiGeoLocation;
 import calebzhou.rdi.microservice.model.json.RdiWeather;
+import calebzhou.rdi.microservice.model.json.loca.Location;
+import calebzhou.rdi.microservice.model.json.loca.TencentGeoCoder;
 import calebzhou.rdi.microservice.model.json.weather.CaiyunWeather;
 import calebzhou.rdi.microservice.utils.IpRegionUtils;
 import calebzhou.rdi.microservice.utils.RdiHttpClient;
@@ -12,6 +15,7 @@ import calebzhou.rdi.microservice.model.json.TencentIpLocation;
 import calebzhou.rdi.microservice.utils.RdiSerializer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import okhttp3.Request;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,27 +28,48 @@ public class PublicCtrler {
 
     //ip转换成 国省市区
     @GetMapping("/ip2loca")
-    public RdiGeoLocation  china_ip2loca(HttpServletRequest req,@RequestParam String ip){
+    public RdiGeoLocation  china_ip2loca(@RequestParam String ip){
         if(ip.startsWith("0:0:0:0:0:0:0:") || ip.equals("127.0.0.1"))
-            ip = "119.119.99.199";
+            ip = "49.116.192.0";
         Request request = new RdiHttpClient.RequestBuilder()
                 .type(RdiHttpClient.RequestType.GET)
                 .url("https://apis.map.qq.com/ws/location/v1/ip")
                 .param("ip", ip)
                 .param("key", CloudConst.tencentLbsKey)
                 .build();
-        String json = RdiHttpClient.sendRequest(request);
-        String isp = IpRegionUtils.getIspByIp(ip);
-        TencentIpLocation lbs = RdiSerializer.GSON.fromJson(json, TencentIpLocation.class);
+        Ip2RegionData ip2RegionData = IpRegionUtils.searchRegionByIp(ip);
+        TencentIpLocation lbs = RdiSerializer.GSON.fromJson(RdiHttpClient.sendRequest(request), TencentIpLocation.class);
+        //https://apis.map.qq.com/ws/geocoder/v1/?address=新疆克孜勒苏&key=IQJBZ-AKBCI-CBMGL-5GJ53-UJHNQ-RQBOV
+        String nation = lbs.result.ad_info.nation;
+        String province = lbs.result.ad_info.province;
+        String city = lbs.result.ad_info.city;
+        double latitude = lbs.result.location.lat;
+        double longitude = lbs.result.location.lng;
+        //中国境内并且省份为空 说明没查到地址 去ip2region里面查
+        if("中国".equals(nation)&& StringUtils.isEmpty(province)){
+            province=ip2RegionData.getProvince();
+            city=ip2RegionData.getCity();
+            //拿到了省份和城市 去腾讯云查
+            request = new RdiHttpClient.RequestBuilder()
+                    .type(RdiHttpClient.RequestType.GET)
+                    .url("https://apis.map.qq.com/ws/geocoder/v1/")
+                    .param("address", province+city)
+                    .param("key", CloudConst.tencentLbsKey)
+                    .build();
+            TencentGeoCoder tencentGeoCoder = RdiSerializer.GSON.fromJson(RdiHttpClient.sendRequest(request), TencentGeoCoder.class);
+            Location location = tencentGeoCoder.getResult().getLocation();
+            latitude = location.getLat();
+            longitude = location.getLng();
+        }
+
 
         return new RdiGeoLocation(
-                lbs.result.ad_info.nation,
-                lbs.result.ad_info.province,
-                lbs.result.ad_info.city,
+                nation,
+                province,
+                city,
                 lbs.result.ad_info.district,
-                isp,
-               new GeoLocation( lbs.result.location.lat,
-                lbs.result.location.lng)
+                ip2RegionData.getIsp(),
+               new GeoLocation(latitude, longitude)
         );
 
     }

@@ -3,6 +3,7 @@ package calebzhou.rdi.microservice.ctrler.v37;
 import calebzhou.rdi.microservice.annotation.PidTokenCheck;
 import calebzhou.rdi.microservice.dao.IslandRepo;
 import calebzhou.rdi.microservice.model.Island;
+import calebzhou.rdi.microservice.model.dto.ResultData;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -25,14 +26,14 @@ public class IslandCtrler {
     }*/
     //提供玩家pid获取空岛坐标x,y,z
     @RequestMapping(value = "/{pid}",method = RequestMethod.GET)
-    public String getIsland(@RequestHeader("rauth")String token,@PathVariable String pid){
+    public Object getIsland(/*@RequestHeader("rauth")String token,*/@PathVariable String pid){
         Integer iid = repo.findIslandIdOwnByPid(pid);
         if(iid==null)
             iid=repo.findIslandIdJoinByPid(pid);
         if(iid==null)
             return "fail";
         Island is = repo.findByIid(iid).get();
-        return is.getLocation();
+        return ResultData.success(is.getLocation());
     }
     //提供玩家pid和xyz创建新的空岛，返回是否成功
     /*@RequestMapping(value = "/{pid}",method = RequestMethod.POST)

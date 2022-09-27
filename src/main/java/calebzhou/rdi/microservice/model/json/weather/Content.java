@@ -2,6 +2,8 @@ package calebzhou.rdi.microservice.model.json.weather;
 
 public class Content {
     private String source;
+    private String status;
+    private String location;
     private String title;
     private String description;
 
@@ -30,5 +32,13 @@ public class Content {
     public Content setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getLocation() {
+        return location;
     }
 }
