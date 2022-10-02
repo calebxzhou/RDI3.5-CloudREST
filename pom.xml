@@ -125,14 +125,11 @@
             <artifactId>java-jwt</artifactId>
             <version>3.8.3</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/net.mamoe/mirai-core-jvm -->
         <dependency>
-            <groupId>net.mamoe</groupId>
-            <artifactId>mirai-core-jvm</artifactId>
-            <version>2.12.3</version>
-            <type>pom</type>
+            <groupId>com.ip2location</groupId>
+            <artifactId>ip2location-java</artifactId>
+            <version>8.9.1</version>
         </dependency>
-
     </dependencies>
 
     <build>

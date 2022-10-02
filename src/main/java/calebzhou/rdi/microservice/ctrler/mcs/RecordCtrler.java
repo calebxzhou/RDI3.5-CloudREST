@@ -1,10 +1,12 @@
 package calebzhou.rdi.microservice.ctrler.mcs;
 
+import calebzhou.rdi.microservice.ThreadPool;
 import calebzhou.rdi.microservice.component.PassToken;
 import calebzhou.rdi.microservice.utils.RdiSerializer;
 import calebzhou.rdi.microservice.dao.DatabaseConnector;
 import calebzhou.rdi.microservice.dao.RecordMapper;
 import calebzhou.rdi.microservice.model.RecordBlock;
+import calebzhou.rdi.microservice.utils.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -118,10 +120,11 @@ public class RecordCtrler {
         if("minecraft:the_nether".equals(world))
             return;
 
+
         log.info("方块记录：{},{},{},{},{},{}",bid,act,world,x,y,z);
 
-        //ThreadPool.newThread(()->mapper.insertRecordBlock(new RecordBlock(pid,bid,act,world,x,y,z, TimeUtils.getNow())));
-        try  {
+        mapper.insertRecordBlock(new RecordBlock(pid,bid,act,world,x,y,z, TimeUtils.getNow()));
+       /* try  {
             Connection connection = DatabaseConnector.getConnection();
             PreparedStatement ps = connection.prepareStatement("insert into RecordBlock (pid,act,bid,world,x,y,z,ts) values (?,?,?,?,?,?,?,?)");
             ps.setString(1, pid);
@@ -137,7 +140,7 @@ public class RecordCtrler {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @PassToken @RequestMapping(value = "/block",method = RequestMethod.GET)

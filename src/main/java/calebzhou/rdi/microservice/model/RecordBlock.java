@@ -1,8 +1,11 @@
 package calebzhou.rdi.microservice.model;
 
+import calebzhou.rdi.microservice.utils.RdiSerializer;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class RecordBlock {
+public class RecordBlock implements Serializable {
     public String id;
     public String pid;
     public int act;
@@ -25,5 +28,10 @@ public class RecordBlock {
         this.y = y;
         this.z = z;
         this.ts = ts;
+    }
+
+    @Override
+    public String toString() {
+        return RdiSerializer.GSON.toJson(this);
     }
 }

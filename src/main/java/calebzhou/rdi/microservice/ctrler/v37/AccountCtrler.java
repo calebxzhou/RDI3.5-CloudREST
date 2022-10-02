@@ -36,8 +36,8 @@ public class AccountCtrler {
     }
     @PassToken
     @GetMapping("/isreg/{id}")
-    public boolean isRegistered(@PathVariable String id){
-        return mapper.isIdAlreadyRegistered(id);
+    public ResultData isRegistered(@PathVariable String id){
+        return ResultData.success(mapper.isIdAlreadyRegistered(id));
     }
     @PassToken
     @GetMapping("/login/{id}")

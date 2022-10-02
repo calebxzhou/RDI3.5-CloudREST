@@ -9,6 +9,8 @@ import calebzhou.rdi.microservice.model.Island2;
 import calebzhou.rdi.microservice.utils.TimeUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/v37/island2")
 public class Island2Ctrler {
@@ -57,7 +59,9 @@ public class Island2Ctrler {
     //提供玩家pid删除空岛，返回删除的岛屿id
     @PidTokenCheck
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)
-    public Object deleteIsland(/*@RequestHeader("rauth") String token,*/@PathVariable String pid){
+    public Object deleteIsland(/*@RequestHeader("rauth") String token,*/@PathVariable String pid, HttpServletRequest request){
+        if(!request.getRemoteAddr().equals("124.223.83.52"))
+            return null;
         //没岛不删
         if(!mapper.isPlayerOwnIsland(pid)){
             return ResultCode.sourceNotOwnIsland;
@@ -93,10 +97,11 @@ public class Island2Ctrler {
         return ResultCode.success;
     }
 
+
     //提供玩家pid修改空岛传送点，参数x,y,z,w,p坐标 0失败1成功
     @PidTokenCheck
     @RequestMapping(value = "/loca/{pid}",method = RequestMethod.PUT)
-    public ResultCode changeLocation(/*@RequestHeader("rauth") String token,*/@PathVariable String pid,@RequestParam String dim, @RequestParam double x,@RequestParam double y,@RequestParam double z,
+    public ResultCode changeLocation(/*@RequestHeader("rauth") String token,*/@PathVariable String pid,@RequestParam double x,@RequestParam double y,@RequestParam double z,
                               @RequestParam double w,@RequestParam double p){
         //没有岛屿改不了
         if(!mapper.isPlayerOwnIsland(pid)){

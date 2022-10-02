@@ -4,8 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +17,7 @@ public class App extends SpringBootServletInitializer {
 		if("true".equals(System.getProperty("rdi.debug"))){
 			DEBUG = true;
 		}
-		SpringApplication app = new SpringApplication(App.class);
-		app.run(args);
+		SpringApplication.run(App.class,args);
 
 	}
 

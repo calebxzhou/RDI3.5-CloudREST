@@ -29,6 +29,8 @@ public class RdiResponseAdvice implements ResponseBodyAdvice<Object> {
             return body;
         if(body instanceof ResultCode resultCode)
             return resultCode.toResultData();
+        if(body instanceof Enum e)
+            return ResultData.success(e.toString());
         /*if(String.valueOf(body).contains("Not Found") && String.valueOf(body).contains("404"))
             return ResultCode.notFound.toResultData();*/
         return ResultData.success(body);

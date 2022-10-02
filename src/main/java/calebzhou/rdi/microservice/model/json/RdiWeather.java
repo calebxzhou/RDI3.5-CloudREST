@@ -28,6 +28,7 @@ public class RdiWeather {
                     .append("\n============\n");
         }
         Realtime realtime = result.getRealtime();
+
         double temperature = realtime.getTemperature();
         double humidity = realtime.getHumidity();
         String skycon = realtime.getSkycon();
@@ -43,7 +44,8 @@ public class RdiWeather {
         String hourlyDescription = result.getHourly().getDescription();
         String sunrise = result.getDaily().getAstro().get(0).getSunrise().getTime();
         String sunset = result.getDaily().getAstro().get(0).getSunset().getTime();
-
+        double lowTemp = result.getDaily().getTemperature().get(0).getMin();
+        double highTemp = result.getDaily().getTemperature().get(0).getMax();
 
         return new RdiWeather(
                 alertString.toString(),
@@ -59,7 +61,9 @@ public class RdiWeather {
                 minuteRainDescription,
                 hourlyDescription,
                 sunrise,
-                sunset/*,
+                sunset,
+                lowTemp,
+                highTemp/*,
                 getTomorrowWeather(daily)*/);
     }
     public String alert;
@@ -76,6 +80,8 @@ public class RdiWeather {
     public String hourlyDescr;
     public String sunRiseTime;
     public String sunSetTime;
+    public double lowTemp;
+    public double highTemp;
    // public RdiTomorrowWeather tomorrow;
 
 }
