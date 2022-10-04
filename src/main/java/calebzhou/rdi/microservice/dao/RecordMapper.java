@@ -1,6 +1,5 @@
 package calebzhou.rdi.microservice.dao;
 
-import calebzhou.rdi.microservice.model.RecordBlock;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

@@ -76,5 +76,9 @@ public interface Island2Mapper {
 
     @Delete("delete from Island2Crew where pid=#{mpid} and iid=#{iid}")
     void deleteMember(@Param("mpid")String mpid,@Param("iid")Integer iid);
+    @Select(value = "select iid from Island where pid=#{pid}" )
+    Integer findIsland1IdOwnByPid(@Param("pid")String pid);
 
+    @Select(value = "select iid from Island where crew like #{pid}" )
+    Integer findIsland1IdJoinByPid(@Param("pid")String pid);
 }

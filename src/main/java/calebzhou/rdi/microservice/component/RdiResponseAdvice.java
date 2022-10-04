@@ -1,8 +1,6 @@
 package calebzhou.rdi.microservice.component;
 
-import calebzhou.rdi.microservice.constant.ResultCode;
-import calebzhou.rdi.microservice.model.dto.ResultData;
-import calebzhou.rdi.microservice.utils.RdiSerializer;
+import calebzhou.rdi.microservice.constant.ResponseCode;
 import lombok.SneakyThrows;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -24,15 +22,15 @@ public class RdiResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if(body instanceof String st)
-            return ResultData.success(st);
-        if(body instanceof ResultData<?>)
+            return ResponseData.success(st);
+        if(body instanceof ResponseData<?>)
             return body;
-        if(body instanceof ResultCode resultCode)
-            return resultCode.toResultData();
+        if(body instanceof ResponseCode responseCode)
+            return responseCode.toResultData();
         if(body instanceof Enum e)
-            return ResultData.success(e.toString());
+            return ResponseData.success(e.toString());
         /*if(String.valueOf(body).contains("Not Found") && String.valueOf(body).contains("404"))
             return ResultCode.notFound.toResultData();*/
-        return ResultData.success(body);
+        return ResponseData.success(body);
     }
 }
