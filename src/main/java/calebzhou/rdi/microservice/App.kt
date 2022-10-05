@@ -1,6 +1,7 @@
 package calebzhou.rdi.microservice
 
 import mu.KotlinLogging
+import okhttp3.OkHttpClient
 import org.apache.catalina.connector.Connector
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Bean
  */
 var DEBUG = false
 val logger = KotlinLogging.logger {}
+val HttpClient = OkHttpClient()
 fun main(args: Array<String>) {
     if ("true" == System.getProperty("rdi.debug")) {
         DEBUG = true
@@ -25,6 +27,7 @@ fun main(args: Array<String>) {
 
 @SpringBootApplication
 class App : SpringBootServletInitializer() {
+
     override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder? {
         return builder.sources(App::class.java)
     }

@@ -36,7 +36,7 @@ class RdiExceptionHandler {
 
     @ExceptionHandler(NoHandlerFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun handleNoHandlerFound(e: NoHandlerFoundException?, request: WebRequest?): ResponseData<*>? {
+    fun handleNoHandlerFound(e: NoHandlerFoundException?, request: WebRequest?): ResponseData<Nothing?> {
         return ResponseData(ResponseCode.NotFound)
     }
 }

@@ -3,15 +3,15 @@ package calebzhou.rdi.microservice.ctrler.v37.pub;
 
 import calebzhou.rdi.microservice.constant.CloudConst;
 import calebzhou.rdi.microservice.dao.RecordMapper;
-import calebzhou.rdi.microservice.model.GeoLocation;
-import calebzhou.rdi.microservice.model.Ip2RegionData;
-import calebzhou.rdi.microservice.model.RdiGeoLocation;
-import calebzhou.rdi.microservice.model.RecordBlock;
+import calebzhou.rdi.microservice.model.*;
 import calebzhou.rdi.microservice.model.json.RdiWeather;
 import calebzhou.rdi.microservice.model.json.loca.Location;
 import calebzhou.rdi.microservice.model.json.loca.TencentGeoCoder;
+import calebzhou.rdi.microservice.model.json.weather.CaiyunWeather;
+import calebzhou.rdi.microservice.utils.IpGeoUtils;
 import calebzhou.rdi.microservice.utils.RdiHttpClient;
 import calebzhou.rdi.microservice.model.json.TencentIpLocation;
+import calebzhou.rdi.microservice.utils.RdiSerializer;
 import com.ip2location.IPResult;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import okhttp3.Request;
@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static calebzhou.rdi.microservice.model.RdiWeatherKt.parseCaiyunWeather;
 
 @RestController
 @RequestMapping("/v37/public")
@@ -38,7 +40,7 @@ public class PublicCtrler {
                 .param("ip", ip)
                 .param("key", CloudConst.tencentLbsKey)
                 .build();
-        Ip2RegionData ip2RegionData = IpGeoUtils.searchIp2Region(ip);
+        Ip2RegionData ip2RegionData = IpGeoUtils.Companion.searchIp2Region(ip);
         TencentIpLocation lbs = RdiSerializer.GSON.fromJson(RdiHttpClient.sendRequest(request), TencentIpLocation.class);
         //https://apis.map.qq.com/ws/geocoder/v1/?address=新疆克孜勒苏&key=IQJBZ-AKBCI-CBMGL-5GJ53-UJHNQ-RQBOV
         String nation = lbs.result.ad_info.nation;
@@ -94,7 +96,7 @@ public class PublicCtrler {
         },0,10*60*1000);
     }
     @GetMapping( "/weather")
-    public RdiWeather globalWeatherNow(@RequestParam double latitude,@RequestParam double longitude){
+    public RdiWeather globalWeatherNow(@RequestParam double latitude, @RequestParam double longitude){
         RdiWeather rdiWeather;
         GeoLocation geoLocation = new GeoLocation(latitude, longitude);
         if(locaWeatherMap.containsKey(geoLocation)){
@@ -107,16 +109,8 @@ public class PublicCtrler {
                 .param("alert", "true")
                 .build();
         String json = RdiHttpClient.sendRequest(request);
-        CaiyunWeather weather = RdiSerializer.GSON.fromJson(json, CaiyunWeather.class);
-        rdiWeather = RdiWeather.fromCaiyunWeather(weather);
+        rdiWeather = parseCaiyunWeather(json);
         locaWeatherMap.put(geoLocation,rdiWeather);
         return rdiWeather;
-    }
-
-    @Autowired
-    RecordMapper recordMapper;
-    @GetMapping("/block_record/{dim}/{x}/{y}/{z}")
-    public List<RecordBlock> getRecordBlock(@PathVariable String dim, @PathVariable int x, @PathVariable int y, @PathVariable int z){
-        return recordMapper.getRecordBlocksByCoord(dim, x, y, z);
     }
 }

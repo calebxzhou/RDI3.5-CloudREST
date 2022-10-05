@@ -18,9 +18,9 @@ public class Island2Ctrler {
     }
 
     //获取岛屿基本信息 成功返回岛屿数据
-    @PidTokenCheck
+  /*  @PidTokenCheck
     @RequestMapping(value = "/{pid}",method = RequestMethod.GET)
-    public Object getIsland(/*@RequestHeader("rauth") String token,*/@PathVariable String pid){
+    public Object getIsland(*//*@RequestHeader("rauth") String token,*//*@PathVariable String pid){
         boolean playerOwnIsland = mapper.isPlayerOwnIsland(pid);
         boolean playerJoinAnyIsland = mapper.isPlayerJoinAnyIsland(pid);
         if(!playerOwnIsland && !playerJoinAnyIsland){
@@ -36,12 +36,12 @@ public class Island2Ctrler {
         }
         Island2 island = mapper.getIslandById(iid);
         return island;
-    }
+    }*/
 
     //提供玩家pid创建新的空岛，成功返回岛屿id
-    @PidTokenCheck
+    /*@PidTokenCheck
     @RequestMapping(value = "/{pid}",method = RequestMethod.POST)
-    public Object createIsland(/*@RequestHeader("rauth") String token,*/@PathVariable String pid){
+    public Object createIsland(*//*@RequestHeader("rauth") String token,*//*@PathVariable String pid){
         if(mapper.isPlayerOwnIsland(pid)){
             return ResponseCode.sourceAlreadyOwnIsland;
         }
@@ -53,11 +53,11 @@ public class Island2Ctrler {
         island2.ts = TimeUtils.getNow();
         mapper.insertIsland(island2);
         return mapper.getPlayerOwnIslandId(pid);
-    }
+    }*/
     //提供玩家pid删除空岛，返回删除的岛屿id
-    @PidTokenCheck
+   /* @PidTokenCheck
     @RequestMapping(value = "/{pid}",method = RequestMethod.DELETE)
-    public Object deleteIsland(/*@RequestHeader("rauth") String token,*/@PathVariable String pid, HttpServletRequest request){
+    public Object deleteIsland(*//*@RequestHeader("rauth") String token,*//*@PathVariable String pid, HttpServletRequest request){
         if(!request.getRemoteAddr().equals("124.223.83.52"))
             return null;
         //没岛不删
@@ -69,7 +69,7 @@ public class Island2Ctrler {
             return ResponseCode.sourceNotOwnIsland;
         mapper.deleteIsland(iid);
         return iid;
-    }
+    }*/
     //提供玩家pid修改岛主
     @PidTokenCheck
     @RequestMapping(value = "/transfer/{pid}/{targetPid}",method = RequestMethod.PUT)

@@ -118,27 +118,8 @@ public class RecordCtrler {
         if("minecraft:the_nether".equals(world))
             return;
 
-
-        log.info("方块记录：{},{},{},{},{},{}",bid,act,world,x,y,z);
-
         mapper.insertRecordBlock(new RecordBlock(pid,bid,act,world,x,y,z, TimeUtils.getNow()));
-       /* try  {
-            Connection connection = DatabaseConnector.getConnection();
-            PreparedStatement ps = connection.prepareStatement("insert into RecordBlock (pid,act,bid,world,x,y,z,ts) values (?,?,?,?,?,?,?,?)");
-            ps.setString(1, pid);
-            ps.setInt(2, act);
-            ps.setString(3, bid);
-            ps.setString(4, world);
-            ps.setInt(5, x);
-            ps.setInt(6, y);
-            ps.setInt(7, z);
-            ps.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
-            ps.executeUpdate();
-            ps.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
+
     }
 
     @PassToken @RequestMapping(value = "/block",method = RequestMethod.GET)
