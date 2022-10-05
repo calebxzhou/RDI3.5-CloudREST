@@ -26,17 +26,19 @@ class RdiExceptionHandler {
         }
         return ResponseData(ResponseCode.AccessDenied)
     }
-
-    @ExceptionHandler(Exception::class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    fun exception(e: Exception): ResponseData<Nothing?> {
-        logger.error("全局异常信息 ex={}", e.message, e)
-        return ResponseData(ResponseCode.InternalError)
-    }
-
     @ExceptionHandler(NoHandlerFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleNoHandlerFound(e: NoHandlerFoundException?, request: WebRequest?): ResponseData<Nothing?> {
         return ResponseData(ResponseCode.NotFound)
     }
+    @ExceptionHandler(Exception::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun exception(e: Exception): ResponseData<Nothing?> {
+        logger.error("全局异常信息 ex={}", e.message, e)
+        val error = ResponseCode.InternalError
+        error.msg+=e.message+e.cause
+        return ResponseData(error)
+    }
+
+
 }
