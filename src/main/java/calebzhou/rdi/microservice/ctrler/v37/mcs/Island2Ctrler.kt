@@ -3,7 +3,7 @@ package calebzhou.rdi.microservice.ctrler.v37.mcs
 import calebzhou.rdi.microservice.annotation.PidTokenCheck
 import calebzhou.rdi.microservice.constant.ResponseCode
 import calebzhou.rdi.microservice.dao.IslandMapper
-import calebzhou.rdi.microservice.model.Island2
+import calebzhou.rdi.microservice.model.entity.Island2
 import calebzhou.rdi.microservice.utils.TimeUtils
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest

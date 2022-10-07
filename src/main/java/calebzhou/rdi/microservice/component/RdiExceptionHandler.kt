@@ -6,6 +6,7 @@ import calebzhou.rdi.microservice.exception.RdiTokenFailureException
 import calebzhou.rdi.microservice.logger
 import calebzhou.rdi.microservice.model.ResponseData
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -38,6 +39,11 @@ class RdiExceptionHandler {
         val error = ResponseCode.InternalError
         error.msg+=e.message+e.cause
         return ResponseData(error)
+    }
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun parameterException(e: Exception): ResponseData<Nothing?> {
+        return ResponseData(ResponseCode.ParameterNotPresent)
     }
 
 

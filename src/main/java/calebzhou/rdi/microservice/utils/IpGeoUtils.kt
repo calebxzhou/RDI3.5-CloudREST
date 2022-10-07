@@ -5,6 +5,7 @@ import calebzhou.rdi.microservice.model.Ip2RegionData
 import com.ip2location.IP2Location
 import com.ip2location.IPResult
 import org.lionsoul.ip2region.xdb.Searcher
+import java.util.regex.Pattern
 
 /**
  * Created by calebzhou on 2022-10-04,21:39.
@@ -18,7 +19,7 @@ class IpGeoUtils{
             ip2locationSearcher.Open(App::class.java.getResourceAsStream("/ip2location_db.bin")?.readAllBytes())
         }
         fun searchIp2Region(ip:String) : Ip2RegionData{
-            val split = ip2regionSearcher.search(ip).split("\\|")
+            val split = Pattern.compile("\\|").split(ip2regionSearcher.search(ip))
             return Ip2RegionData(split[0],split[1],split[2],split[3])
         }
         fun searchIp2Location(ip:String) : IPResult{

@@ -1,8 +1,6 @@
 package calebzhou.rdi.microservice.dao
 
-import calebzhou.rdi.microservice.model.Island2
-import calebzhou.rdi.microservice.model.Island2Crew
-import calebzhou.rdi.microservice.model.Island2Loca
+import calebzhou.rdi.microservice.model.entity.*
 import org.apache.ibatis.annotations.*
 import org.springframework.stereotype.Repository
 
@@ -75,9 +73,9 @@ interface IslandMapper {
     @Delete("delete from Island2Crew where pid=#{mpid} and iid=#{iid}")
     fun deleteMember(@Param("mpid") mpid: String, @Param("iid") iid: Int)
 
-    @Select(value = ["select x,y,z from Island where pid=#{pid}"])
+    @Select(value = ["select concat(x, ',', y, ',', z) from Island where pid=#{pid}"])
     fun findIsland1IdOwnByPid(@Param("pid") pid: String): String?
 
-    @Select(value = ["select x,y,z from Island where crew like #{pid}"])
+    @Select(value = ["select concat(x, ',', y, ',', z) from Island where crew like #{pid}"])
     fun findIsland1IdJoinByPid(@Param("pid") pid: String): String?
 }

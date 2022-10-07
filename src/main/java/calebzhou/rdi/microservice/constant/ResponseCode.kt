@@ -8,6 +8,7 @@ enum class ResponseCode(var code:Int, var msg:String) {
     NotFound(-404,"路径找不到"),
     AccessDenied(-403,"权限不足"),
     InternalError(-500,"服务器内部错误"),
+    ParameterNotPresent(-500,"参数错误"),
     TokenInvalid(-401,"登录失效，请重新登录！"),
     //账号系列
     SourceAlreadyRegistered(-10,"请求者已经注册过一个账号了"),
