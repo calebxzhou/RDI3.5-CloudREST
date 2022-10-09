@@ -20,6 +20,8 @@ interface RecordMapper {
     fun insertRecordLogin(login: RecordLogin)
     @Insert("insert into RecordIdName (pid, pname, ts) VALUES (#{pid},#{pname},#{ts})")
     fun insertRecordIdName(idName: RecordIdName)
+    @Select("select * from RecordIdName where pid=#{pid}")
+    fun selectRecordIdNameByPid(pid: String): RecordIdName?
     @Insert("insert into RecordLogout (pid, ts) VALUES (#{pid}, #{ts})")
     fun insertRecordLogout(logout: RecordLogout)
 

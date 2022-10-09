@@ -10,5 +10,5 @@ import java.sql.Timestamp
 data class Island2Vo(val iid:Int,
                      val owner:RdiPlayer,
                      val createTime:Timestamp,
-                     val loca:Island2Loca, val crews:List<RdiPlayer> ) {
+                     val loca:Island2Loca, val crews:List<Island2CrewVo> ) {
 }

@@ -3,8 +3,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.7.4"
     id("io.spring.dependency-management") version "1.0.14.RELEASE"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
+    id ("org.jetbrains.kotlin.plugin.noarg" )version "1.7.20"
+    kotlin("jvm") version "1.7.20"
+    kotlin("plugin.spring") version "1.7.20"
 }
 
 group = "calebzhou.rdi.microservice"
@@ -14,7 +15,11 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 repositories {
     mavenCentral()
 }
-
+apply(plugin = "kotlin-noarg")
+noArg {
+    annotation("calebzhou.rdi.microservice.annotation.NoArg")
+    invokeInitializers = true
+}
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -45,6 +50,7 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
+
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
     }
@@ -52,4 +58,16 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+tasks.withType<Jar>() {
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+   /* manifest {
+        attributes["Main-Class"] = "MainKt"
+    }*/
+
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
 }

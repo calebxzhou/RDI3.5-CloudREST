@@ -1,8 +1,8 @@
-package calebzhou.rdi.microservice.constant;
+package calebzhou.rdi.microservice.constant
 
-public class CloudConst {
-    public static final String tencentLbsKey = "IQJBZ-AKBCI-CBMGL-5GJ53-UJHNQ-RQBOV";
-    public static final String ipStackKey="21837b39955341919f05191ff89ebe5f";
-    public static final String openWeatherKey="eec0f7291187c2131079c68d3c51fb55";
-    public static final String caiyunWeatherKey = "GeEM9KjkU6TzJZuu";
+object CloudConst {
+    const val tencentLbsKey = "IQJBZ-AKBCI-CBMGL-5GJ53-UJHNQ-RQBOV"
+    const val ipStackKey = "21837b39955341919f05191ff89ebe5f"
+    const val openWeatherKey = "eec0f7291187c2131079c68d3c51fb55"
+    const val caiyunWeatherKey = "GeEM9KjkU6TzJZuu"
 }

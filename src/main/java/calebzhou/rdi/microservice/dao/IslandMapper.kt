@@ -3,6 +3,7 @@ package calebzhou.rdi.microservice.dao
 import calebzhou.rdi.microservice.model.entity.*
 import org.apache.ibatis.annotations.*
 import org.springframework.stereotype.Repository
+import java.sql.Timestamp
 
 /**
  * Created by calebzhou on 2022-10-05,8:02.
@@ -17,15 +18,15 @@ interface IslandMapper {
         Result(property = "loca", column = "iid", one = One(select = "getIslandLocationByIid")),
         Result(property = "crews", column = "iid", javaType = MutableList::class, many = Many(select = "getIslandCrewsByIid"))
     )
-    fun getIslandById(@Param("iid") iid: Int?): Island2?
+    fun getIslandById(@Param("iid") iid: Int): Island2?
 
     //根据岛屿id获取岛屿所有成员
     @Select("select * from Island2Crew where iid=#{iid}")
-    fun getIslandCrewsByIid(@Param("iid") iid: Int): List<Island2Crew?>?
+    fun getIslandCrewsByIid(@Param("iid") iid: Int): List<Island2Crew>?
 
     //根据岛屿id获取岛屿的位置
     @Select("select * from Island2Loca where iid=#{iid}")
-    fun getIslandLocationByIid(@Param("iid") iid: Int): Island2Loca?
+    fun getIslandLocationByIid(@Param("iid") iid: Int): Island2Loca
 
     //玩家是否拥有岛屿
     @Select("SELECT EXISTS(SELECT 1 FROM Island2 WHERE pid = #{pid} LIMIT 1)")
@@ -47,8 +48,8 @@ interface IslandMapper {
     fun getPlayerJoinIslandId(@Param("pid") pid: String): Int?
 
     @Insert("insert into Island2 (pid,  ts) VALUES (#{pid},#{ts})")
-    @Options(useGeneratedKeys = true, keyProperty = "iid")
-    fun insertIsland(island: Island2)
+    //@Options(useGeneratedKeys = true, keyProperty = "iid")
+    fun createIsland(pid:String,ts:Timestamp)
 
     @Delete("delete from Island2 where iid=#{iid}")
     fun deleteIsland(@Param("iid") iid: Int)

@@ -7,7 +7,7 @@ import java.sql.Timestamp
  */
 data class RecordChat(val pid:String,val cont:String,val ts:Timestamp)
 data class RecordDeath(val pid:String,val src:String,val ts:Timestamp)
-data class RecordIdName(val pid:String,val pname:String,val ts:Timestamp)
+data class RecordIdName(var id:String?=null,val pid:String,val pname:String,val ts:Timestamp)
 data class RecordLogout(val pid:String,val ts:Timestamp)
 data class RecordLogin(val pid:String,val ip:String,val geo:String,val ts:Timestamp)
 //方块记录
