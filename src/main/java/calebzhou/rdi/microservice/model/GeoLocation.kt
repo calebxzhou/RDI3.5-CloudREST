@@ -10,9 +10,9 @@ import java.sql.Timestamp
  *  地理天气
  */
 //经度纬度
-class GeoLocation(var latitude:Double,var longitude:Double)
+data class GeoLocation(val latitude:Double,val longitude:Double)
 //RDI地址位置
-class RdiGeoLocation(var nation: String, var province: String, var city: String,
-                     var district: String, var isp: String, var location: GeoLocation)
+data class RdiGeoLocation(val nation: String, val province: String, val city: String,
+                     val district: String, val isp: String, val location: GeoLocation)
 //ip2region开原地址库的信息
-class Ip2RegionData(val nation: String, val province: String, val city: String, val isp: String)
+data class Ip2RegionData(val nation: String, val province: String, val city: String, val isp: String)

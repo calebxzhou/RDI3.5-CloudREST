@@ -7,6 +7,7 @@ enum class ResponseCode(var code:Int, var msg:String) {
     Success(200,"成功"),
     NotFound(-404,"路径找不到"),
     AccessDenied(-403,"权限不足"),
+    TooManyRequests(-429,"too many requests"),
     InternalError(-500,"服务器内部错误"),
     ParameterNotPresent(-500,"参数错误"),
     TokenInvalid(-401,"登录失效，请重新登录！"),

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Created by calebzhou on 2022-10-05,21:20.
@@ -52,8 +53,14 @@ class GeoWeatherCtrler {
 
     }
     @GetMapping("/ip2loca")
-    fun ip2loca(@RequestParam ip:String): RdiGeoLocation {
-        val processedIp = if (ip.startsWith("0:0:0:0:0:0:0:")|| ip == "127.0.0.1") "202.107.26.97" else ip
+    fun ip2loca(@RequestParam ip:String?,request:HttpServletRequest): RdiGeoLocation {
+        val processedIp = if(ip==null){
+            IpGeoUtils.getClientIP(request)
+        }else{
+            if (ip.startsWith("0:0:0:0:0:0:0:")|| ip == "127.0.0.1")
+                "202.107.26.97"
+            else ip
+        }
         var lbsJson:String;
         HttpClient.newCall(Request.Builder()
             .url("https://apis.map.qq.com/ws/location/v1/ip".toHttpUrl().newBuilder()
@@ -63,7 +70,7 @@ class GeoWeatherCtrler {
             .build()).execute().use { response->
             lbsJson = response.body!!.string()
         }
-        val ip2RegionData = IpGeoUtils.searchIp2Region(ip)
+        val ip2RegionData = IpGeoUtils.searchIp2Region(processedIp)
         val lbs = RdiSerializer.gson.fromJson(lbsJson, TencentLbsIpToLocation::class.java)
         val adInfo = lbs.result!!.adInfo!!
         val location = lbs.result!!.location!!
@@ -95,7 +102,7 @@ class GeoWeatherCtrler {
         }
         //不在中国境内 去ip2location查询
         if(nation != "中国"){
-            val ipResult = IpGeoUtils.searchIp2Location(ip);
+            val ipResult = IpGeoUtils.searchIp2Location(processedIp);
             nation=ipResult.countryLong+"|"+ipResult.countryShort;
             province=ipResult.region;
             city=ipResult.city;

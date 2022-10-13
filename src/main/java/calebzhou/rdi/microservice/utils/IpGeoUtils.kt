@@ -6,6 +6,7 @@ import com.ip2location.IP2Location
 import com.ip2location.IPResult
 import org.lionsoul.ip2region.xdb.Searcher
 import java.util.regex.Pattern
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Created by calebzhou on 2022-10-04,21:39.
@@ -24,6 +25,11 @@ class IpGeoUtils{
         }
         fun searchIp2Location(ip:String) : IPResult{
             return ip2locationSearcher.IPQuery(ip)
+        }
+        fun getClientIP(request: HttpServletRequest): String {
+            val xfHeader = request.getHeader("X-Forwarded-For") ?: return request.remoteAddr
+            return xfHeader.split(",".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()[0] // voor als ie achter een proxy zit
         }
     }
 

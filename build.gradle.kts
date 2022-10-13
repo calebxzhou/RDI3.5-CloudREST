@@ -45,6 +45,8 @@ dependencies {
 // https://mvnrepository.com/artifact/org.lionsoul/ip2region
     implementation("org.lionsoul:ip2region:2.6.5")
     implementation( "io.github.microutils:kotlin-logging-jvm:3.0.0")
+// https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.1")
 
 }
 

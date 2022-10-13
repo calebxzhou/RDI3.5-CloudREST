@@ -1,5 +1,6 @@
 package calebzhou.rdi.microservice.model.entity
 
+import calebzhou.rdi.microservice.annotation.ExcludeSerialize
 import calebzhou.rdi.microservice.annotation.NoArg
 import java.sql.Timestamp
 
@@ -11,10 +12,10 @@ import java.sql.Timestamp
 */
 
 //岛屿位置
-data class Island2Loca (var id :Int ,var iid :Int,
+data class Island2Loca (@ExcludeSerialize var id :Int ,var iid :Int,
 var x :Double, var y :Double, var z :Double, var w :Double, var p :Double)
 //岛屿成员
-data class Island2Crew (var id:Int,var pid:String,var iid:Int,var ts:Timestamp)
+data class Island2Crew (@ExcludeSerialize var id:Int,var pid:String,var iid:Int,var ts:Timestamp)
 //岛屿
 @NoArg
 data class Island2(var iid:Int, var pid:String, var ts: Timestamp,

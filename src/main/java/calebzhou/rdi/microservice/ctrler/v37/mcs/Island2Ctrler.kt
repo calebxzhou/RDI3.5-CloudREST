@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest
  * Created by calebzhou on 2022-10-05,7:58.
  */
 @RestController
-@RequestMapping("/v37/mcs_game/island")
+@RequestMapping("/v37/mcs_game/island2")
 class Island2Ctrler(var service: IslandService) {
     //获取岛屿基本信息 成功返回岛屿数据
     @RequestMapping(value = ["/{pid}"], method = [RequestMethod.GET])
