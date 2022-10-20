@@ -46,7 +46,9 @@ class RecordCtrler(var mapper: RecordMapper) {
     @PassToken
     @RequestMapping(value = ["/idname"], method = [RequestMethod.POST])
     fun recordIdName(@RequestParam pid: String, name: String) {
-        mapper.insertRecordIdName(RecordIdName(null,pid,name,TimeUtils.getNow()))
+            val idName = RecordIdName(null, pid, name, TimeUtils.getNow())
+        if(!mapper.containsRecordIdName(idName))
+            mapper.insertRecordIdName(idName)
     }
 
     //记录登出

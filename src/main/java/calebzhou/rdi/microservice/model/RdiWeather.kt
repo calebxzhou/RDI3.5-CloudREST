@@ -23,8 +23,8 @@ fun parseCaiyunWeather(weatherJson:String) : RdiWeather{
     val realtime = caiyunWeather.result?.realtime
     realTimeWeather.temp= realtime?.temperature!!
     realTimeWeather.humi= realtime.humidity!!
-    realTimeWeather.skycon= caiyunWeather?.result?.hourly?.description!!
-    realTimeWeather.skyDesc= realtime.skycon!!
+    realTimeWeather.skycon= realtime.skycon!!
+    realTimeWeather.skyDesc= caiyunWeather?.result?.hourly?.description!!
     realTimeWeather.visi= realtime.visibility!!
     realTimeWeather.windSpd= realtime.wind?.speed!!
     realTimeWeather.windDir= realtime.wind?.direction!!

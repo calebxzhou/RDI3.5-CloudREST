@@ -21,7 +21,7 @@ class IpGeoUtils{
         }
         fun searchIp2Region(ip:String) : Ip2RegionData{
             val split = Pattern.compile("\\|").split(ip2regionSearcher.search(ip))
-            return Ip2RegionData(split[0],split[1],split[2],split[3])
+            return Ip2RegionData(split[0],split[2],split[3],split[4])
         }
         fun searchIp2Location(ip:String) : IPResult{
             return ip2locationSearcher.IPQuery(ip)

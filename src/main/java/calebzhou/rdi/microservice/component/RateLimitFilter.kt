@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse
 /**
  * Created by calebzhou on 2022-10-10,11:28.
  */
-@Component
+//@Component
 class RateLimitFilter: HttpFilter() {
     private val MaxRequestsPerMinute = 10 //or whatever you want it to be
     private var requestCountsPerIpAddress: LoadingCache<String, Int> = Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES).build { 0 }

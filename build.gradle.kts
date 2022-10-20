@@ -47,7 +47,7 @@ dependencies {
     implementation( "io.github.microutils:kotlin-logging-jvm:3.0.0")
 // https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.1")
-
+    implementation ("org.springframework.integration:spring-integration-ip:5.5.15")
 }
 
 tasks.withType<KotlinCompile> {

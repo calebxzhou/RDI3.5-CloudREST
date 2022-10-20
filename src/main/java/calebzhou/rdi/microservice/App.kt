@@ -11,6 +11,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * Created by calebzhou on 2022-10-04,22:41.
  */
 var DEBUG = false
+    private set
 val logger = KotlinLogging.logger {}
 val HttpClient = OkHttpClient()
 fun main(args: Array<String>) {

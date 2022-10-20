@@ -53,14 +53,11 @@ class GeoWeatherCtrler {
 
     }
     @GetMapping("/ip2loca")
-    fun ip2loca(@RequestParam ip:String?,request:HttpServletRequest): RdiGeoLocation {
-        val processedIp = if(ip==null){
-            IpGeoUtils.getClientIP(request)
-        }else{
-            if (ip.startsWith("0:0:0:0:0:0:0:")|| ip == "127.0.0.1")
-                "202.107.26.97"
-            else ip
-        }
+    fun ip2loca(request:HttpServletRequest): RdiGeoLocation {
+        var processedIp =   IpGeoUtils.getClientIP(request)
+        if (processedIp.startsWith("0:0:0:0:0:0:0:")|| processedIp == "127.0.0.1")
+            processedIp = "202.107.26.97"
+
         var lbsJson:String;
         HttpClient.newCall(Request.Builder()
             .url("https://apis.map.qq.com/ws/location/v1/ip".toHttpUrl().newBuilder()
